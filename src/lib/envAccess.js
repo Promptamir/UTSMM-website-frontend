@@ -25,8 +25,8 @@ export const API = {
     GET: SERVER.API_URL + "countries/",
   },
   AUTH: {
-    LOGIN: SERVER.API_URL + "auth/login",
-    SIGNUP: SERVER.API_URL + "auth/register",
+    LOGIN: SERVER.API_URL + "login",
+    SIGNUP: SERVER.API_URL + "register",
   },
   DASHBOARD: {
     QUICK_VIEW: {
