@@ -1,6 +1,4 @@
-let SERVER_URL = window.origin.includes("localhost")
-  ? `${window.origin.replace(":3000", "")}:3001`
-  : window.origin;
+let SERVER_URL = 'https://utsmm.liara.run/';
 
 console.log(SERVER_URL);
 export const CLIENT = {
@@ -9,7 +7,7 @@ export const CLIENT = {
 
 export const SERVER = {
   BASE_URL: SERVER_URL,
-  API_URL: SERVER_URL + "/api/",
+  API_URL: SERVER_URL + "api/",
   ADMIN_PANEL_API_URL: SERVER_URL + "/api/admin/dashboard/",
 };
 
