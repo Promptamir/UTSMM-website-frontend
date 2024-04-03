@@ -33,7 +33,7 @@ export default function BlogDetailPage() {
                         <>
                           <div className={'info-holder'}>
                             {
-                                data.keywords.length !== 0 && <div className={'keywords-holder'}>
+                                data.keywords?.length !== 0 && <div className={'keywords-holder'}>
                                   {
                                     data.keywords.map((item, index) => (
                                         <div className={'keyword'} key={index}>#{item}</div>

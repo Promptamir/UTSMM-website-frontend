@@ -4,16 +4,17 @@ import axios from "axios";
 import {useQuery} from "@tanstack/react-query";
 import {Link} from "react-router-dom";
 import '../../../css/pages/blog-page/BlogPageStyle.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const BlogPage = () => {
-    const [paginationNumber, setPaginationNumber] = useState(0);
+    const [paginationNumber, setPaginationNumber] = useState(1);
 
     const {
         data,
         isLoading,
-        isError
+        isError,
     } = useQuery({
+        queryKey: ['Blog'],
         queryFn: async () => {
             const {data} = await axios.get('https://utsmm.liara.run/api/blogs');
             return data.entities.blogs;
@@ -43,16 +44,16 @@ const BlogPage = () => {
                         magni maiores recusandae, velit tempora. Esse.</p>
                 </div>
             </div>
-            <div className={'blogs-pagination-holder'}>
+            <div>
                 <div className={'blog-holder'}>
                     {
                         (isLoading)
                             ? <h1>Loading</h1>
                             : (isError)
                                 ? <h1>An Error Has Happened</h1>
-                                : data.slice(0,10).map((item, index) => (
+                                : data.slice((paginationNumber === 1) ? 0 : paginationNumber, 10*paginationNumber).map((item, index) => (
                                     <Link to={`/blog/${item.slug}`} key={index}>
-                                        <img className={'blog-img'} src={item.image} alt={item.short_description} />
+                                        <img className={'blog-img'} src={`https://utsmm.liara.run/${item.image}`} alt={item.short_description} />
                                         <h1 className={'blog-title'}>{item.title}</h1>
                                         <p className={'blog-p'}>{item.short_description}</p>
                                     </Link>
@@ -60,19 +61,22 @@ const BlogPage = () => {
                     }
                 </div>
                 {
-                    (!isLoading && !isError && !data.length > 10)
-                        ? (
-                            <div className={'pagination-holder'}>
+                    (isLoading)
+                        ? <h1>Loading</h1>
+                        : (isError)
+                            ? <h1>An error has happened</h1>
+                            : <div className={'pagination-holder'}>
                                 <div className={'pagination'}>
                                     {
-                                        [...Array(data.length/10)].map((item, index) => (
+                                        [...Array(data.length / 10)].map((item, index) => (
                                             <>
                                                 {
                                                     (index > 4)
                                                         ? <div className={'pagination-item'}>...</div>
                                                         : <button
-                                                            onClick={() => setPaginationNumber(index)}
+                                                            onClick={() => setPaginationNumber(index + 1)}
                                                             className={'pagination-item'}
+                                                            data-active={(paginationNumber === index + 1)}
                                                         >
                                                             {index + 1}
                                                         </button>
@@ -82,7 +86,6 @@ const BlogPage = () => {
                                     }
                                 </div>
                             </div>
-                        ) : false
                 }
             </div>
         </main>

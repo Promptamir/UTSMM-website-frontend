@@ -2,6 +2,10 @@ $primaryColor: rgb(49, 101, 243);
 
 .wave {pointer-events: none;}
 
+.intro .right {
+  margin-bottom: 30px;
+}
+
 .blogs-pagination-holder {
   max-width: 1000px;
   margin-inline: auto;
@@ -10,19 +14,22 @@ $primaryColor: rgb(49, 101, 243);
 .blog-img {
   width: 100%;
   display: block;
-  height: 100px;
+  height: 200px;
   object-fit: cover;
 }
 
 .blog-title {
-  color: white;
   font-weight: 700;
   margin: 10px 0;
+  color: black;
+  font-size: 16px;
 }
 
 .blog-p {
-  color: white;
   font-weight: 300;
+  margin-bottom: 30px;
+  color: black;
+  font-size: 14px;
 }
 
 .blog-holder {
@@ -38,7 +45,7 @@ $primaryColor: rgb(49, 101, 243);
 
 .pagination {
   border-radius: 10px;
-  border: 1px solid white;
+  border: 1px solid black;
   margin-top: 20px;
   overflow: hidden;
   display: flex;
@@ -52,14 +59,21 @@ $primaryColor: rgb(49, 101, 243);
   height: 40px;
   background-color: transparent;
   transition: 500ms;
-  color: white;
+  color: black;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
 
   &:hover {
-    background-color: white;
-    color: $primaryColor;
+    background-color: $primaryColor;
+    color: whitesmoke;
+  }
+}
+
+// Media querys
+@media screen and (max-width: 1024px) {
+  .blog-holder {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
