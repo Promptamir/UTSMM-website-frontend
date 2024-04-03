@@ -1,262 +1,111 @@
-
-
-
-import { useEffect, useState } from "react";
-import rocket from "../../../images/auth-page/rocket.svg"
-import { Icon } from '@iconify/react';
-import Lottie from 'react-lottie-player'
-
-
-import animationOne from "../../../images/auth-page/animation.json"
-import animationTwo from "../../../images/auth-page/animation-2.json"
-import FormFields from "./components/FormFields";
-import {Link, useNavigate, useParams} from "react-router-dom";
-
-
-import Select from 'react-select'
-import { useFetch } from "../../../lib/useFetch";
-import { API } from "../../../lib/envAccess";
+// Importing part
+import '../../../css/pages/auth-page/AuthPageStyle.css';
+import {useRef, useState} from "react";
 import axios from "axios";
-import Swal from "sweetalert2"
-import { showError } from "../../../lib/alertHandler";
 
+// Creating and exporting auth page as default
+export default function AuthPage() {
+    // Defining states of component
+    const [mode, setMode] = useState('login');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailSignup, setEmailSignup] = useState('');
 
+    const [name, setName] = useState('');
+    const [emailSignUp, setEmailSignUp] = useState('');
+    const [passwordSignup, setPasswordSignup] = useState('');
+    const [passwordRepeat, setPasswordRepeat] = useState('');
+    const [error, setError] = useState('');
 
-const AuthPage = () => {
+    const [loading, setloading] = useState(false);
 
-    const navigator = useNavigate()
-    const [pageMode, setMode] = useState("login")
-    const token = JSON.parse(sessionStorage.getItem("token"))
-    const params = useParams()
+    // Handling the form submit event
+    function handleSubmit(event) {
+        event.preventDefault();
 
-    const [countries, error, loading] = useFetch(API.COUNTRIES.GET)
+        if (mode === 'login') {
+            setloading(true);
+            setError('')
 
-
-
-
-    useEffect(() => {
-
-        if (token) {
-            navigator("/user/dashboard")
-        }
-    }, [])
-
-
-    const handleSubmitclick = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target)
-
-
-
-        if (pageMode === "login") {
-            await axios({
-                method: "post",
-                url: API.AUTH.LOGIN,
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            }).then(response => {
-                const data = response.data
-                const token = data.token
-
-                sessionStorage.setItem("token", JSON.stringify(token))
-
-                Swal.fire({
-                    title: "Login Success!",
-                    text: "Welcome Back,please click ok button",
-                    icon: "success"
-                }).then(() => {
-                    setTimeout(() => {
-                        navigator("/user/dashboard")
-                    }
-                        , 2000)
-                })
-
+            console.log({
+                "email": email,
+                "password": password
             })
-                .catch(error => {
-                    const response = error?.response
-                    if (response.status === 500) {
-                        console.log(response)
-                        const errors = response.data
-                        showError(errors)
-                    }
-                })
 
-        }
-        if (pageMode === "sign-up") {
-            const affliateLink = params?.link
-            if (affliateLink) formData.append("affliateLink", affliateLink)
-            await axios({
-                method: "post",
-                url: API.AUTH.SIGNUP,
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            axios.post('https://utsmm.liara.run/api/login', {
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Accept" : "application/json",
+                    "X-Requested-With" : "XMLHttpRequest"
+                },
+                "body": {
+                    "email": email,
+                    "password": password
                 }
-            }).then(response => {
-                const data = response.data
-                const token = data.token
-                sessionStorage.setItem("token", JSON.stringify(token))
-                Swal.fire({
-                    title: data.message,
-                    text: "Welcome Back,please click ok button",
-                    icon: "success"
-                }).then(() => {
-                    navigator("/user/dashboard")
-                })
-
-            }).catch(error => {
-                const response = error?.response
-
-                if (response?.status === 500) {
-                    const errors = response.data
-                    showError(errors)
-                    return
-                }
-
-                Swal.fire({
-                    title: "Somthing Wrong!",
-                    text: "please refresh page, and if this error not gone..., contact us !",
-                    icon: "error"
-                })
             })
+                .then((data) => {
+                    setloading(false);
+                    console.log(data)
+                })
+                .catch((data) => {
+                    setloading(false);
+                    console.log(data)
+                    setError('An Unexpected Error has happened.')
+                })
+        } else {
+            if (passwordSignup !== passwordRepeat) {
+                setError('The password and its repeat are not matching');
+            } else {
+                setError('');
+                setloading(true);
+            }
         }
-
     }
 
-
-
-
-
-
-
-
+    // Returning JSX
     return (
-        <main className="auth-page">
-            <div className="left">
-                <img className="rocket" src={rocket} />
-                <Lottie
-                    className="lottie"
-                    loop
-                    animationData={animationOne}
-                    play
-                />
-
-
-            </div>
-            <form
-                className="right"
-                encType="multipart/form-data"
-                onSubmit={handleSubmitclick}>
-                <div className="form-header">
-                    <h1 className={pageMode === "login" ? "selected" : ""} onClick={() => setMode("login")}>
-                        Login
-                    </h1>
-                    <h1 className={pageMode === "sign-up" ? "selected" : ""} onClick={() => setMode("sign-up")}>
-                        Sign Up
-                    </h1>
-                </div>
-                <div className="form-body">
-                    <div className="login-fields part">
-                        <div className="container">
-                            <FormFields
-                                name={"email"}
-                                type={"email"}
-                                placeHolder={"email"}
-                                required={true}
-                                icon={<Icon icon="entypo:email" />} />
-                            <FormFields
-                                name={"password"}
-                                type="password"
-                                required={true}
-                                placeHolder={"Password"}
-                                icon={<Icon icon="mdi:password" />} />
-                        </div>
-                    </div>
-                    <div className={`sign-up-fields part ${pageMode === "sign-up" ? "expanded" : ""}`}>
-                        <div className="container">
-                            <FormFields
-                                name={"passwordConfirm"}
-                                placeHolder={"Password-Confirmation"}
-                                type={"password"}
-                                icon={<Icon icon="mdi:password" />}
-                                required={pageMode === "sign-up"} />
-
-                            <FormFields
-                                name={"country"}
-                                type={"text"}
-                                placeHolder={"country"}
-                                icon={<Icon icon="fontisto:earth" />}
-                                customeClass={"select-box-field"}
-                                required={pageMode === "sign-up"}
-                                child={
-                                    <Select
-                                        className="select-box"
-                                        placeholder={"Country"}
-                                        options={countries}
-                                        name="country"
-                                        isSearchable={true}
-                                    />
-                                } />
-
-
-
-
-                            <FormFields
-                                name={"fullName"}
-                                type={"text"}
-                                placeHolder={"full-Name"}
-                                required={pageMode === "sign-up"}
-                                icon={<Icon icon="mdi:rename-box" />} />
-
-                            <FormFields
-                                name={"gender"}
-                                placeHolder={"gender"}
-                                required={pageMode === "sign-up"}
-                                icon={<Icon icon="ph:gender-male-bold" />}
-                                child={
-                                    <div className="gender-box">
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                radioGroup="gender"
-                                                name="gender"
-                                                value={"male"} />
-                                            <span>male</span>
-                                        </label>
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                radioGroup="gender"
-                                                name="gender"
-                                                value={"female"} />
-                                            <span>female</span>
-                                        </label>
-                                    </div>
-                                } />
-
-
-                        </div>
-                    </div>
-                </div>
-                <div className="form-buttons">
-                    <Link style={{color: 'white'}} to={'/auth/recovery/password'}>Forgotten your password? Click here.</Link>
-                    <button className="submit">Submit</button>
-                </div>
-                <div className="form-auth-options">
-                    <div className="item">
-                        <Icon icon="devicon:google" />
-                    </div>
-                    <div className="item">
-                        <Icon icon="logos:facebook" />
-                    </div>
-
-                </div>
-
-            </form>
-        </main >
+        <div className={'auth-page'}>
+            <main className={'container'}>
+                <form onSubmit={handleSubmit} action="#" className={'form'}>
+                    <h1 className={'form-title'}>{(mode === 'login') ? 'Login' : 'Sign Up'}</h1>
+                    {
+                        (mode === 'login')
+                            ? (
+                                <>
+                                    <input onChange={(event) => setEmail(event.target.value)} name={'email'} id={'email'} type="email" required className={'form-input'} placeholder={'Email'}/>
+                                    <input onChange={(event) => setPassword(event.target.value)} name={'password'} id={'password'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password'}/>
+                                </>
+                            ) : (
+                                <>
+                                    <input onChange={(event) => setName(event.target.value)} name={'name'} id={'name'} type="text" minLength={3} maxLength={10} required className={'form-input'} placeholder={'Name'}/>
+                                    <input onChange={(event) => setEmailSignUp(event.target.value)} name={'email'} id={'email'} type="email" required className={'form-input'} placeholder={'Email'}/>
+                                    <input onChange={(event) => setPasswordSignup(event.target.value)} name={'password'} id={'password'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password'}/>
+                                    <input onChange={(event) => setPasswordRepeat(event.target.value)} name={'password-repeat'} id={'password-repeat'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password Repeat'}/>
+                                </>
+                            )
+                    }
+                    {error !== '' && <div className={'form-input-error'}>{error}</div>}
+                    <button className={'form-submit-btn'} disabled={loading}>
+                        {(loading) ? 'Loading' : 'Submit'}
+                    </button>
+                    <button
+                        className={'mode-switch'}
+                        type={'button'}
+                        onClick={() => {
+                            (mode === 'login')
+                                ? setMode('sign-up')
+                                : setMode('login')
+                        }}
+                    >
+                        {
+                            (mode === 'login')
+                                ? 'Already have an account ?'
+                                : 'Dont have any account ?'
+                        }
+                    </button>
+                </form>
+            </main>
+        </div>
     )
 }
 
-export default AuthPage
