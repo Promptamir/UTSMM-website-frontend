@@ -43,14 +43,12 @@ export default function AuthPage() {
                     "password": password
                 }
             })
-                .then((data) => {
+                .then(() => {
                     setloading(false);
-                    console.log(data)
                 })
-                .catch((data) => {
+                .catch(() => {
                     setloading(false);
-                    console.log(data)
-                    setError('An Unexpected Error has happened.')
+                    setError('An Unexpected Error has happened.');
                 })
         } else {
             if (passwordSignup !== passwordRepeat) {
@@ -58,6 +56,31 @@ export default function AuthPage() {
             } else {
                 setError('');
                 setloading(true);
+
+                axios.post('https://utsmm.liara.run/api/register', {
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "Accept" : "application/json",
+                        "X-Requested-With" : "XMLHttpRequest"
+                    },
+                    "body": {
+                        "name": name,
+                        "email": emailSignUp,
+                        "password": passwordSignup,
+                        "password_confirmation": passwordRepeat
+                    }
+                })
+                    .then((data) => {
+                        setloading(false);
+
+                        if (data.data.message && data.data.message !== '') {
+                            setError(data.data.message);
+                        }
+                    })
+                    .catch(() => {
+                        setloading(false);
+                        setError('An Unexpected Error has happened.')
+                    })
             }
         }
     }
