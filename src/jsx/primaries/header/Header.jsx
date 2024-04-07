@@ -12,14 +12,13 @@ const Header = (
 
 ) => {
 
-
-
+    const tokenExists = sessionStorage.getItem('token') && sessionStorage.getItem('token') !== '';
 
 
     const menuList = [
         {
-            title: "Account",
-            route: "/auth",
+            title: (tokenExists) ? 'Dashboard' : 'Account',
+            route: (tokenExists) ? '/auth' : "/user/dashboard/Statics",
             icon: <Icon icon="mdi:account" />
         },
         {
@@ -57,7 +56,6 @@ const Header = (
             route: "/admin/dashboard",
             icon: <Icon icon="fluent:data-pie-24-filled" />
         }
-
     ]
 
 
