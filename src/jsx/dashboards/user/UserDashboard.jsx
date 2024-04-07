@@ -17,6 +17,7 @@ import ChildPanel from "./panels/child-panel/ChildPanel"
 import { useNavigate, useParams } from "react-router-dom"
 import FreeCredits from "./panels/free-credits/FreeCredits"
 import Tutorials from "./panels/tutorials/Tutorials"
+import '../../../css/dashboard/user/menu.css';
 
 const UserDashboard = (
     {
@@ -165,7 +166,7 @@ const UserDashboard = (
 
     }, [params])
 
-
+    const navigate = useNavigate();
 
     return (
         <main className="user-dashboard">
@@ -210,6 +211,10 @@ const UserDashboard = (
 
                         })
                     }
+                    <button className={'log-out'} onClick={() => {
+                        sessionStorage.removeItem('token');
+                        navigate('/')
+                    }}>Log out</button>
                 </div>
             </ul>
             <div className="panel">
