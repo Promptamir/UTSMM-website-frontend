@@ -53,6 +53,13 @@
   padding: 10px;
   border-radius: 10px;
 }
+.form .form-input-succses {
+  background-color: rgba(0, 255, 13, 0.2);
+  color: rgb(0, 255, 13);
+  border: 1px solid rgb(0, 255, 13);
+  padding: 10px;
+  border-radius: 10px;
+}
 .form .mode-switch {
   display: block;
   text-align: center;

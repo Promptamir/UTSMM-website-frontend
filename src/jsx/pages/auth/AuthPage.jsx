@@ -15,7 +15,11 @@ export default function AuthPage() {
     const [emailSignUp, setEmailSignUp] = useState('');
     const [passwordSignup, setPasswordSignup] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
+
     const [error, setError] = useState('');
+    const [succses, setSuccses] = useState('');
+
+    const [emailForgottenMode, setEmailForgottenMode] = useState('');
 
     const [loading, setloading] = useState(false);
 
@@ -54,7 +58,7 @@ export default function AuthPage() {
                     setloading(false);
                     setError('There was an unexpected error. Please try again.');
                 })
-        } else {
+        } else if (mode === 'signup') {
             if (passwordSignup !== passwordRepeat) {
                 setError('The password and its repeat are not matching');
             } else {
@@ -88,6 +92,30 @@ export default function AuthPage() {
                         setError('There was an unexpected error. Please try again.');
                     })
             }
+        } else {
+            setloading(true);
+            setError('');
+
+            fetch('https://utsmm.liara.run/api/forgot-password', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept" : "application/json",
+                    "X-Requested-With" : "XMLHttpRequest"
+                },
+                body: JSON.stringify({
+                    "email": emailForgottenMode
+                })
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    setloading(false);
+                    setSuccses('We sent you an email.');
+                })
+                .catch(() => {
+                    setloading(false);
+                    setError('There was an unexpected error. Please try again.');
+                })
         }
     }
 
@@ -96,33 +124,53 @@ export default function AuthPage() {
         <div className={'auth-page'}>
             <main className={'container'}>
                 <form onSubmit={handleSubmit} action="#" className={'form'}>
-                    <h1 className={'form-title'}>{(mode === 'login') ? 'Login' : 'Sign Up'}</h1>
+                    <h1 className={'form-title'}>{(mode === 'login') ? 'Login' : (mode === 'signup') ? 'Sign Up' : 'Password Forgotten'}</h1>
                     {
-                        (mode === 'login')
+                        (mode === 'login') ? (
+                            <>
+                                <input onChange={(event) => setEmail(event.target.value)} name={'email'} id={'email'}
+                                       type="email" required className={'form-input'} placeholder={'Email'}/>
+                                <input onChange={(event) => setPassword(event.target.value)} name={'password'}
+                                       id={'password'} type="password" minLength={8} maxLength={12} required
+                                       className={'form-input'} placeholder={'Password'}/>
+                            </>
+                        ) : (mode === 'signup') ? (
+                            <>
+                                <input onChange={(event) => setName(event.target.value)} name={'name'} id={'name'}
+                                       type="text" minLength={3} maxLength={10} required className={'form-input'}
+                                       placeholder={'Name'}/>
+                                <input onChange={(event) => setEmailSignUp(event.target.value)} name={'email'}
+                                       id={'email'} type="email" required className={'form-input'}
+                                       placeholder={'Email'}/>
+                                <input onChange={(event) => setPasswordSignup(event.target.value)} name={'password'}
+                                       id={'password'} type="password" minLength={8} maxLength={12} required
+                                       className={'form-input'} placeholder={'Password'}/>
+                                <input onChange={(event) => setPasswordRepeat(event.target.value)}
+                                       name={'password-repeat'} id={'password-repeat'} type="password" minLength={8}
+                                       maxLength={12} required className={'form-input'}
+                                       placeholder={'Password Repeat'}/>
+                            </>
+                        ) : (mode === 'password-forgotten')
                             ? (
                                 <>
-                                    <input onChange={(event) => setEmail(event.target.value)} name={'email'} id={'email'} type="email" required className={'form-input'} placeholder={'Email'}/>
-                                    <input onChange={(event) => setPassword(event.target.value)} name={'password'} id={'password'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password'}/>
+                                    <input onChange={(event) => setEmailForgottenMode(event.target.value)}
+                                           name={'email'} id={'email'} type="email" required className={'form-input'}
+                                           placeholder={'Email'}/>
                                 </>
-                            ) : (
-                                <>
-                                    <input onChange={(event) => setName(event.target.value)} name={'name'} id={'name'} type="text" minLength={3} maxLength={10} required className={'form-input'} placeholder={'Name'}/>
-                                    <input onChange={(event) => setEmailSignUp(event.target.value)} name={'email'} id={'email'} type="email" required className={'form-input'} placeholder={'Email'}/>
-                                    <input onChange={(event) => setPasswordSignup(event.target.value)} name={'password'} id={'password'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password'}/>
-                                    <input onChange={(event) => setPasswordRepeat(event.target.value)} name={'password-repeat'} id={'password-repeat'} type="password" minLength={8} maxLength={12} required className={'form-input'} placeholder={'Password Repeat'}/>
-                                </>
-                            )
+                            ) : false
                     }
                     {error !== '' && <div className={'form-input-error'}>{error}</div>}
+                    {succses !== '' && <div className={'form-input-succses'}>{succses}</div>}
                     <button className={'form-submit-btn'} disabled={loading}>
                         {(loading) ? 'Loading' : 'Submit'}
                     </button>
+                    {mode === 'login' && <button className={'mode-switch'} type={'button'} onClick={() => setMode('password-forgotten')}>Lost your password ?</button>}
                     <button
                         className={'mode-switch'}
                         type={'button'}
                         onClick={() => {
                             (mode === 'login')
-                                ? setMode('sign-up')
+                                ? setMode('signup')
                                 : setMode('login')
                         }}
                     >
