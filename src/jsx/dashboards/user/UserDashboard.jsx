@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import FreeCredits from "./panels/free-credits/FreeCredits"
 import Tutorials from "./panels/tutorials/Tutorials"
 import '../../../css/dashboard/user/menu.css';
+import Setting from './panels/setting/Setting';
 
 const UserDashboard = (
     {
@@ -116,7 +117,8 @@ const UserDashboard = (
         {
             type: "normal",
             title: "Setting",
-            icon: <Icon icon="ant-design:setting-filled" />
+            icon: <Icon icon="ant-design:setting-filled" />,
+            component: <Setting />
         },
         {
             type: "click",
@@ -215,7 +217,7 @@ const UserDashboard = (
                         })
                     }
                     <button disabled={loading} className={'log-out'} onClick={() => {
-                        setError(false);
+                        setError('');
                         setloading(true);
 
                         fetch('https://utsmm.liara.run/api/logout', {

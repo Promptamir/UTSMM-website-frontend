@@ -1,0 +1,86 @@
+.container-dashboard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+.container-dashboard .container-item {
+  padding: 20px;
+  background-color: white;
+  border-radius: 20px;
+  width: 100%;
+}
+.container-dashboard .dashboard-error {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+}
+.container-dashboard .dashboard-succses {
+  background-color: rgba(0, 255, 13, 0.2);
+  color: rgb(0, 255, 13);
+  border: 1px solid rgb(0, 255, 13);
+  padding: 10px;
+  border-radius: 10px;
+}
+.container-dashboard .dashboard-submit-btn {
+  background-color: #4976f3;
+  padding: 10px;
+  border-radius: 20px;
+  display: block;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+.container-dashboard .dashboard-submit-btn:disabled {
+  pointer-events: none;
+  opacity: 20%;
+}
+.container-dashboard .dashboard-form-input {
+  background: transparent;
+  border-radius: 10px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 10px;
+  border: 1px solid #4976f3;
+  transition: 500ms;
+  width: 100%;
+}
+.container-dashboard .dashboard-form-input:focus {
+  background-color: #4976f3;
+  color: white;
+}
+.container-dashboard .dashboard-form-input:focus::placeholder {
+  color: white;
+}
+.container-dashboard .dashboard-form-input::placeholder {
+  color: #4976f3;
+  font-size: 16px;
+  font-weight: 300;
+}
+.container-dashboard .dashboard-form-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+  display: block;
+  width: 100%;
+}
+.container-dashboard .dashboard-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+}
+.container-dashboard .dashboard-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+/*# sourceMappingURL=setting.css.map */
