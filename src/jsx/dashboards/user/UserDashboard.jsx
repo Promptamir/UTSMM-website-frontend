@@ -168,6 +168,9 @@ const UserDashboard = (
 
     const navigate = useNavigate();
 
+    const [error, setError] = useState('');
+    const [loading, setloading] = useState(false);
+
     return (
         <main className="user-dashboard">
             <ul className={`panel-menu panel-menu-${userDashboardMenuState}`}>
@@ -211,10 +214,32 @@ const UserDashboard = (
 
                         })
                     }
-                    <button className={'log-out'} onClick={() => {
-                        sessionStorage.removeItem('token');
-                        navigate('/')
+                    <button disabled={loading} className={'log-out'} onClick={() => {
+                        setError(false);
+                        setloading(true);
+
+                        fetch('https://utsmm.liara.run/api/logout', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept" : "application/json",
+                                "X-Requested-With" : "XMLHttpRequest"
+                            }
+                        })
+                            .then(() => {
+                                setloading(false);
+                                setError('');
+
+                                sessionStorage.removeItem('token');
+                                navigate('/');
+                            })
+                            .catch(() => {
+                                setloading(false);
+                                setError('There was an unexpected error. Please try again.');
+                            })
+
                     }}>Log out</button>
+                    {error !== '' && <div className={'error'}>{error}</div>}
                 </div>
             </ul>
             <div className="panel">

@@ -1,6 +1,6 @@
 // Importing part
 import '../../../css/pages/auth-page/AuthPageStyle.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -25,6 +25,13 @@ export default function AuthPage() {
 
     // Defining router to use to navigate to different pages
     const navigate = useNavigate();
+
+    // Using useEffect to set error and success messages to disappear when mode changes
+    useEffect(() => {
+        setloading(false);
+        setError('');
+        setSuccses('');
+    }, [mode]);
 
     // Handling the form submit event
     function handleSubmit(event) {
@@ -161,9 +168,7 @@ export default function AuthPage() {
                     }
                     {error !== '' && <div className={'form-input-error'}>{error}</div>}
                     {succses !== '' && <div className={'form-input-succses'}>{succses}</div>}
-                    <button className={'form-submit-btn'} disabled={loading}>
-                        {(loading) ? 'Loading' : 'Submit'}
-                    </button>
+                    <button className={'form-submit-btn'} disabled={loading}>{(loading) ? 'Loading' : 'Submit'}</button>
                     {mode === 'login' && <button className={'mode-switch'} type={'button'} onClick={() => setMode('password-forgotten')}>Lost your password ?</button>}
                     <button
                         className={'mode-switch'}
@@ -176,8 +181,8 @@ export default function AuthPage() {
                     >
                         {
                             (mode === 'login')
-                                ? 'Already have an account ?'
-                                : 'Dont have any account ?'
+                                ? 'Dont have any account ?'
+                                : 'Already have an account ?'
                         }
                     </button>
                 </form>

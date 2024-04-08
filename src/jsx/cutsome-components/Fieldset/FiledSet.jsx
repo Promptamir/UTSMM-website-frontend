@@ -5,6 +5,7 @@ const FiledSet = (
         legend,
         inputType,
         inputName,
+        inputRef,
         onChange,
         contentComponent,
         fieldClassName,
@@ -26,10 +27,12 @@ const FiledSet = (
                 name={inputName}
                 cols="40"
                 rows="10"
-                required={isRequired}>
+                required={isRequired}
+                ref={inputRef}
+            >
             </textarea>)
         } else {
-            return <input type={inputType} name={inputName} required={isRequired} />
+            return <input ref={inputRef} type={inputType} name={inputName} required={isRequired} />
         }
 
 
