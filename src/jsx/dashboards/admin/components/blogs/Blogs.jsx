@@ -20,6 +20,7 @@ import { API, SERVER } from '../../../../../lib/envAccess'
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from 'react-responsive-pagination';
 import { showError, showSuccess } from '../../../../../lib/alertHandler'
+import Swal from "sweetalert2";
 
 
 export default function Blogs() {
@@ -28,9 +29,7 @@ export default function Blogs() {
     const [currentPage, setCurrentPage] = useState(1)
 
 
-    const [data, error, loading, setUrl, refresh] = useFetch(
-        API.ADMIN_DASHBOARD.BLOGS.GET + currentPage
-    )
+    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/blogs?page=${currentPage}`)
 
     const dispatcher = useDispatch()
 
@@ -68,33 +67,33 @@ export default function Blogs() {
     }
 
     const onPublishedClick = (blog, published) => {
-        put(API.ADMIN_DASHBOARD.BLOGS.BLOG.PUBLISHED.PUT, {
-            blogID: blog._id,
-            published: published
-        })
-            .then(res => {
-                showSuccess(res).finally(end => { refresh() })
-            })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
+        alert(published);
     }
 
 
-
     const handleOnDelete = (blog) => {
-        deletE(API.ADMIN_DASHBOARD.BLOGS.BLOG.DELETE.DELETE, {
-            blogID: blog._id
+        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            }
         })
-            .then(resp => {
-                showSuccess(resp).finally(end => {
-                    refresh()
+            .then((data) => data.json())
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The blog is deleted now.'
                 })
+
+                refresh();
             })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
+                })
             })
     }
 
@@ -126,14 +125,14 @@ export default function Blogs() {
                     </TableHeader>
                     <TableBody>
                         {
-                            !loading ? data?.blogs?.map(blog => {
+                            !loading ? data?.entities.blogs.map(blog => {
                                 return <Row key={blog.id}>
                                     <Property>
                                         <div className="property-header">
                                             {headerList[0]}
                                         </div>
                                         <div className="property-body">
-                                            {blog._id}
+                                            {blog.id}
                                         </div>
                                     </Property>
                                     <Property>
@@ -161,7 +160,7 @@ export default function Blogs() {
                                         <div className="property-body">
                                             <MaxLineText
                                                 maxLine={4}
-                                                content={blog.description} />
+                                                content={blog.short_description} />
                                         </div>
                                     </Property>
                                     <Property>

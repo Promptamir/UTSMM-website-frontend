@@ -10,6 +10,7 @@ import { API } from "../../lib/envAccess"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Swal from "sweetalert2";
 
 
 export default function CreateNewBlogPopUp({ refresh }) {
@@ -17,6 +18,7 @@ export default function CreateNewBlogPopUp({ refresh }) {
 
     const [image, setImage] = useState(require("../../images/place-holder/1.png"))
     const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
 
 
     const dispatcher = useDispatch()
@@ -41,23 +43,37 @@ export default function CreateNewBlogPopUp({ refresh }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
 
-        post(API.ADMIN_DASHBOARD.BLOGS.POST,
-            formData)
-            .then(resp => {
-                showSuccess(resp).finally(end=>{
-                    handleCloseButtonClick()
+        fetch(`https://utsmm.liara.run/api/admin/blogs`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            },
+            body: JSON.stringify({
+                "title": title,
+                "short_description": description,
+                "content": description,
+                "keywords": [],
+                "status": 1
+            })
+        })
+            .then((data) => data.json())
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The blog is added now.'
+                })
+
+                refresh();
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
                 })
             })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
-            .finally(end => {
-                refresh()
-            })
-
     }
 
 
@@ -80,6 +96,7 @@ export default function CreateNewBlogPopUp({ refresh }) {
                 <div className="image-input">
                     <img src={image} />
                     <input
+                        required
                         type="file"
                         name="image"
                         accept="image/*"
@@ -95,12 +112,18 @@ export default function CreateNewBlogPopUp({ refresh }) {
                         <input
                             type="text"
                             name="title"
+                            required
+                            onInput={(value) => setTitle(value.target.value)}
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
 
                 <div style={{margin: '20px 0'}}>
-                    <ReactQuill style={{width: '100%'}} theme="snow" value={description} onChange={setDescription} />
+                    <ReactQuill
+                        style={{width: '100%'}}
+                        theme="snow"
+                        onChange={setDescription}
+                    />
                 </div>
 
                 <button className="submit">

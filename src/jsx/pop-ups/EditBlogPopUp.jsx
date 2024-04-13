@@ -8,6 +8,8 @@ import { useState } from "react"
 import { API, SERVER } from "../../lib/envAccess"
 import { put } from "../../lib/useFetch"
 import { showError, showSuccess } from "../../lib/alertHandler"
+import Swal from "sweetalert2";
+import ReactQuill from "react-quill";
 
 export default function EditBlogPopUp({ blog, refresh }) {
 
@@ -34,31 +36,43 @@ export default function EditBlogPopUp({ blog, refresh }) {
         fileReader.readAsDataURL(file)
     }
 
+    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target)
 
-        formData.append("blogID", blog._id)
+        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            },
+            body: JSON.stringify({
+                "title": title,
+                "short_description": description,
+                "content": description,
+                "keywords": [],
+                "status": 1
+            })
+        })
+            .then((data) => data.json())
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The blog is added now.'
+                })
 
-
-        put(API.ADMIN_DASHBOARD.BLOGS.BLOG.EDIT.PUT, formData)
-            .then(resp => {
-                showSuccess(resp).finally(end => {
-                    refresh()
-                    handleCloseButtonClick()
+                refresh();
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
                 })
             })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
-
     }
-
-
-
-
 
     return (
         <form className="admin-panel-create-blog-pop-up"
@@ -93,28 +107,19 @@ export default function EditBlogPopUp({ blog, refresh }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            required
+                            onChange={(event) => setTitle(event.target.value)}
                             type="text"
                             name="title"
                             defaultValue={blog.title} />
                     </FieldBody>
                 </AdminPanelFiledset>
 
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="material-symbols:description-outline" />
-                        <span>Description</span>
-                    </Legend>
-                    <FieldBody>
-                        <textarea
-                            cols={10}
-                            rows={10}
-                            type="text"
-                            name="description"
-                            defaultValue={blog.description} />
-                    </FieldBody>
-                </AdminPanelFiledset>
-
-
+                <ReactQuill
+                    style={{width: '100%', marginTop: '20px'}}
+                    theme="snow"
+                    onChange={setDescription}
+                />
 
 
                 <button className="submit">
