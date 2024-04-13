@@ -220,8 +220,8 @@ const UserDashboard = (
                         setError('');
                         setloading(true);
 
-                        fetch('https://utsmm.liara.run/api/logout', {
-                            method: "POST",
+                        fetch('https://utsmm.liara.run/api/auth-tokens', {
+                            method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
                                 "Accept" : "application/json",

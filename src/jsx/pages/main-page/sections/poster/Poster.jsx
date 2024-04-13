@@ -50,7 +50,7 @@ export default function Poster() {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        fetch('https://utsmm.liara.run/api/login', {
+        fetch('https://utsmm.liara.run/api/auth-tokens', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

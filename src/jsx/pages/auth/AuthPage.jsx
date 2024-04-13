@@ -41,7 +41,7 @@ export default function AuthPage() {
             setloading(true);
             setError('');
 
-            fetch('https://utsmm.liara.run/api/login', {
+            fetch('https://utsmm.liara.run/api/auth-tokens', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function AuthPage() {
                 setError('');
                 setloading(true);
 
-                fetch('https://utsmm.liara.run/api/register', {
+                fetch('https://utsmm.liara.run/api/users', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function AuthPage() {
             setloading(true);
             setError('');
 
-            fetch('https://utsmm.liara.run/api/forgot-password', {
+            fetch('https://utsmm.liara.run/api/password-reset-links', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
