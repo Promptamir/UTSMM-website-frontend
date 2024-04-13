@@ -18,7 +18,7 @@ const Header = (
     const menuList = [
         {
             title: (tokenExists) ? 'Dashboard' : 'Account',
-            route: (tokenExists) ? '/auth' : "/user/dashboard/Statics",
+            route: (tokenExists) ? "/user/dashboard/Statics" : '/auth',
             icon: <Icon icon="mdi:account" />
         },
         {
