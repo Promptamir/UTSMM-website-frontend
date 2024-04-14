@@ -13,10 +13,11 @@ const BlogPage = () => {
         data,
         isLoading,
         isError,
+        refetch,
     } = useQuery({
         queryKey: ['Blog'],
         queryFn: async () => {
-            const {data} = await axios.get('https://utsmm.liara.run/api/blogs');
+            const {data} = await axios.get(`https://utsmm.liara.run/api/blogs?page=${paginationNumber}`);
             return data.entities.blogs;
         }
     });
@@ -60,33 +61,6 @@ const BlogPage = () => {
                                 ))
                     }
                 </div>
-                {
-                    (isLoading)
-                        ? <h1>Loading</h1>
-                        : (isError)
-                            ? <h1>An error has happened</h1>
-                            : <div className={'pagination-holder'}>
-                                <div className={'pagination'}>
-                                    {
-                                        [...Array(data.length / 10)].map((item, index) => (
-                                            <>
-                                                {
-                                                    (index > 4)
-                                                        ? <div className={'pagination-item'}>...</div>
-                                                        : <button
-                                                            onClick={() => setPaginationNumber(index + 1)}
-                                                            className={'pagination-item'}
-                                                            data-active={(paginationNumber === index + 1)}
-                                                        >
-                                                            {index + 1}
-                                                        </button>
-                                                }
-                                            </>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                }
             </div>
         </main>
     )
