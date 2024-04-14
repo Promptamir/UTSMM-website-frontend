@@ -7,7 +7,7 @@ import ItemHeader from "../../../../cutsome-components/table/components/ItemHead
 import TableBody from "../../../../cutsome-components/table/components/TableBody"
 import Row from "../../../../cutsome-components/table/components/Row"
 import Property from "../../../../cutsome-components/table/components/Property"
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import Switch from "react-switch"
 import SelectedFaqs from "./SelectedFaqs"
 import { post, put, useFetch } from "../../../../../lib/useFetch"
@@ -18,96 +18,73 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from "react-responsive-pagination"
 
 export default function Faqs() {
+    const [data, error, loading, setUrl, refresh] = useFetch('https://utsmm.liara.run/api/faqs');
 
-
-    const [pageNumber, setSelectedPAgeNumber] = useState(1)
-
-    const [data, error, loading, setUrl, refresh] = useFetch(
-        API.ADMIN_DASHBOARD.FAQS.GET + pageNumber
-    )
 
     const headerList = [
-        "Chat ID",
-        "Full Name",
-        "Email",
-        "Phone Number",
-        "Message",
-        "Answerd",
+        "ID",
+        "Tag",
+        "Question",
+        "Answer",
         "Controlls"
     ]
 
-
-    const toggleAnswered = (faq, answerd) => {
-        put(API.ADMIN_DASHBOARD.FAQS.FAQ.ANSWERD.CHANGE_ANSWERED.PUT, {
-            faqID: faq._id,
-            answerd: answerd
-        })
-            .then(res => {
-                showSuccess(res)
-                    .finally(end => {
-                        refresh()
+    const replyFaq = (faq) => {
+        Swal.fire({
+            input: "textarea",
+            inputLabel: "Message",
+            inputPlaceholder: "Type your message here...",
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: "green",
+            denyButtonColor: "red"
+        }).then(what => {
+            if (what.isConfirmed) {
+                const message = what.value;
+                fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept" : "application/json",
+                        "X-Requested-With" : "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({
+                        "question": faq.question,
+                        "answer": message,
+                        "tag": faq.tag,
+                        "order": faq.order
                     })
+                })
+                    .then(resp => {
+                        showSuccess(resp)
+                        refresh();
+                    })
+                    .catch(err => {
+                        const errors = err?.response?.data
+                        showError(errors)
+                    })
+            }
+        })
+    }
+
+
+    const deleteFaq = (faq) => {
+        fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            }
+        })
+            .then(resp => {
+                showSuccess(resp)
+                refresh();
             })
             .catch(err => {
                 const errors = err?.response?.data
                 showError(errors)
             })
-    }
-
-
-    const replyEmail = (faq) => {
-        Swal.fire({
-            input: "textarea",
-            inputLabel: "Message",
-            inputPlaceholder: "Type your message here...",
-            showCancelButton: true,
-            showConfirmButton: true,
-            confirmButtonColor: "green",
-            denyButtonColor: "red"
-        }).then(what => {
-            if (what.isConfirmed) {
-                const message = what.value
-                post(API.ADMIN_DASHBOARD.FAQS.FAQ.ANSWERD.EMAIL.POST, {
-                    message: message,
-                    faqID: faq._id
-                })
-                    .then(resp => {
-                        showSuccess(resp)
-                    })
-                    .catch(err => {
-                        const errors = err?.response?.data
-                        showError(errors)
-                    })
-            }
-        })
-    }
-
-
-    const replyPhone = (faq) => {
-        Swal.fire({
-            input: "textarea",
-            inputLabel: "Message",
-            inputPlaceholder: "Type your message here...",
-            showCancelButton: true,
-            showConfirmButton: true,
-            confirmButtonColor: "green",
-            denyButtonColor: "red"
-        }).then(what => {
-            if (what.isConfirmed) {
-                const message = what.value
-                post(API.ADMIN_DASHBOARD.FAQS.FAQ.ANSWERD.PHONE.POST, {
-                    message: message,
-                    faqID: faq._id
-                })
-                    .then(resp => {
-                        showSuccess(resp)
-                    })
-                    .catch(err => {
-                        const errors = err?.response?.data
-                        showError(errors)
-                    })
-            }
-        })
     }
 
 
@@ -130,14 +107,14 @@ export default function Faqs() {
                 </TableHeader>
                 <TableBody >
                     {
-                        !loading ? data?.faqs?.map(faq => {
-                            return <Row key={faq._id}>
+                        !loading ? data.entities.faqs.map(faq => {
+                            return <Row key={faq.id}>
                                 <Property>
                                     <div className="property-header">
                                         {headerList[0]}
                                     </div>
                                     <div className="property-body">
-                                        {faq._id}
+                                        {faq.id}
                                     </div>
                                 </Property>
                                 <Property>
@@ -145,7 +122,7 @@ export default function Faqs() {
                                         {headerList[1]}
                                     </div>
                                     <div className="property-body">
-                                        {faq.fullName}
+                                        {faq.tag}
                                     </div>
                                 </Property>
                                 <Property>
@@ -153,7 +130,7 @@ export default function Faqs() {
                                         {headerList[2]}
                                     </div>
                                     <div className="property-body">
-                                        {faq.email}
+                                        {faq.question}
                                     </div>
                                 </Property>
                                 <Property>
@@ -161,50 +138,30 @@ export default function Faqs() {
                                         {headerList[3]}
                                     </div>
                                     <div className="property-body">
-                                        {faq.phoneNumber}
+                                        {faq.answer}
                                     </div>
                                 </Property>
                                 <Property>
                                     <div className="property-header">
                                         {headerList[4]}
                                     </div>
-                                    <div className="property-body message">
-                                        {faq.message}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[5]}
-                                    </div>
-                                    <div className="property-body">
-                                        <Switch
-                                            onChange={(e) => {
-                                                toggleAnswered(faq, e)
-                                            }}
-                                            checked={faq.answerd} />
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[6]}
-                                    </div>
                                     <div className="property-body buttons">
                                         <button
                                             className="reply-email"
-                                            onClick={() => replyEmail(faq)}>
+                                            onClick={() => replyFaq(faq)}>
                                             <span>
-                                                Reply Email
+                                                Reply
                                             </span>
                                             <Icon icon="iconamoon:send-fill" />
                                         </button>
                                         <button
                                             className="reply-phone"
                                             onClick={() => {
-                                                replyPhone(faq)
+                                                deleteFaq(faq)
                                             }}
                                         >
                                             <span>
-                                                Reply Phone
+                                                Delete
                                             </span>
                                             <Icon icon="iconamoon:send-fill" />
                                         </button>

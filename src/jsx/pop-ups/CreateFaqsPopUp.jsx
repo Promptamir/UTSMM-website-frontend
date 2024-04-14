@@ -8,6 +8,8 @@ import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import { post } from "../../lib/useFetch"
 import { API } from "../../lib/envAccess"
 import { showError, showSuccess } from "../../lib/alertHandler"
+import {useState} from "react";
+import Swal from "sweetalert2";
 
 
 
@@ -25,20 +27,38 @@ export default function CreateFaqsPopUp({ refresh }) {
     }
 
 
+    const [question, setQuestion] = useState('');
+    const [answer, setAnswer] = useState('');
+
     const handleFormSubmit = (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
 
-        post(API.ADMIN_DASHBOARD.SELECTED_FAQS.POST, formData)
-            .then(res => {
-                showSuccess(res).finally(end => {
-                    refresh()
-                    handleCloseButtonClick()
-                })
+        fetch(`https://utsmm.liara.run/api/admin/faqs`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            },
+            body: JSON.stringify({
+                "question": question,
+                "answer": answer,
+                "tag": "",
+                "order": ""
+            })
+        })
+            .then(resp => {
+                Swal.fire({
+                    icon: 'success',
+                    text: 'The faq is added'
+                });
             })
             .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'There was a problem fetching the data'
+                });
             })
 
     }
@@ -66,6 +86,8 @@ export default function CreateFaqsPopUp({ refresh }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            onChange={(e) => setQuestion(e.target.value)}
+                            required
                             type="text"
                             name="question"
                             defaultValue={""} />
@@ -79,6 +101,8 @@ export default function CreateFaqsPopUp({ refresh }) {
                     </Legend>
                     <FieldBody>
                         <textarea
+                            onChange={(e) => setAnswer(e.target.value)}
+                            required
                             cols={10}
                             rows={10}
                             type="number"
