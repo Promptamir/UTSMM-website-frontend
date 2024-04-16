@@ -13,6 +13,7 @@ $ColorPrimary: #4976f3;
 .container {
   margin-inline: auto;
   max-width: $MqSize;
+  margin-bottom: 100px;
 }
 
 .form {
@@ -98,6 +99,43 @@ $ColorPrimary: #4976f3;
     &:disabled {
       pointer-events: none;
       opacity: 20%;
+    }
+  }
+}
+
+.comment-table-holder {
+  background-color: white;
+  border-radius: 20px;
+  padding-bottom: 20px;
+}
+
+.comment-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.comment-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .comment-table-item {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 17px;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:nth-of-type(2) {grid-column: span 3;}
+  }
+
+  &:first-of-type {
+    .comment-table-item {
+      color: $ColorPrimary;
+      font-weight: 700;
     }
   }
 }

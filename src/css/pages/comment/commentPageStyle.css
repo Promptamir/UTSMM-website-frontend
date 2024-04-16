@@ -8,6 +8,7 @@
 .container {
   margin-inline: auto;
   max-width: 1024px;
+  margin-bottom: 100px;
 }
 
 .form {
@@ -84,6 +85,40 @@
 .form .form-submit-btn:disabled {
   pointer-events: none;
   opacity: 20%;
+}
+
+.comment-table-holder {
+  background-color: white;
+  border-radius: 20px;
+  padding-bottom: 20px;
+}
+
+.comment-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.comment-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.comment-table-row .comment-table-item {
+  padding: 10px;
+  font-weight: 500;
+  font-size: 17px;
+  color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comment-table-row .comment-table-item:nth-of-type(2) {
+  grid-column: span 3;
+}
+.comment-table-row:first-of-type .comment-table-item {
+  color: #4976f3;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 1024px) {
