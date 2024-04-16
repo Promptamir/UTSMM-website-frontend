@@ -49,14 +49,15 @@ export default function CreateNewBlogPopUp({ refresh }) {
             headers: {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest"
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "title": title,
                 "short_description": description,
                 "content": description,
                 "keywords": [],
-                "status": 1
+                "status": 0
             })
         })
             .then((data) => data.json())

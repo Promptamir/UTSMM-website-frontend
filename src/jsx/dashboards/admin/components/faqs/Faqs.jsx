@@ -18,7 +18,8 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from "react-responsive-pagination"
 
 export default function Faqs() {
-    const [data, error, loading, setUrl, refresh] = useFetch('https://utsmm.liara.run/api/faqs');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/faqs?page=${currentPage}`);
 
 
     const headerList = [
@@ -46,7 +47,8 @@ export default function Faqs() {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept" : "application/json",
-                        "X-Requested-With" : "XMLHttpRequest"
+                        "X-Requested-With" : "XMLHttpRequest",
+                        "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                     },
                     body: JSON.stringify({
                         "question": faq.question,
@@ -69,12 +71,19 @@ export default function Faqs() {
 
 
     const deleteFaq = (faq) => {
+        console.log({
+            "Content-Type": "application/json",
+            "Accept" : "application/json",
+            "X-Requested-With" : "XMLHttpRequest",
+            "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
+        })
         fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest"
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             }
         })
             .then(resp => {
@@ -107,7 +116,7 @@ export default function Faqs() {
                 </TableHeader>
                 <TableBody >
                     {
-                        !loading ? data.entities.faqs.map(faq => {
+                        (!loading && !error) ? data.entities.faqs.map(faq => {
                             return <Row key={faq.id}>
                                 <Property>
                                     <div className="property-header">
@@ -168,16 +177,21 @@ export default function Faqs() {
                                     </div>
                                 </Property>
                             </Row>
-                        }) : <h1>Loading...</h1>
+                        }) :
+                            (loading)
+                                ? <h1>Loading...</h1>
+                                : (error)
+                                    ? <h1>Error</h1>
+                                    : false
                     }
-
                 </TableBody>
                 <TablePaginations>
                     <ResponsivePagination
-                        current={data?.currentPage}
-                        total={data?.maxPageNumber}
+                        current={currentPage}
+                        total={3}
                         onPageChange={(pageNumber) => {
-                            setUrl(API.ADMIN_DASHBOARD.FAQS.GET + pageNumber)
+                            setCurrentPage(pageNumber);
+                            refresh();
                         }}
                     />
                 </TablePaginations>

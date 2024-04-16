@@ -38,7 +38,8 @@ export default function CreateFaqsPopUp({ refresh }) {
             headers: {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest"
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 "question": question,
@@ -52,6 +53,7 @@ export default function CreateFaqsPopUp({ refresh }) {
                     icon: 'success',
                     text: 'The faq is added'
                 });
+                refresh();
             })
             .catch(err => {
                 console.log(err);

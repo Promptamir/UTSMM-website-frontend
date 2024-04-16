@@ -67,7 +67,38 @@ export default function Blogs() {
     }
 
     const onPublishedClick = (blog, published) => {
-        alert(published);
+        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({
+                "title": blog.title,
+                "short_description": blog.short_description,
+                "content": blog.content,
+                "keywords": blog.keywords,
+                "status": (published) ? 1 : 0
+            })
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                console.log(data);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The blog is published now.'
+                })
+
+                refresh();
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
+                })
+            })
     }
 
 
@@ -77,7 +108,8 @@ export default function Blogs() {
             headers: {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest"
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             }
         })
             .then((data) => data.json())
@@ -95,6 +127,8 @@ export default function Blogs() {
                     title: 'There was an error while fetching the data'
                 })
             })
+
+        refresh();
     }
 
 
@@ -125,7 +159,7 @@ export default function Blogs() {
                     </TableHeader>
                     <TableBody>
                         {
-                            !loading ? data?.entities.blogs.map(blog => {
+                            (!loading && !error) ? data?.entities.blogs.map(blog => {
                                 return <Row key={blog.id}>
                                     <Property>
                                         <div className="property-header">
@@ -179,9 +213,9 @@ export default function Blogs() {
                                         </div>
                                         <div className="property-body">
                                             <Switch
-                                                checked={blog.published}
-                                                onChange={(e) => {
-                                                    onPublishedClick(blog, e)
+                                                checked={blog.status === 1}
+                                                onChange={() => {
+                                                    onPublishedClick(blog, (blog.status !== 1))
                                                 }} />
                                         </div>
                                     </Property>
@@ -204,16 +238,22 @@ export default function Blogs() {
                                         </div>
                                     </Property>
                                 </Row>
-                            }) : <h1>Loading....</h1>
+                            }) :
+                                (loading)
+                                    ? <h1>Loading...</h1>
+                                    : (error)
+                                        ? <h1>Error</h1>
+                                        : false
                         }
 
                     </TableBody>
                     <TablePaginations>
                         <ResponsivePagination
-                            current={data?.currentPage}
-                            total={data?.maxPageNumber}
+                            current={currentPage}
+                            total={3}
                             onPageChange={(pageNumber) => {
-                                setUrl(API.ADMIN_DASHBOARD.BLOGS.GET + pageNumber)
+                                setCurrentPage(pageNumber);
+                                refresh();
                             }}
                         />
                     </TablePaginations>

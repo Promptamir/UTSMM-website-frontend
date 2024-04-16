@@ -47,7 +47,8 @@ export default function EditBlogPopUp({ blog, refresh }) {
             headers: {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest"
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 "title": title,
