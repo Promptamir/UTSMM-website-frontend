@@ -101,7 +101,7 @@ export default function Faqs() {
     return (
         <div className="admin-panel-faqs">
 
-            <SelectedFaqs />
+            <SelectedFaqs refresh={refresh} />
 
             <Table columnsStyle={"6rem 10rem 15rem 10rem 1fr 5rem 10rem"} >
                 <TableHeader>

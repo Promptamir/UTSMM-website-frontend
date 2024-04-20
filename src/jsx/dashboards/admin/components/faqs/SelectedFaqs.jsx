@@ -13,41 +13,11 @@ import EditFaqsPopUp from "../../../../pop-ups/EditFaqsPopUp"
 
 import { useState } from "react"
 
-export default function SelectedFaqs() {
+export default function SelectedFaqs({refresh}) {
 
 
 
-    const [pageNumber, selectedPageNumber] = useState(1)
     const dispatcher = useDispatch()
-
-
-    const [
-        data,
-        error,
-        loading,
-        setUrl,
-        refresh] = useFetch(
-            API.ADMIN_DASHBOARD.SELECTED_FAQS.GET + pageNumber
-        )
-
-
-
-    const deleteFaqs = (faq) => {
-        deletE(API.ADMIN_DASHBOARD.SELECTED_FAQS.FAQ.DELETE, {
-            id: faq._id
-        })
-            .then(resp => {
-                showSuccess(resp)
-                    .finally(end => {
-                        refresh()
-                    })
-            })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
-    }
-
 
     const openCreateFaqPopUp = () => {
         dispatcher(showPopUp({
@@ -56,16 +26,6 @@ export default function SelectedFaqs() {
             component: <CreateFaqsPopUp refresh={refresh} />
         }))
     }
-
-    const openEditFaqPopUp = (faq) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_EDIT_FAQS,
-            duration: 2000,
-            component: <EditFaqsPopUp faqs={faq} refresh={refresh} />
-        }))
-    }
-
-
 
     return (
         <div className="selected-faqs">
@@ -79,30 +39,8 @@ export default function SelectedFaqs() {
                         <span>Create New</span>
                     </button>
                 </div>
+                <button onClick={refresh}>Refresh</button>
             </h2>
-            <div className="body">
-                {data?.selectedFaqs?.map((faq, index) => {
-                    return <div className="item">
-                        <FAQsAccordion
-                            headerTitle={faq.question}
-                            bodyTitle={faq.answer}
-                            key={index} />
-                        <div className="item-buttons">
-                            <button
-                                onClick={() => { deleteFaqs(faq) }}>
-                                <Icon icon="fluent:delete-32-filled" />
-                                <span>Delete</span>
-                            </button>
-                            <button
-                                onClick={() => openEditFaqPopUp(faq)}>
-                                <Icon icon="bxs:edit" />
-                                <span>Edit</span>
-                            </button>
-                        </div>
-                    </div>
-
-                })}
-            </div>
         </div>
     )
 }

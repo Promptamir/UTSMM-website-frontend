@@ -85,7 +85,6 @@ export default function Blogs() {
         })
             .then((data) => data.json())
             .then((data) => {
-                console.log(data);
                 Swal.fire({
                     icon: 'success',
                     title: 'The blog is published now.'
@@ -127,8 +126,6 @@ export default function Blogs() {
                     title: 'There was an error while fetching the data'
                 })
             })
-
-        refresh();
     }
 
 

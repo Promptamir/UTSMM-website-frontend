@@ -12,10 +12,10 @@ import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
 
 export default function EditBlogPopUp({ blog, refresh }) {
-
-
-    const [image, setImage] = useState(SERVER.BASE_URL + blog.image)
-
+    const [image, setImage] = useState(SERVER.BASE_URL + blog.image);
+    const [imageFile, setImageFile] = useState();
+    const [keywords, setKeywords] = useState('');
+    const [error, setError] = useState('');
 
     const dispatcher = useDispatch()
 
@@ -33,46 +33,62 @@ export default function EditBlogPopUp({ blog, refresh }) {
             setImage(result)
         }
 
-        fileReader.readAsDataURL(file)
+        fileReader.readAsDataURL(file);
+        setImageFile(e.target.files[0]);
     }
 
+    const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
-        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                "title": title,
-                "short_description": description,
-                "content": description,
-                "keywords": [],
-                "status": 1
-            })
+        console.log({
+            "image": imageFile,
+            "title": title,
+            "short_description": description,
+            "content": content,
+            "keywords": keywords.split(','),
+            "status": 1
         })
-            .then((data) => data.json())
-            .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The blog is added now.'
-                })
 
-                refresh();
-            })
-            .catch(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'There was an error while fetching the data'
+        if (error === '') {
+            fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept" : "application/json",
+                    "X-Requested-With" : "XMLHttpRequest",
+                    "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                },
+                body: JSON.stringify({
+                    "image": imageFile,
+                    "title": title,
+                    "short_description": description,
+                    "content": content,
+                    "keywords": keywords.split(','),
+                    "status": 1
                 })
             })
+                .then((data) => data.json())
+                .then((data) => {
+                    console.log(data);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'The blog is added now.'
+                    })
+
+                    refresh();
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'There was an error while fetching the data'
+                    })
+                })
+        }
     }
 
     return (
@@ -108,20 +124,71 @@ export default function EditBlogPopUp({ blog, refresh }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            minLength={3}
+                            maxLength={255}
                             required
                             onChange={(event) => setTitle(event.target.value)}
                             type="text"
                             name="title"
-                            defaultValue={blog.title} />
+                            value={blog.title} />
+                    </FieldBody>
+                </AdminPanelFiledset>
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="pajamas:title" />
+                        <span>Description</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            required
+                            minLength={3}
+                            maxLength={300}
+                            onChange={(event) => setDescription(event.target.value)}
+                            type="text"
+                            name="title"
+                            value={blog.short_description} />
+                    </FieldBody>
+                </AdminPanelFiledset>
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="pajamas:title" />
+                        <span>Keywords</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            type="text"
+                            name="title"
+                            required
+                            minLength={3}
+                            placeholder={'Separated by Comma ","'}
+                            onInput={(e) => {
+                                const value = e.target.value;
+                                const arrayOfKeywords = value.split(',');
+
+                                if (arrayOfKeywords.length < 3) {
+                                    setError('There should be at least 3 keywords')
+                                } else {
+                                    setError('');
+                                    setKeywords(value)
+                                }
+                            }}
+                        />
                     </FieldBody>
                 </AdminPanelFiledset>
 
                 <ReactQuill
                     style={{width: '100%', marginTop: '20px'}}
                     theme="snow"
-                    onChange={setDescription}
+                    onChange={(val) => {
+                        if (val.length <= 100) {
+                            setError('The content should at least be 100 character.');
+                        } else {
+                            setError('');
+                            setContent(val)
+                        }
+                    }}
                 />
-
+                {error !== '' && <div className={'input-error'}>{error}</div>}
 
                 <button className="submit">
                     <span>Submit </span>

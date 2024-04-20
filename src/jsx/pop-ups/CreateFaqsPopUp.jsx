@@ -5,12 +5,8 @@ import { closePopUp } from "../../features/popUpReducer"
 import AdminPanelFiledset from "../dashboards/admin/components/tools/fieldset/AdminPanelFiledset"
 import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
 import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
-import { post } from "../../lib/useFetch"
-import { API } from "../../lib/envAccess"
-import { showError, showSuccess } from "../../lib/alertHandler"
 import {useState} from "react";
 import Swal from "sweetalert2";
-
 
 
 export default function CreateFaqsPopUp({ refresh }) {
@@ -29,6 +25,8 @@ export default function CreateFaqsPopUp({ refresh }) {
 
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
+    const [tag, setTag] = useState('');
+    const [order, setOrder] = useState('');
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
@@ -39,15 +37,16 @@ export default function CreateFaqsPopUp({ refresh }) {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
                 "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "question": question,
                 "answer": answer,
-                "tag": "",
-                "order": ""
+                "tag": tag,
+                "order": order
             })
         })
+            .then((data) => data.json())
             .then(resp => {
                 Swal.fire({
                     icon: 'success',
@@ -90,12 +89,43 @@ export default function CreateFaqsPopUp({ refresh }) {
                         <input
                             onChange={(e) => setQuestion(e.target.value)}
                             required
+                            minLength={10}
                             type="text"
                             name="question"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
-
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="ri:question-fill" />
+                        <span>Tag</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            onChange={(e) => setTag(e.target.value)}
+                            required
+                            minLength={3}
+                            maxLength={40}
+                            type="text"
+                            name="question"
+                            defaultValue={""} />
+                    </FieldBody>
+                </AdminPanelFiledset>
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="ri:question-fill" />
+                        <span>Order</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            onChange={(e) => setOrder(e.target.value)}
+                            required
+                            minLength={1}
+                            type="text"
+                            name="question"
+                            defaultValue={""} />
+                    </FieldBody>
+                </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
                         <Icon icon="fluent:text-12-filled" />
@@ -107,13 +137,13 @@ export default function CreateFaqsPopUp({ refresh }) {
                             required
                             cols={10}
                             rows={10}
-                            type="number"
+                            minLength={10}
                             name="answer"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <button className="submit">
-                    <span>Submit </span>
+                    <span>Submit</span>
                     <Icon icon="iconamoon:send-fill" />
                 </button>
             </div>

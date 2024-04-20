@@ -15,6 +15,15 @@ $panel-color-6: #dc3545;
 
 $gradient-degree: 0deg;
 
+.input-error {
+    background-color: rgba(255, 0, 0, .2);
+    color: red;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
 .admin-dashboard {
     width: 100%;
     padding-top: 6em;
