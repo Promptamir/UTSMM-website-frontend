@@ -57,13 +57,27 @@ export default function Faqs() {
                         "order": faq.order
                     })
                 })
+                    .then((data) => data.json())
                     .then(resp => {
-                        showSuccess(resp)
-                        refresh();
+                        if (resp.message === "Unauthenticated.") {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Unauthenticated.'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'The reply is updated.'
+                            });
+
+                            refresh();
+                        }
                     })
-                    .catch(err => {
-                        const errors = err?.response?.data
-                        showError(errors)
+                    .catch(() => {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'There was a problem fetching the data'
+                        });
                     })
             }
         })
@@ -71,12 +85,6 @@ export default function Faqs() {
 
 
     const deleteFaq = (faq) => {
-        console.log({
-            "Content-Type": "application/json",
-            "Accept" : "application/json",
-            "X-Requested-With" : "XMLHttpRequest",
-            "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
-        })
         fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
             method: "DELETE",
             headers: {

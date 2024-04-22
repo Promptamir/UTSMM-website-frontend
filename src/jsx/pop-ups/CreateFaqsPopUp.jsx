@@ -48,14 +48,20 @@ export default function CreateFaqsPopUp({ refresh }) {
         })
             .then((data) => data.json())
             .then(resp => {
-                Swal.fire({
-                    icon: 'success',
-                    text: 'The faq is added'
-                });
-                refresh();
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'The faq is added'
+                    });
+                    refresh();
+                }
             })
-            .catch(err => {
-                console.log(err);
+            .catch(() => {
                 Swal.fire({
                     icon: 'error',
                     text: 'There was a problem fetching the data'
@@ -107,7 +113,7 @@ export default function CreateFaqsPopUp({ refresh }) {
                             minLength={3}
                             maxLength={40}
                             type="text"
-                            name="question"
+                            name="tag"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
@@ -121,8 +127,8 @@ export default function CreateFaqsPopUp({ refresh }) {
                             onChange={(e) => setOrder(e.target.value)}
                             required
                             minLength={1}
-                            type="text"
-                            name="question"
+                            type="number"
+                            name="order"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
