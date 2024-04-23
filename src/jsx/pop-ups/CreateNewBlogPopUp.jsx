@@ -75,12 +75,18 @@ export default function CreateNewBlogPopUp({ refresh }) {
                 .then((data) => {
                     console.log(data);
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'The blog is added now.'
-                    })
-
-                    refresh();
+                    if (data.message === "Unauthenticated.") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Unauthenticated.'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'The faq is added'
+                        });
+                        refresh();
+                    }
                 })
                 .catch(() => {
                     Swal.fire({

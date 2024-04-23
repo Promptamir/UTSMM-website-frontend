@@ -170,8 +170,17 @@ export default function Blogs() {
                                         <div className="property-header">
                                             {headerList[1]}
                                         </div>
-                                        <div className="property-body">
-                                            <img src={SERVER.BASE_URL + blog.image} />
+                                        <div className="property-body" style={{width: '100%'}}>
+                                            <img
+                                                src={SERVER.BASE_URL + blog.image}
+                                                style={{
+                                                    width: '100%',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '20px',
+                                                    height: '100px',
+                                                    maxWidth: 'none'
+                                                }}
+                                            />
                                         </div>
                                     </Property>
                                     <Property>
@@ -244,16 +253,25 @@ export default function Blogs() {
                         }
 
                     </TableBody>
-                    <TablePaginations>
-                        <ResponsivePagination
-                            current={currentPage}
-                            total={3}
-                            onPageChange={(pageNumber) => {
-                                setCurrentPage(pageNumber);
-                                refresh();
-                            }}
-                        />
-                    </TablePaginations>
+                    {
+                        (loading)
+                            ? <h1>Loading...</h1>
+                            : (error)
+                                ? <h1>Error</h1>
+                                : (data.entities.count/15 !== 1)
+                                ? (
+                                    <TablePaginations>
+                                        <ResponsivePagination
+                                            current={currentPage}
+                                            total={data.entities.count/15}
+                                            onPageChange={(pageNumber) => {
+                                                setCurrentPage(pageNumber);
+                                                refresh();
+                                            }}
+                                        />
+                                    </TablePaginations>
+                                ) : false
+                    }
                 </Table>
             </div>
         </div>

@@ -54,8 +54,17 @@ export default function EditBlogPopUp({ blog, refresh }) {
         })
 
         if (error === '') {
+            console.log({
+                "image": imageFile,
+                "title": title,
+                "_method": 'put',
+                "short_description": description,
+                "content": content,
+                "keywords": keywords.split(','),
+                "status": 1
+            });
             fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
-                method: "PUT",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept" : "application/json",
@@ -65,6 +74,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
                 body: JSON.stringify({
                     "image": imageFile,
                     "title": title,
+                    "_method": 'put',
                     "short_description": description,
                     "content": content,
                     "keywords": keywords.split(','),
@@ -75,12 +85,18 @@ export default function EditBlogPopUp({ blog, refresh }) {
                 .then((data) => {
                     console.log(data);
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'The blog is added now.'
-                    })
-
-                    refresh();
+                    if (data.message === "Unauthenticated.") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Unauthenticated.'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'The faq is added'
+                        });
+                        refresh();
+                    }
                 })
                 .catch(() => {
                     Swal.fire({
@@ -130,7 +146,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
                             onChange={(event) => setTitle(event.target.value)}
                             type="text"
                             name="title"
-                            value={blog.title} />
+                            defaultValue={blog.title} />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
@@ -145,8 +161,8 @@ export default function EditBlogPopUp({ blog, refresh }) {
                             maxLength={300}
                             onChange={(event) => setDescription(event.target.value)}
                             type="text"
-                            name="title"
-                            value={blog.short_description} />
+                            name="description"
+                            defaultValue={blog.short_description} />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
@@ -157,7 +173,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
                     <FieldBody>
                         <input
                             type="text"
-                            name="title"
+                            name="keywords"
                             required
                             minLength={3}
                             placeholder={'Separated by Comma ","'}

@@ -34,6 +34,7 @@ export default function Faqs() {
         Swal.fire({
             input: "textarea",
             inputLabel: "Message",
+            inputAttributes: {minLength: 10},
             inputPlaceholder: "Type your message here...",
             showCancelButton: true,
             showConfirmButton: true,
@@ -193,21 +194,26 @@ export default function Faqs() {
                                     : false
                     }
                 </TableBody>
-                <TablePaginations>
-                    <ResponsivePagination
-                        current={currentPage}
-                        total={3}
-                        onPageChange={(pageNumber) => {
-                            setCurrentPage(pageNumber);
-                            refresh();
-                        }}
-                    />
-                </TablePaginations>
+                {
+                    (loading)
+                        ? <h1>Loading...</h1>
+                        : (error)
+                            ? <h1>Error</h1>
+                            : (data.entities.count/15 !== 1)
+                                ? (
+                                    <TablePaginations>
+                                        <ResponsivePagination
+                                            current={currentPage}
+                                            total={data.entities.count/15}
+                                            onPageChange={(pageNumber) => {
+                                                setCurrentPage(pageNumber);
+                                                refresh();
+                                            }}
+                                        />
+                                    </TablePaginations>
+                                ) : false
+                }
             </Table>
-
-
-
-
         </div>
     )
 }
