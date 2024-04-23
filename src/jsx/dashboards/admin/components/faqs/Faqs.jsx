@@ -199,7 +199,7 @@ export default function Faqs() {
                         ? <h1>Loading...</h1>
                         : (error)
                             ? <h1>Error</h1>
-                            : (data.entities.count/15 !== 1)
+                            : (data.entities.count && data.entities.count/15 !== 1)
                                 ? (
                                     <TablePaginations>
                                         <ResponsivePagination
