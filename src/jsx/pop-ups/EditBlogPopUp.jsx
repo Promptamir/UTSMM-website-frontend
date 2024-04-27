@@ -11,9 +11,7 @@ import { showError, showSuccess } from "../../lib/alertHandler"
 import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
 
-export default function EditBlogPopUp({ blog, refresh }) {
-    const [image, setImage] = useState(SERVER.BASE_URL + blog.image);
-    const [imageFile, setImageFile] = useState();
+export default function EditBlogPopUp({ blog, refresh, setLoading }) {
     const [keywords, setKeywords] = useState('');
     const [error, setError] = useState('');
 
@@ -23,20 +21,6 @@ export default function EditBlogPopUp({ blog, refresh }) {
         dispatcher(closePopUp())
     }
 
-
-    const handleOnImageChange = (e) => {
-        const file = e.target.files[0]
-
-        const fileReader = new FileReader()
-        fileReader.onload = (e) => {
-            const result = e.target.result
-            setImage(result)
-        }
-
-        fileReader.readAsDataURL(file);
-        setImageFile(e.target.files[0]);
-    }
-
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
@@ -44,25 +28,8 @@ export default function EditBlogPopUp({ blog, refresh }) {
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
-        console.log({
-            "image": imageFile,
-            "title": title,
-            "short_description": description,
-            "content": content,
-            "keywords": keywords.split(','),
-            "status": 1
-        })
-
         if (error === '') {
-            console.log({
-                "image": imageFile,
-                "title": title,
-                "_method": 'put',
-                "short_description": description,
-                "content": content,
-                "keywords": keywords.split(','),
-                "status": 1
-            });
+            setLoading(true);
             fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
                 method: "POST",
                 headers: {
@@ -72,9 +39,8 @@ export default function EditBlogPopUp({ blog, refresh }) {
                     "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                 },
                 body: JSON.stringify({
-                    "image": imageFile,
-                    "title": title,
                     "_method": 'put',
+                    "title": title,
                     "short_description": description,
                     "content": content,
                     "keywords": keywords.split(','),
@@ -83,6 +49,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
             })
                 .then((data) => data.json())
                 .then((data) => {
+                    setLoading(false);
                     console.log(data);
 
                     if (data.message === "Unauthenticated.") {
@@ -93,12 +60,13 @@ export default function EditBlogPopUp({ blog, refresh }) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The faq is added'
+                            text: 'The blogs is edited'
                         });
                         refresh();
                     }
                 })
                 .catch(() => {
+                    setLoading(false);
                     Swal.fire({
                         icon: 'error',
                         title: 'There was an error while fetching the data'
@@ -123,16 +91,6 @@ export default function EditBlogPopUp({ blog, refresh }) {
             </div>
             <div className="pop-up-body">
 
-
-                <div className="image-input">
-                    <img src={image} />
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        onChange={handleOnImageChange} />
-                </div>
-
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
                         <Icon icon="pajamas:title" />
@@ -146,7 +104,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
                             onChange={(event) => setTitle(event.target.value)}
                             type="text"
                             name="title"
-                            defaultValue={blog.title} />
+                        />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
@@ -162,7 +120,7 @@ export default function EditBlogPopUp({ blog, refresh }) {
                             onChange={(event) => setDescription(event.target.value)}
                             type="text"
                             name="description"
-                            defaultValue={blog.short_description} />
+                        />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>

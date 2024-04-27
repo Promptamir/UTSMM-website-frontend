@@ -11,7 +11,7 @@ import {SERVER} from "../../lib/envAccess";
 import ReactQuill from "react-quill";
 
 
-export default function CreateNewBlogPopUp({ refresh }) {
+export default function CreateNewBlogPopUp({ refresh, setLoading }) {
     const [image, setImage] = useState(require("../../images/place-holder/1.png"));
     const [imageFile, setImageFile] = useState();
     const [keywords, setKeywords] = useState('');
@@ -44,38 +44,38 @@ export default function CreateNewBlogPopUp({ refresh }) {
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
-        console.log({
-            "image": imageFile,
-            "title": title,
-            "short_description": description,
-            "content": content,
-            "keywords": keywords.split(','),
-            "status": 1
-        })
-
         if (error === '') {
-            fetch(`https://utsmm.liara.run/api/admin/blogs`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept" : "application/json",
-                    "X-Requested-With" : "XMLHttpRequest",
-                    "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
-                },
-                body: JSON.stringify({
-                    "image": imageFile,
-                    "title": title,
-                    "short_description": description,
-                    "content": content,
-                    "keywords": keywords.split(','),
-                    "status": 1
-                })
-            })
-                .then((data) => data.json())
-                .then((data) => {
-                    console.log(data);
+            setLoading(true);
 
-                    if (data.message === "Unauthenticated.") {
+            const keywordsArray = keywords.split(',');
+            const myHeaders = new Headers();
+            myHeaders.append("Accept", "application/json");
+            myHeaders.append("X-Requested-With", "XMLHttpRequest");
+            myHeaders.append("Authorization", `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`);
+
+            const formdata = new FormData();
+            formdata.append("title", title);
+            formdata.append("short_description", description);
+            formdata.append("content", content);
+            formdata.append("image", imageFile, "[PROXY]");
+            formdata.append("status", 1);
+            keywordsArray.forEach((item, index) => {
+                formdata.append(`keywords[${index}]`, item);
+            })
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow"
+            };
+
+            fetch("https://utsmm.liara.run/api/admin/blogs", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    console.log(result);
+                    setLoading(false);
+                    if (result.message === "Unauthenticated.") {
                         Swal.fire({
                             icon: 'error',
                             text: 'Unauthenticated.'
@@ -83,7 +83,7 @@ export default function CreateNewBlogPopUp({ refresh }) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The faq is added'
+                            text: 'The blog is added.'
                         });
                         refresh();
                     }
@@ -93,6 +93,7 @@ export default function CreateNewBlogPopUp({ refresh }) {
                         icon: 'error',
                         title: 'There was an error while fetching the data'
                     })
+                    setLoading(false);
                 })
         }
     }

@@ -13,7 +13,7 @@ import EditFaqsPopUp from "../../../../pop-ups/EditFaqsPopUp"
 
 import { useState } from "react"
 
-export default function SelectedFaqs({refresh}) {
+export default function SelectedFaqs({refresh, setLoading}) {
 
 
 
@@ -23,7 +23,7 @@ export default function SelectedFaqs({refresh}) {
         dispatcher(showPopUp({
             type: ADMIN_PANEL_CREATE_FAQS,
             duration: 2000,
-            component: <CreateFaqsPopUp refresh={refresh} />
+            component: <CreateFaqsPopUp refresh={refresh} setLoading={setLoading} />
         }))
     }
 

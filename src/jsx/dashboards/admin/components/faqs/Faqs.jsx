@@ -20,7 +20,7 @@ import ResponsivePagination from "react-responsive-pagination"
 export default function Faqs() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/faqs?page=${currentPage}`);
-
+    const [customLoading, setCustomLoading] = useState(false);
 
     const headerList = [
         "ID",
@@ -42,6 +42,7 @@ export default function Faqs() {
             denyButtonColor: "red"
         }).then(what => {
             if (what.isConfirmed) {
+                setCustomLoading(true);
                 const message = what.value;
                 fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
                     method: "PUT",
@@ -60,6 +61,7 @@ export default function Faqs() {
                 })
                     .then((data) => data.json())
                     .then(resp => {
+                        setCustomLoading(false);
                         if (resp.message === "Unauthenticated.") {
                             Swal.fire({
                                 icon: 'error',
@@ -75,6 +77,7 @@ export default function Faqs() {
                         }
                     })
                     .catch(() => {
+                        setCustomLoading(false);
                         Swal.fire({
                             icon: 'error',
                             text: 'There was a problem fetching the data'
@@ -86,6 +89,7 @@ export default function Faqs() {
 
 
     const deleteFaq = (faq) => {
+        setCustomLoading(true);
         fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
             method: "DELETE",
             headers: {
@@ -95,13 +99,26 @@ export default function Faqs() {
                 "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             }
         })
+            .then((resp) => resp.json())
             .then(resp => {
-                showSuccess(resp)
-                refresh();
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'The faq is deleted'
+                    });
+                    refresh();
+                }
+                setCustomLoading(false);
             })
             .catch(err => {
                 const errors = err?.response?.data
                 showError(errors)
+                setCustomLoading(false);
             })
     }
 
@@ -110,9 +127,12 @@ export default function Faqs() {
     return (
         <div className="admin-panel-faqs">
 
-            <SelectedFaqs refresh={refresh} />
+            <SelectedFaqs setLoading={setCustomLoading} refresh={refresh}/>
 
-            <Table columnsStyle={"6rem 10rem 15rem 10rem 1fr 5rem 10rem"} >
+            <div className={'loading'} data-loading={customLoading}>
+                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+            </div>
+            <Table columnsStyle={"6rem 10rem 15rem 10rem 1fr 5rem 10rem"}>
                 <TableHeader>
 
                     {
@@ -123,70 +143,70 @@ export default function Faqs() {
                         })
                     }
                 </TableHeader>
-                <TableBody >
+                <TableBody>
                     {
                         (!loading && !error) ? data.entities.faqs.map(faq => {
-                            return <Row key={faq.id}>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[0]}
-                                    </div>
-                                    <div className="property-body">
-                                        {faq.id}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[1]}
-                                    </div>
-                                    <div className="property-body">
-                                        {faq.tag}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[2]}
-                                    </div>
-                                    <div className="property-body">
-                                        {faq.question}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[3]}
-                                    </div>
-                                    <div className="property-body">
-                                        {faq.answer}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headerList[4]}
-                                    </div>
-                                    <div className="property-body buttons">
-                                        <button
-                                            className="reply-email"
-                                            onClick={() => replyFaq(faq)}>
+                                return <Row key={faq.id}>
+                                    <Property>
+                                        <div className="property-header">
+                                            {headerList[0]}
+                                        </div>
+                                        <div className="property-body">
+                                            {faq.id}
+                                        </div>
+                                    </Property>
+                                    <Property>
+                                        <div className="property-header">
+                                            {headerList[1]}
+                                        </div>
+                                        <div className="property-body">
+                                            {faq.tag}
+                                        </div>
+                                    </Property>
+                                    <Property>
+                                        <div className="property-header">
+                                            {headerList[2]}
+                                        </div>
+                                        <div className="property-body">
+                                            {faq.question}
+                                        </div>
+                                    </Property>
+                                    <Property>
+                                        <div className="property-header">
+                                            {headerList[3]}
+                                        </div>
+                                        <div className="property-body">
+                                            {faq.answer}
+                                        </div>
+                                    </Property>
+                                    <Property>
+                                        <div className="property-header">
+                                            {headerList[4]}
+                                        </div>
+                                        <div className="property-body buttons">
+                                            <button
+                                                className="reply-email"
+                                                onClick={() => replyFaq(faq)}>
                                             <span>
                                                 Reply
                                             </span>
-                                            <Icon icon="iconamoon:send-fill" />
-                                        </button>
-                                        <button
-                                            className="reply-phone"
-                                            onClick={() => {
-                                                deleteFaq(faq)
-                                            }}
-                                        >
+                                                <Icon icon="iconamoon:send-fill"/>
+                                            </button>
+                                            <button
+                                                className="reply-phone"
+                                                onClick={() => {
+                                                    deleteFaq(faq)
+                                                }}
+                                            >
                                             <span>
                                                 Delete
                                             </span>
-                                            <Icon icon="iconamoon:send-fill" />
-                                        </button>
-                                    </div>
-                                </Property>
-                            </Row>
-                        }) :
+                                                <Icon icon="iconamoon:send-fill"/>
+                                            </button>
+                                        </div>
+                                    </Property>
+                                </Row>
+                            }) :
                             (loading)
                                 ? <h1>Loading...</h1>
                                 : (error)
@@ -199,12 +219,12 @@ export default function Faqs() {
                         ? <h1>Loading...</h1>
                         : (error)
                             ? <h1>Error</h1>
-                            : (data.entities.count && data.entities.count/15 !== 1)
+                            : (data.entities.count && data.entities.count / 15 !== 1)
                                 ? (
                                     <TablePaginations>
                                         <ResponsivePagination
                                             current={currentPage}
-                                            total={data.entities.count/15}
+                                            total={data.entities.count / 15}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
                                                 refresh();

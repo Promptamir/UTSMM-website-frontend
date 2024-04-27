@@ -9,7 +9,7 @@ import {useState} from "react";
 import Swal from "sweetalert2";
 
 
-export default function CreateFaqsPopUp({ refresh }) {
+export default function CreateFaqsPopUp({ refresh, setLoading }) {
 
 
 
@@ -31,6 +31,7 @@ export default function CreateFaqsPopUp({ refresh }) {
     const handleFormSubmit = (e) => {
         e.preventDefault()
 
+        setLoading(true);
         fetch(`https://utsmm.liara.run/api/admin/faqs`, {
             method: "POST",
             headers: {
@@ -48,6 +49,7 @@ export default function CreateFaqsPopUp({ refresh }) {
         })
             .then((data) => data.json())
             .then(resp => {
+                setLoading(false);
                 if (resp.message === "Unauthenticated.") {
                     Swal.fire({
                         icon: 'error',
@@ -62,6 +64,7 @@ export default function CreateFaqsPopUp({ refresh }) {
                 }
             })
             .catch(() => {
+                setLoading(false);
                 Swal.fire({
                     icon: 'error',
                     text: 'There was a problem fetching the data'

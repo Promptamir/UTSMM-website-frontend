@@ -26,7 +26,8 @@ import Swal from "sweetalert2";
 export default function Blogs() {
 
 
-    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [customLoading, setCustomLoading] = useState(false);
 
 
     const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/blogs?page=${currentPage}`)
@@ -54,7 +55,7 @@ export default function Blogs() {
         dispatcher(showPopUp({
             type: ADMIN_PANEL_CREATE_BLOG,
             duration: 2000,
-            component: <CreateNewBlogPopUp refresh={refresh} />
+            component: <CreateNewBlogPopUp setLoading={setCustomLoading} refresh={refresh} />
         }))
     }
 
@@ -62,46 +63,87 @@ export default function Blogs() {
         dispatcher(showPopUp({
             type: ADMIN_PANEL_CREATE_BLOG,
             duration: 2000,
-            component: <EditBlogPopUp blog={blog} refresh={refresh} />
+            component: <EditBlogPopUp setLoading={setCustomLoading} blog={blog} refresh={refresh} />
         }))
     }
 
     const onPublishedClick = (blog, published) => {
-        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
-            method: "PUT",
+        setCustomLoading(true);
+
+        let title = '';
+        let short_description = '';
+        let content = '';
+        let keywords = '';
+
+        fetch(`https://utsmm.liara.run/api/blogs/${blog.slug}`, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`,
             },
-            body: JSON.stringify({
-                "title": blog.title,
-                "short_description": blog.short_description,
-                "content": blog.content,
-                "keywords": blog.keywords,
-                "status": (published) ? 1 : 0
-            })
         })
             .then((data) => data.json())
             .then((data) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The blog is published now.'
-                })
+                title = data.entities.blog.title;
+                short_description = data.entities.blog.content;
+                content = data.entities.blog.content;
+                keywords = data.entities.blog.keywords;
 
-                refresh();
+                fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept" : "application/json",
+                        "X-Requested-With" : "XMLHttpRequest",
+                        "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`,
+                    },
+                    body: JSON.stringify({
+                        "_method" : "put",
+                        "title": title,
+                        "short_description": short_description,
+                        "content": content,
+                        "keywords": keywords,
+                        "status": (published) ? 1 : 0
+                    })
+                })
+                    .then((data) => data.json())
+                    .then((data) => {
+                        setCustomLoading(false);
+                        if (data.message === "Unauthenticated.") {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Unauthenticated.'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                text: (published) ? 'The Blog is Published' : 'The Blog is not Published now'
+                            });
+                            refresh();
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'There was an error while fetching the data'
+                        })
+                        setCustomLoading(false);
+                    })
             })
             .catch(() => {
                 Swal.fire({
                     icon: 'error',
                     title: 'There was an error while fetching the data'
                 })
+                setCustomLoading(false);
             })
     }
 
 
     const handleOnDelete = (blog) => {
+        setCustomLoading(true);
         fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
             method: "DELETE",
             headers: {
@@ -113,14 +155,24 @@ export default function Blogs() {
         })
             .then((data) => data.json())
             .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The blog is deleted now.'
-                })
+                setCustomLoading(false);
+                if (data.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'The Blog is deleted now.'
+                    });
+                    refresh();
+                }
 
                 refresh();
             })
             .catch(() => {
+                setCustomLoading(false);
                 Swal.fire({
                     icon: 'error',
                     title: 'There was an error while fetching the data'
@@ -142,7 +194,10 @@ export default function Blogs() {
                     </button>
                 </div>
             </h2>
-            <div className="blogs-body">
+            <div className="blogs-body relative">
+                <div className={'loading'} data-loading={customLoading}>
+                    <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                </div>
                 <Table columnsStyle={"7rem 10rem 10rem 1fr  7rem 7rem 7rem"}>
                     <TableHeader>
                         {
@@ -157,94 +212,100 @@ export default function Blogs() {
                     <TableBody>
                         {
                             (!loading && !error) ? data?.entities.blogs.map(blog => {
-                                return <Row key={blog.id}>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[0]}
-                                        </div>
-                                        <div className="property-body">
-                                            {blog.id}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[1]}
-                                        </div>
-                                        <div className="property-body" style={{width: '100%'}}>
-                                            <img
-                                                src={SERVER.BASE_URL + blog.image}
-                                                style={{
-                                                    width: '100%',
-                                                    objectFit: 'cover',
-                                                    borderRadius: '20px',
-                                                    height: '100px',
-                                                    maxWidth: 'none'
-                                                }}
-                                            />
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[2]}
-                                        </div>
-                                        <div className="property-body">
-                                            <MaxLineText
-                                                maxLine={3}
-                                                content={blog.title} />
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[3]}
-                                        </div>
-                                        <div className="property-body">
-                                            <MaxLineText
-                                                maxLine={4}
-                                                content={blog.short_description} />
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[4]}
-                                        </div>
-                                        <div className="property-body">
-                                            <MaxLineText
-                                                maxLine={4}
-                                                content={blog.likes} />
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[5]}
-                                        </div>
-                                        <div className="property-body">
-                                            <Switch
-                                                checked={blog.status === 1}
-                                                onChange={() => {
-                                                    onPublishedClick(blog, (blog.status !== 1))
-                                                }} />
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[6]}
-                                        </div>
-                                        <div className="property-body controlls-property">
-                                            <button
-                                                onClick={() => { handleOnEditBlogClick(blog) }}>
-                                                <Icon icon="bxs:edit" />
-                                                <span>Edit</span>
-                                            </button>
-                                            <button
-                                                onClick={() => handleOnDelete(blog)}
-                                            >
-                                                <Icon icon="fluent:delete-48-filled" />
-                                                <span>Delete</span>
-                                            </button>
-                                        </div>
-                                    </Property>
-                                </Row>
-                            }) :
+                                    return <Row key={blog.id}>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[0]}
+                                            </div>
+                                            <div className="property-body">
+                                                {blog.id}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[1]}
+                                            </div>
+                                            <div className="property-body" style={{width: '100%'}}>
+                                                <img
+                                                    src={blog.image}
+                                                    style={{
+                                                        width: '100%',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '20px',
+                                                        height: '100px',
+                                                        maxWidth: 'none'
+                                                    }}
+                                                />
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[2]}
+                                            </div>
+                                            <div className="property-body">
+                                                <MaxLineText
+                                                    maxLine={3}
+                                                    content={blog.title}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[3]}
+                                            </div>
+                                            <div className="property-body">
+                                                <span style={{
+                                                    width: '250px',
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    display: 'block',
+                                                    textOverflow: 'ellipsis'
+                                                }}>{blog.short_description}</span>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[4]}
+                                            </div>
+                                            <div className="property-body">
+                                                <MaxLineText
+                                                    maxLine={4}
+                                                    content={blog.likes}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[5]}
+                                            </div>
+                                            <div className="property-body">
+                                                <Switch
+                                                    checked={blog.status === 1}
+                                                    onChange={() => {
+                                                        onPublishedClick(blog, (blog.status !== 1))
+                                                    }}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[6]}
+                                            </div>
+                                            <div className="property-body controlls-property">
+                                                <button
+                                                    onClick={() => {
+                                                        handleOnEditBlogClick(blog)
+                                                    }}>
+                                                    <Icon icon="bxs:edit"/>
+                                                    <span>Edit</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => handleOnDelete(blog)}
+                                                >
+                                                    <Icon icon="fluent:delete-48-filled"/>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </div>
+                                        </Property>
+                                    </Row>
+                                }) :
                                 (loading)
                                     ? <h1>Loading...</h1>
                                     : (error)
@@ -258,19 +319,19 @@ export default function Blogs() {
                             ? <h1>Loading...</h1>
                             : (error)
                                 ? <h1>Error</h1>
-                                : (data.entities.count && data.entities.count/15 !== 1)
-                                ? (
-                                    <TablePaginations>
-                                        <ResponsivePagination
-                                            current={currentPage}
-                                            total={data.entities.count/15}
-                                            onPageChange={(pageNumber) => {
-                                                setCurrentPage(pageNumber);
-                                                refresh();
-                                            }}
-                                        />
-                                    </TablePaginations>
-                                ) : false
+                                : (data.entities.count && data.entities.count / 15 !== 1)
+                                    ? (
+                                        <TablePaginations>
+                                            <ResponsivePagination
+                                                current={currentPage}
+                                                total={data.entities.count / 15}
+                                                onPageChange={(pageNumber) => {
+                                                    setCurrentPage(pageNumber);
+                                                    refresh();
+                                                }}
+                                            />
+                                        </TablePaginations>
+                                    ) : false
                     }
                 </Table>
             </div>
