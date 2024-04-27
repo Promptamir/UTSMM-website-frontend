@@ -102,7 +102,7 @@
 
 .comment-table-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 .comment-table-row .comment-table-item {
   padding: 10px;
@@ -113,8 +113,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.comment-table-row .comment-table-item:nth-of-type(2) {
-  grid-column: span 3;
+.comment-table-row .comment-table-item.stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  color: #4976f3;
 }
 .comment-table-row:first-of-type .comment-table-item {
   color: #4976f3;

@@ -3,6 +3,8 @@ import '../../../css/pages/comment/commentPageStyle.css';
 import {useState} from "react";
 import {useFetch} from "../../../lib/useFetch";
 import ResponsivePagination from "react-responsive-pagination";
+import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
+import {Icon} from "@iconify/react";
 
 // Creating and exporting comment page as default
 export default function CommentPage() {
@@ -39,10 +41,16 @@ export default function CommentPage() {
                     })
                         .then((data) => data.json())
                         .then((data) => {
-                            setFormLoading(false);
-                            setFormError('');
-                            setFormSuccses('Your comment has been submitted.');
-                            refresh();
+                            if (data.message === 'Unauthenticated.') {
+                                setFormLoading(false);
+                                setFormError('Unauthenticated');
+                                setFormSuccses('');
+                            } else {
+                                setFormLoading(false);
+                                setFormError('');
+                                setFormSuccses('Your comment has been submitted.');
+                                refresh();
+                            }
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -69,24 +77,42 @@ export default function CommentPage() {
                                     <div className={'comment-table-row'}>
                                         <div className={'comment-table-item'}>Name</div>
                                         <div className={'comment-table-item'}>Comment</div>
+                                        <div className={'comment-table-item'}>Stars</div>
                                     </div>
                                     {
                                         data.entities.comments.map((item, index) => (
                                             <div className={'comment-table-row'} key={index}>
                                                 <div className={'comment-table-item'}>{item.user.name}</div>
                                                 <div className={'comment-table-item'}>{item.content}</div>
+                                                <div className={'comment-table-item stars'}>
+                                                    {new Array(item.stars).fill('').map((item, index) => (
+                                                        <Icon icon={'material-symbols:star'} width={30} height={30}
+                                                              key={index} color={'currentColor'}/>
+                                                    ))}
+                                                </div>
                                             </div>
                                         ))
                                     }
                                 </div>
-                                <ResponsivePagination
-                                    current={currentPage}
-                                    total={3}
-                                    onPageChange={(pageNumber) => {
-                                        setCurrentPage(pageNumber);
-                                        refresh();
-                                    }}
-                                />
+                                {
+                                    (loading)
+                                        ? <h1>Loading...</h1>
+                                        : (error)
+                                            ? <h1>Error</h1>
+                                            : (data.entities.count && data.entities.count / 15 !== 1)
+                                                ? (
+                                                    <TablePaginations>
+                                                        <ResponsivePagination
+                                                            current={currentPage}
+                                                            total={data.entities.count / 15}
+                                                            onPageChange={(pageNumber) => {
+                                                                setCurrentPage(pageNumber);
+                                                                refresh();
+                                                            }}
+                                                        />
+                                                    </TablePaginations>
+                                                ) : false
+                                }
                             </div>
                         )
             }
