@@ -6,25 +6,25 @@ import TableBody from "../../../../cutsome-components/table/components/TableBody
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader";
 import {useEffect, useState} from "react";
 import {useFetch} from "../../../../../lib/useFetch"
-import {API} from "../../../../../lib/envAccess";
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from 'react-responsive-pagination';
+import {Icon} from "@iconify/react";
+import Switch from "react-switch";
+import Swal from "sweetalert2";
 
 
 export default function CommentPage() {
-
-    const [pageNumber, setPageNumber] = useState(1)
-    // TODO: To Be changed
-    const [data, error, loading, setUrl] = useFetch(
-        API.ADMIN_DASHBOARD.ORDERS.GET + pageNumber,
-    )
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/comments?page=${currentPage}`);
+    const [customLoading, setCustomLoading] = useState(false);
 
     const headersList = [
-        "Name",
-        "Tel",
-        "Message",
-        "Accept",
-        "Answer"
+        "id",
+        "content",
+        "stars",
+        "status",
+        "Showing",
+        "Created at"
     ]
 
     const orderListButtons = [
@@ -53,6 +53,85 @@ export default function CommentPage() {
         setSortedList(temp)
     }, [ordersStatus, data])
 
+    const onPublishedClick = (record, published) => {
+        setCustomLoading(true);
+        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}/confirmation-status`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({
+                "confirmation_status": (published) ? 1 : 0
+            })
+        })
+            .then((data) => data.json())
+            .then(resp => {
+                setCustomLoading(false);
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `The Status is set to "${published}".`
+                    });
+
+                    refresh();
+                }
+            })
+            .catch(() => {
+                setCustomLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'There was a problem fetching the data'
+                });
+            })
+    }
+
+    const onPublishedClickMain = (record, published) => {
+        setCustomLoading(true);
+        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}/show-on-main-page-status`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({
+                "show_on_main_page_status": (published) ? 1 : 0
+            })
+        })
+            .then((data) => data.json())
+            .then(resp => {
+                setCustomLoading(false);
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: (published) ? 'the comment is now shown' : 'the comment is not visible now'
+                    });
+
+                    refresh();
+                }
+            })
+            .catch(() => {
+                setCustomLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'There was a problem fetching the data'
+                });
+            })
+    }
 
     return (
         <div className="admin-panel-orders">
@@ -73,78 +152,111 @@ export default function CommentPage() {
                     }
                 </div>
             </div>
-            <Table columnsStyle={"6rem 6rem 1.8fr 6rem 1fr 6rem 5rem 8rem"}>
-                <TableHeader>
-                    {
-                        headersList.map((record, index) => {
-                            return <ItemHeader key={index}>
-                                {record}
-                            </ItemHeader>
-                        })
-                    }
-                </TableHeader>
-                {
-                    <TableBody>
+            <div style={{position: 'relative'}}>
+                <div className={'loading'} data-loading={customLoading}>
+                    <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                </div>
+                <Table columnsStyle={"6rem 6rem 1.8fr 6rem 1fr 6rem 5rem 8rem"}>
+                    <TableHeader>
                         {
-                            !loading ? sortedList?.map((record, index) => {
-                                return <Row key={index}>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[0]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record.name}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[1]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record.tel}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[2]}
-                                        </div>
-                                        <div className="property-body ">
-                                            {record.message}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[3]}
-                                        </div>
-                                        <div className="property-body">
-                                            <button>Accept</button>
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[4]}
-                                        </div>
-                                        <div className="property-body">
-                                            <input type="text" placeholder={'Write here'}/>
-                                        </div>
-                                    </Property>
-                                </Row>
-                            }) : <h1>Loading...</h1>
+                            headersList.map((record, index) => {
+                                return <ItemHeader key={index}>
+                                    {record}
+                                </ItemHeader>
+                            })
                         }
-
-                    </TableBody>
-                }
-
-                <TablePaginations>
-                    <ResponsivePagination
-                        current={data?.currentPage}
-                        total={data?.maxPageNumber}
-                        onPageChange={(pageNumber) => {
-                            setUrl(API.ADMIN_DASHBOARD.ORDERS.GET + pageNumber)
-                        }}
-                    />
-                </TablePaginations>
-            </Table>
+                    </TableHeader>
+                    {
+                        <TableBody>
+                            {
+                                (!loading && !error) ? data.entities.comments.map((record, index) => {
+                                    return <Row key={index}>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[0]}
+                                            </div>
+                                            <div className="property-body">
+                                                {record.id}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[1]}
+                                            </div>
+                                            <div className="property-body">
+                                                {record.content}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[2]}
+                                            </div>
+                                            <div className="property-body">
+                                                {record.stars}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[3]}
+                                            </div>
+                                            <div className="property-body">
+                                                <Switch
+                                                    checked={record.status === 1}
+                                                    onChange={() => {
+                                                        onPublishedClick(record, (record.status !== 1))
+                                                    }}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[4]}
+                                            </div>
+                                            <div className="property-body">
+                                                <Switch
+                                                    checked={record.show_on_main_page === 1}
+                                                    onChange={() => {
+                                                        onPublishedClickMain(record, (record.show_on_main_page !== 1))
+                                                    }}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[5]}
+                                            </div>
+                                            <div className="property-body">
+                                                {new Date(record.created_at).toLocaleDateString()}
+                                            </div>
+                                        </Property>
+                                    </Row>
+                                }) : (loading)
+                                    ? <h1>Loading...</h1>
+                                    : (error)
+                                        ? <h1>Error</h1>
+                                        : false
+                            }
+                        </TableBody>
+                    }
+                    {
+                        (loading)
+                            ? <h1>Loading...</h1>
+                            : (error)
+                                ? <h1>Error</h1>
+                                : (data.entities.count > 15)
+                                    ? (
+                                        <TablePaginations>
+                                            <ResponsivePagination
+                                                current={currentPage}
+                                                total={Math.round(data.entities.count/10)}
+                                                onPageChange={(pageNumber) => {
+                                                    setCurrentPage(pageNumber);
+                                                    refresh();
+                                                }}
+                                            />
+                                        </TablePaginations>
+                                    ) : false
+                    }
+                </Table>
+            </div>
         </div>
     )
 }

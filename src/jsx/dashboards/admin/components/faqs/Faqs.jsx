@@ -8,18 +8,14 @@ import TableBody from "../../../../cutsome-components/table/components/TableBody
 import Row from "../../../../cutsome-components/table/components/Row"
 import Property from "../../../../cutsome-components/table/components/Property"
 import {useEffect, useState} from "react"
-import Switch from "react-switch"
 import SelectedFaqs from "./SelectedFaqs"
 import { post, put, useFetch } from "../../../../../lib/useFetch"
 import { API } from "../../../../../lib/envAccess"
 import { showError, showSuccess } from "../../../../../lib/alertHandler"
 import Swal from "sweetalert2"
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations"
-import ResponsivePagination from "react-responsive-pagination"
 
 export default function Faqs() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/faqs?page=${currentPage}`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/faqs`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headerList = [
@@ -129,111 +125,93 @@ export default function Faqs() {
 
             <SelectedFaqs setLoading={setCustomLoading} refresh={refresh}/>
 
-            <div className={'loading'} data-loading={customLoading}>
-                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
-            </div>
-            <Table columnsStyle={"6rem 10rem 15rem 10rem 1fr 5rem 10rem"}>
-                <TableHeader>
-
-                    {
-                        headerList.map((record, index) => {
-                            return <ItemHeader key={index}>
-                                {record}
-                            </ItemHeader>
-                        })
-                    }
-                </TableHeader>
-                <TableBody>
-                    {
-                        (!loading && !error) ? data.entities.faqs.map(faq => {
-                                return <Row key={faq.id}>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[0]}
-                                        </div>
-                                        <div className="property-body">
-                                            {faq.id}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[1]}
-                                        </div>
-                                        <div className="property-body">
-                                            {faq.tag}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[2]}
-                                        </div>
-                                        <div className="property-body">
-                                            {faq.question}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[3]}
-                                        </div>
-                                        <div className="property-body">
-                                            {faq.answer}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headerList[4]}
-                                        </div>
-                                        <div className="property-body buttons">
-                                            <button
-                                                className="reply-email"
-                                                onClick={() => replyFaq(faq)}>
+            <div style={{position: 'relative'}}>
+                <div className={'loading'} data-loading={customLoading}>
+                    <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                </div>
+                <Table columnsStyle={"6rem 10rem 15rem 10rem 1fr 5rem 10rem"}>
+                    <TableHeader>
+                        {
+                            headerList.map((record, index) => {
+                                return <ItemHeader key={index}>
+                                    {record}
+                                </ItemHeader>
+                            })
+                        }
+                    </TableHeader>
+                    <TableBody>
+                        {
+                            (!loading && !error) ? data.entities.faqs.map(faq => {
+                                    return <Row key={faq.id}>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[0]}
+                                            </div>
+                                            <div className="property-body">
+                                                {faq.id}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[1]}
+                                            </div>
+                                            <div className="property-body">
+                                                {faq.tag}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[2]}
+                                            </div>
+                                            <div className="property-body">
+                                                {faq.question}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[3]}
+                                            </div>
+                                            <div className="property-body">
+                                                {faq.answer}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[4]}
+                                            </div>
+                                            <div className="property-body buttons">
+                                                <button
+                                                    className="reply-email"
+                                                    onClick={() => replyFaq(faq)}>
                                             <span>
                                                 Reply
                                             </span>
-                                                <Icon icon="iconamoon:send-fill"/>
-                                            </button>
-                                            <button
-                                                className="reply-phone"
-                                                onClick={() => {
-                                                    deleteFaq(faq)
-                                                }}
-                                            >
+                                                    <Icon icon="iconamoon:send-fill"/>
+                                                </button>
+                                                <button
+                                                    className="reply-phone"
+                                                    onClick={() => {
+                                                        deleteFaq(faq)
+                                                    }}
+                                                >
                                             <span>
                                                 Delete
                                             </span>
-                                                <Icon icon="iconamoon:send-fill"/>
-                                            </button>
-                                        </div>
-                                    </Property>
-                                </Row>
-                            }) :
-                            (loading)
-                                ? <h1>Loading...</h1>
-                                : (error)
-                                    ? <h1>Error</h1>
-                                    : false
-                    }
-                </TableBody>
-                {
-                    (loading)
-                        ? <h1>Loading...</h1>
-                        : (error)
-                            ? <h1>Error</h1>
-                            : (data.entities.count && data.entities.count / 15 !== 1)
-                                ? (
-                                    <TablePaginations>
-                                        <ResponsivePagination
-                                            current={currentPage}
-                                            total={data.entities.count / 15}
-                                            onPageChange={(pageNumber) => {
-                                                setCurrentPage(pageNumber);
-                                                refresh();
-                                            }}
-                                        />
-                                    </TablePaginations>
-                                ) : false
-                }
-            </Table>
+                                                    <Icon icon="iconamoon:send-fill"/>
+                                                </button>
+                                            </div>
+                                        </Property>
+                                    </Row>
+                                }) :
+                                (loading)
+                                    ? <h1>Loading...</h1>
+                                    : (error)
+                                        ? <h1>Error</h1>
+                                        : false
+                        }
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     )
 }

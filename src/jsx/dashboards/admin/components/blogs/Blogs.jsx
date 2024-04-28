@@ -319,12 +319,12 @@ export default function Blogs() {
                             ? <h1>Loading...</h1>
                             : (error)
                                 ? <h1>Error</h1>
-                                : (data.entities.count && data.entities.count / 15 !== 1)
+                                : (data.entities.count > 15)
                                     ? (
                                         <TablePaginations>
                                             <ResponsivePagination
                                                 current={currentPage}
-                                                total={data.entities.count / 15}
+                                                total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
                                                     refresh();

@@ -29,7 +29,10 @@ export function useFetch(defaultUrl, deafultValue) {
                     const response = await axios.get(url, {
                         method: "get",
                         headers: {
-                            "token": token
+                            "Content-Type": "application/json",
+                            "Accept" : "application/json",
+                            "X-Requested-With" : "XMLHttpRequest",
+                            "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                         },
                     })
                     setData(response.data)
