@@ -12,6 +12,7 @@ import Orders from "./components/orders/Orders";
 import Platforms from "./components/platforms/Platforms";
 import PaymentMethods from "./components/payment-methods/PaymentMethods";
 import CommentPage from './components/comment/commentPage';
+import Settings from "./components/settings/Settings";
 
 const AdminDashboard = () => {
 
@@ -75,7 +76,7 @@ const AdminDashboard = () => {
         {
             title: "Setting",
             svg: <Icon icon="ant-design:setting-filled" />,
-            component: <Dashboard />
+            component: <Settings />
         },
         {
             title: "Comment",
