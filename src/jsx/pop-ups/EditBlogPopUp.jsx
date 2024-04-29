@@ -50,7 +50,6 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                 .then((data) => data.json())
                 .then((data) => {
                     setLoading(false);
-                    console.log(data);
 
                     if (data.message === "Unauthenticated.") {
                         Swal.fire({

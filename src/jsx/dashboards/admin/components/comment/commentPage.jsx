@@ -24,7 +24,8 @@ export default function CommentPage() {
         "stars",
         "status",
         "Showing",
-        "Created at"
+        "Created at",
+        "Delete"
     ]
 
     const orderListButtons = [
@@ -225,6 +226,58 @@ export default function CommentPage() {
                                             </div>
                                             <div className="property-body">
                                                 {new Date(record.created_at).toLocaleDateString()}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headersList[6]}
+                                            </div>
+                                            <div className="property-body">
+                                                <button
+                                                    style={{
+                                                        paddingBlock: '5px',
+                                                        paddingInline: '10px',
+                                                        background: 'red',
+                                                        borderRadius: '5px'
+                                                    }}
+                                                    onClick={() => {
+                                                    setCustomLoading(true);
+                                                    fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}`, {
+                                                        method: "DELETE",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                            "Accept" : "application/json",
+                                                            "X-Requested-With" : "XMLHttpRequest",
+                                                            "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                                                        }
+                                                    })
+                                                        .then((data) => data.json())
+                                                        .then(resp => {
+                                                            setCustomLoading(false);
+                                                            if (resp.message === "Unauthenticated.") {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    text: 'Unauthenticated.'
+                                                                });
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    text: 'The comment is removed'
+                                                                });
+
+                                                                refresh();
+                                                            }
+                                                        })
+                                                        .catch(() => {
+                                                            setCustomLoading(false);
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                text: 'There was a problem fetching the data'
+                                                            });
+                                                        })
+                                                }}>
+                                                    Delete
+                                                </button>
                                             </div>
                                         </Property>
                                     </Row>

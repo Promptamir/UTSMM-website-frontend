@@ -110,6 +110,7 @@ export default function Blogs() {
                 })
                     .then((data) => data.json())
                     .then((data) => {
+                        console.log(data);
                         setCustomLoading(false);
                         if (data.message === "Unauthenticated.") {
                             Swal.fire({

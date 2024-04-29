@@ -73,7 +73,6 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
             fetch("https://utsmm.liara.run/api/admin/blogs", requestOptions)
                 .then((response) => response.json())
                 .then((result) => {
-                    console.log(result);
                     setLoading(false);
                     if (result.message === "Unauthenticated.") {
                         Swal.fire({
