@@ -1290,14 +1290,16 @@ $gradient-degree: 0deg;
     }
 
     .submit-btn {
+        margin: 0;
         background-color: $ThemeColor;
-        padding: 10px;
+        padding-block: 10px;
         border-radius: 20px;
         display: block;
         text-align: center;
         color: white;
         font-weight: bold;
         font-size: 20px;
+        width: 100%;
 
         &:disabled {
             pointer-events: none;

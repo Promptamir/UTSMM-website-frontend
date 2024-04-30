@@ -1,12 +1,11 @@
 // Importing part
-
-// Creating and exporting settings tab of admin dashboard as default
 import {useFetch} from "../../../../../lib/useFetch";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
 
+// Creating and exporting settings tab of admin dashboard as default
 export default function Settings() {
     // Getting data
     const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/general-configs`);
