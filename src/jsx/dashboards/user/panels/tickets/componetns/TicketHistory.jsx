@@ -5,8 +5,7 @@ import { API } from "../../../../../../lib/envAccess";
 const TicketHistory = () => {
 
 
-    const [tickets, error, loading] =
-        useFetch(API.DASHBOARD.USER_TICKET_HISTORY.GET)
+    const [tickets, error, loading] = useFetch('https://utsmm.liara.run/api/tickets')
 
 
 
