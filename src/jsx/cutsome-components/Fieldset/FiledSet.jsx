@@ -29,10 +29,11 @@ const FiledSet = (
                 rows="10"
                 required={isRequired}
                 ref={inputRef}
+                onChange={onChange}
             >
             </textarea>)
         } else {
-            return <input ref={inputRef} type={inputType} name={inputName} required={isRequired} />
+            return <input onChange={onChange} ref={inputRef} type={inputType} name={inputName} required={isRequired} />
         }
 
 

@@ -60,9 +60,9 @@ export default function CommentPage() {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "confirmation_status": (published) ? 1 : 0
@@ -100,9 +100,9 @@ export default function CommentPage() {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "show_on_main_page_status": (published) ? 1 : 0
@@ -241,41 +241,41 @@ export default function CommentPage() {
                                                         borderRadius: '5px'
                                                     }}
                                                     onClick={() => {
-                                                    setCustomLoading(true);
-                                                    fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}`, {
-                                                        method: "DELETE",
-                                                        headers: {
-                                                            "Content-Type": "application/json",
-                                                            "Accept" : "application/json",
-                                                            "X-Requested-With" : "XMLHttpRequest",
-                                                            "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
-                                                        }
-                                                    })
-                                                        .then((data) => data.json())
-                                                        .then(resp => {
-                                                            setCustomLoading(false);
-                                                            if (resp.message === "Unauthenticated.") {
-                                                                Swal.fire({
-                                                                    icon: 'error',
-                                                                    text: 'Unauthenticated.'
-                                                                });
-                                                            } else {
-                                                                Swal.fire({
-                                                                    icon: 'success',
-                                                                    text: 'The comment is removed'
-                                                                });
-
-                                                                refresh();
+                                                        setCustomLoading(true);
+                                                        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}`, {
+                                                            method: "DELETE",
+                                                            headers: {
+                                                                "Content-Type": "application/json",
+                                                                "Accept": "application/json",
+                                                                "X-Requested-With": "XMLHttpRequest",
+                                                                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                                                             }
                                                         })
-                                                        .catch(() => {
-                                                            setCustomLoading(false);
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                text: 'There was a problem fetching the data'
-                                                            });
-                                                        })
-                                                }}>
+                                                            .then((data) => data.json())
+                                                            .then(resp => {
+                                                                setCustomLoading(false);
+                                                                if (resp.message === "Unauthenticated.") {
+                                                                    Swal.fire({
+                                                                        icon: 'error',
+                                                                        text: 'Unauthenticated.'
+                                                                    });
+                                                                } else {
+                                                                    Swal.fire({
+                                                                        icon: 'success',
+                                                                        text: 'The comment is removed'
+                                                                    });
+
+                                                                    refresh();
+                                                                }
+                                                            })
+                                                            .catch(() => {
+                                                                setCustomLoading(false);
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    text: 'There was a problem fetching the data'
+                                                                });
+                                                            })
+                                                    }}>
                                                     Delete
                                                 </button>
                                             </div>
@@ -299,7 +299,7 @@ export default function CommentPage() {
                                         <TablePaginations>
                                             <ResponsivePagination
                                                 current={currentPage}
-                                                total={Math.round(data.entities.count/10)}
+                                                total={Math.round(data.entities.count / 10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
                                                     refresh();
