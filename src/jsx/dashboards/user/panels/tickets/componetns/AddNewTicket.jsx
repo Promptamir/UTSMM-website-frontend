@@ -18,16 +18,11 @@ const AddNewTicket = () => {
 
         if (
             (10 <= subject.length) && (subject.length <= 100) &&
-            (10 <= content.length) && (content.length <= 350)
+            (10 <= content.length) && (content.length <= 350) &&
+            (id.length === 16)
         ) {
             setError('');
             errArray = [];
-
-            console.log({
-                "subject": subject,
-                "anything_id": id,
-                "content": content
-            })
 
             setLoading(true);
             fetch('https://utsmm.liara.run/api/tickets', {
@@ -46,7 +41,6 @@ const AddNewTicket = () => {
             })
                 .then((data) => data.json())
                 .then(resp => {
-                    console.log(resp)
                     setLoading(false);
                     if (resp.message === "Unauthenticated.") {
                         setError('Unauthenticated')
@@ -67,6 +61,8 @@ const AddNewTicket = () => {
 
             if (content.length <= 10) {errArray.push('Minimum length of content is 10 characters.')}
             else if (content.length >= 350) {errArray.push('Maximum length of content is 350 characters.')}
+
+            if (id.length !== 16) {errArray.push('Id should be 16 character.')}
 
             if (errArray.length === 1) {setError(errArray[0]);}
             else {setError(errArray.join(' & '))}

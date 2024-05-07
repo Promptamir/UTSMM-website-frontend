@@ -1,23 +1,18 @@
 import { Icon } from "@iconify/react"
 import { useFetch } from "../../../../../../lib/useFetch";
 import { API } from "../../../../../../lib/envAccess";
+import {useEffect} from "react";
 
 const TicketHistory = () => {
 
 
     const [tickets, error, loading] = useFetch('https://utsmm.liara.run/api/tickets')
 
-
-
-    const getIcon = (status) => {
-        switch (status) {
-            case "Pending": return <Icon icon="material-symbols:pending-actions" />
-            case "Resolved": return <Icon icon="icon-park-solid:success" />
-            case "Submited": return <Icon icon="carbon:in-progress" />
-            case "Rejected": return <Icon icon="material-symbols:dangerous-rounded" />
+    useEffect(() => {
+        if (!loading) {
+            console.log(tickets)
         }
-    }
-
+    }, [loading]);
 
 
     const getTime = (time) => {
@@ -32,33 +27,39 @@ const TicketHistory = () => {
 
     return (
         <div className="ticket-history">
-
-            {tickets.map((record => {
-                return <div className={`item ${record.status}`}>
-                    <div className="item-header">
-                        <div className="status">
-                            {getIcon(record.status)}
-                        </div>
-                    </div>
-                    <div className="item-body">
-                        <div className="subject row">
-                            <Icon icon="fluent:document-header-24-filled" />
-                            <span> {record.subject}</span>
-                        </div>
-                        <div className="last-update row">
-                            <Icon icon="mingcute:time-fill" />
-                            <span>{getTime(record.updatedAt)}</span>
-                        </div>
-                        <div className="last-update row">
-                            <Icon icon="material-symbols:date-range" />
-                            <span>{getDate(record.updatedAt)}</span>
-                        </div>
-                    </div>
-                    <div className="item-buttons">
-                        <button>View</button>
-                    </div>
-                </div>
-            }))}
+            {
+                (loading)
+                    ? <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                    : (error)
+                        ? <h1>There was an error.</h1>
+                        : (tickets.entities.tickets.length === 0)
+                            ? <h1>There is no ticket</h1>
+                            : (
+                                tickets.entities.tickets.map((item, index) => (
+                                    <div className={`item ${(item.seen === 1) ? 'seen' : 'pending'}`} key={index}>
+                                        <div className="item-header">
+                                            <div className="status">
+                                                {
+                                                    (item.seen === 1)
+                                                        ? <Icon icon="quill:checkmark-double" />
+                                                        : <Icon icon="uil:clock" />
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="item-body">
+                                            <div className="subject row">
+                                                <Icon icon="fluent:document-header-24-filled"/>
+                                                <span> {item.subject}</span>
+                                            </div>
+                                            <div className="last-update row">
+                                                <Icon icon="material-symbols:date-range"/>
+                                                <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )
+            }
         </div>
     )
 }

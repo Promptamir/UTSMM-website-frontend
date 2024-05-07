@@ -62,7 +62,6 @@
   border-right: 2px solid rgba(255, 255, 255, 0.1);
   top: 5rem;
   position: sticky;
-  height: -moz-max-content;
   height: max-content;
   min-height: 100vh;
   overflow: hidden;
@@ -316,7 +315,6 @@
   padding: 0.5em 1em;
   text-transform: uppercase;
   font-weight: bold;
-  width: -moz-max-content;
   width: max-content;
   border-radius: 100rem;
   margin-top: 0.5rem;
@@ -535,8 +533,7 @@
 }
 .user-dashboard .statics .recent-events-container .recent-events .body .instagram-post .content .content-header img {
   aspect-ratio: 1/1;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .user-dashboard .statics .recent-events-container .recent-events .body .instagram-post .content .content-body {
   display: flex;
@@ -558,7 +555,6 @@
 }
 .user-dashboard .statics .recent-events-container .recent-events .body .instagram-post .content .content-body p {
   border-radius: 100rem;
-  width: -moz-max-content;
   width: max-content;
   font-size: 0.9rem;
   width: 100%;
@@ -793,8 +789,7 @@
   color: white;
   border: 3px solid white;
   border-radius: 1rem;
-  -webkit-backdrop-filter: blur(20px);
-          backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
 .user-dashboard .panel-services .services .right legend {
   font-size: 2rem;
@@ -822,7 +817,6 @@
   align-items: center;
   justify-content: start;
   gap: 0.25rem;
-  width: -moz-max-content;
   width: max-content;
   border-radius: 0.5rem 0 0 0.5rem;
 }
@@ -1028,8 +1022,7 @@
   gap: 2rem;
   padding: 2em;
   max-width: 35rem;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: 1rem;
 }
 .user-dashboard .panel-orders .recent-orders .right .order-detail .header {
@@ -1511,8 +1504,7 @@
   color: white;
   border: 3px solid white;
   border-radius: 1rem;
-  -webkit-backdrop-filter: blur(20px);
-          backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
 .user-dashboard .panel-new-order .order-box .right legend {
   font-size: 2rem;
@@ -1540,7 +1532,6 @@
   align-items: center;
   justify-content: start;
   gap: 0.25rem;
-  width: -moz-max-content;
   width: max-content;
   border-radius: 0.5rem 0 0 0.5rem;
 }
@@ -1800,7 +1791,6 @@
 .user-dashboard .panel-tickets .left .state {
   display: flex;
   gap: 1rem;
-  width: -moz-max-content;
   width: max-content;
   align-self: center;
 }
@@ -1909,16 +1899,10 @@
   color: black;
   cursor: pointer;
 }
-.user-dashboard .panel-tickets .left .ticket-history .Solved {
-  background-color: #0fac6d;
-}
-.user-dashboard .panel-tickets .left .ticket-history .Error {
-  background-color: #dc3545;
-}
-.user-dashboard .panel-tickets .left .ticket-history .Submited {
+.user-dashboard .panel-tickets .left .ticket-history .pending {
   background-color: #ffa938;
 }
-.user-dashboard .panel-tickets .left .ticket-history .InProgress {
+.user-dashboard .panel-tickets .left .ticket-history .seen {
   background-color: #17a2b8;
 }
 .user-dashboard .panel-tickets .right {
@@ -2215,9 +2199,6 @@
   letter-spacing: 2px;
   border-radius: 0.3rem;
 }
-.user-dashboard .panel-free-creidits .email-verify .right .status .code-box input::-moz-placeholder, .user-dashboard .panel-free-creidits .email-verify .right .status .link-box input::-moz-placeholder {
-  color: white;
-}
 .user-dashboard .panel-free-creidits .email-verify .right .status .code-box input::placeholder,
 .user-dashboard .panel-free-creidits .email-verify .right .status .link-box input::placeholder {
   color: white;
@@ -2444,7 +2425,6 @@
     transition: all 1.5s ease;
     transform: translateX(-100%);
     padding-top: 1em;
-    width: -moz-max-content;
     width: max-content;
     background-color: #3165f3;
     z-index: 999;
@@ -2524,7 +2504,6 @@
   }
   .user-dashboard .panel-add-founds .avaialble-methods-intro {
     width: 100%;
-    max-height: -moz-max-content;
     max-height: max-content;
   }
   .user-dashboard .panel-add-founds .road-map {
@@ -2686,8 +2665,7 @@
     padding: 0 !important;
   }
   .user-dashboard .panel-orders .recent-orders .right .order-detail {
-    -webkit-backdrop-filter: none;
-            backdrop-filter: none;
+    backdrop-filter: none;
     padding: 0;
   }
   .user-dashboard .panel-orders .recent-orders .right .body {
@@ -2713,7 +2691,6 @@
     padding: 0;
     margin: 0;
     overflow: initial;
-    max-height: -moz-max-content;
     max-height: max-content;
   }
   .user-dashboard .panel-child {
@@ -2770,7 +2747,6 @@
     overflow: auto;
   }
   .user-dashboard .panel-affliates .charts .footer .item {
-    width: -moz-max-content;
     width: max-content;
   }
   .user-dashboard .panel-free-creidits .email-verify {
@@ -2819,4 +2795,6 @@
     scale: 1;
     opacity: 1;
   }
-}/*# sourceMappingURL=dashboard.css.map */
+}
+
+/*# sourceMappingURL=dashboard.css.map */

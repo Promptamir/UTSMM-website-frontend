@@ -2051,16 +2051,10 @@ $gradient-degree: 0deg;
                         }
                     }
                 }
-                .Solved {
-                    background-color: $panel-color-3;
-                }
-                .Error {
-                    background-color: $panel-color-6;
-                }
-                .Submited {
+                .pending {
                     background-color: $panel-color-4;
                 }
-                .InProgress {
+                .seen {
                     background-color: $panel-color-5;
                 }
             }
