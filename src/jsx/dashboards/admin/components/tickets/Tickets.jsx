@@ -19,24 +19,17 @@ import { API } from '../../../../../lib/envAccess'
 
 
 export default function Tickets() {
-
-
-
-
-    const [pageNumber, setPageNumber] = useState(1)
-
-    const [data, error, loading, setUrl, refresh] = useFetch(
-        API.ADMIN_DASHBOARD.TICKETS.GET + pageNumber,
-    )
+    const [currentPage, setCurrentPage] = useState(1);
+    const [customLoading, setCustomLoading] = useState(false);
+    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/tickets?page=${currentPage}`)
 
 
     const headers = [
         "ID",
-        "Subject ID",
+        "anything_id",
         "Subject",
-        "Message",
+        "Answer",
         "Date",
-        "Sovled",
         "Status",
     ]
 
@@ -81,21 +74,44 @@ export default function Tickets() {
             cancelButtonColor: "red"
         }).then(end => {
             if (end.isConfirmed) {
-                const message = end.value
-                put(API.ADMIN_DASHBOARD.TICKETS.ANSWER.PUT,
-                    { message: message, id: ticket._id })
+                const message = end.value;
+
+                setCustomLoading(true);
+                fetch(`https://utsmm.liara.run/api/admin/tickets/${ticket.id}/answers`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                    },
+                    body: JSON.stringify({"answer" : message})
+                })
+                    .then((data) => data.json())
                     .then(resp => {
-                        if (resp.status === 200) {
+                        setCustomLoading(false);
+                        console.log(resp)
+
+                        if (resp.message === "Unauthenticated.") {
                             Swal.fire({
-                                icon: "success",
-                                title: "Success",
-                                text: resp.data
+                                icon: 'error',
+                                text: 'Unauthenticated.'
                             })
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                text: resp.message
+                            })
+
+                            refresh();
                         }
                     })
-                    .catch(err => {
-                        const errors = err?.response?.data
-                        showError(errors)
+                    .catch(() => {
+                        setCustomLoading(true);
+                        Swal.fire({
+                           icon: 'error',
+                           text: 'There was an error while fetching the data'
+                        })
                     })
             }
         })
@@ -103,29 +119,48 @@ export default function Tickets() {
     }
 
     const handleOnToggleClick = (ticket, state) => {
-
-
-        put(API.ADMIN_DASHBOARD.TICKETS.SOLVED.PUT, {
-            solved: state,
-            id: ticket._id
+        setCustomLoading(true);
+        fetch(`https://utsmm.liara.run/api/tickets/${ticket.id}/seen-status`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+            }
         })
-            .then(async resp => {
-                await showSuccess(resp)
-                refresh()
-            })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
+            .then((data) => data.json())
+            .then(resp => {
+                setCustomLoading(false);
+                console.log(resp)
 
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'The ticket is seen now'
+                    })
+                    refresh();
+                }
+            })
+            .catch(() => {
+                setCustomLoading(true);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'There was an error while fetching the data'
+                })
+            })
     }
 
-
-
-
-
     return (
-        <div className='admin-panel-tickets'>
+        <div className='admin-panel-tickets relative'>
+            <div className={'loading'} data-loading={customLoading}>
+                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+            </div>
             <Table columnsStyle={"6rem 6rem 6rem  1fr 15rem 5rem 8rem"}>
                 <TableHeader>
                     {
@@ -139,86 +174,103 @@ export default function Tickets() {
                 </TableHeader>
                 <TableBody>
                     {
-                        loading === false ? data?.tickets?.map(ticket => {
-                            return <Row>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[0]}
-                                    </div>
-                                    <div className="property-body">
-                                        {ticket._id}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[1]}
-                                    </div>
-                                    <div className="property-body">
-                                        {ticket.orderID}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[2]}
-                                    </div>
-                                    <div className="property-body">
-                                        {ticket.subject}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[3]}
-                                    </div>
-                                    <div className="property-body">
-                                        <MaxLineText
-                                            maxLine={6}
-                                            content={ticket.message} />
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[4]}
-                                    </div>
-                                    <div className="property-body">
-                                        {new Date(ticket.createdAt).toUTCString()}
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[5]}
-                                    </div>
-                                    <div className="property-body">
-                                        <Switch
-                                            onChange={(state) => { handleOnToggleClick(ticket, state) }}
-                                            checked={ticket.solved} />
-                                    </div>
-                                </Property>
-                                <Property>
-                                    <div className="property-header">
-                                        {headers[6]}
-                                    </div>
-                                    <div className="property-body controlls-property">
-                                        <button
-                                            onClick={() => { handleAnswerClick(ticket) }}>
-                                            <span>Answer</span>
-                                            <Icon icon="iconamoon:send-fill" />
-                                        </button>
-                                    </div>
-                                </Property>
-                            </Row>
-                        }) : <h1>Loading ....</h1>
-
+                        (loading)
+                            ? <h1>Loading</h1>
+                            : (error)
+                                ? <h1>An error happened</h1>
+                                : data.entities.tickets.map((ticket, index) => (
+                                    <Row key={index}>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[0]}
+                                            </div>
+                                            <div className="property-body">
+                                                {ticket.id}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[1]}
+                                            </div>
+                                            <div className="property-body">
+                                                {ticket.anything_id}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[2]}
+                                            </div>
+                                            <div className="property-body">
+                                                {ticket.subject}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[3]}
+                                            </div>
+                                            <div className="property-body">
+                                                <MaxLineText
+                                                    maxLine={6}
+                                                    content={ticket.answer}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[4]}
+                                            </div>
+                                            <div className="property-body">
+                                                {new Date(ticket.created_at).toLocaleDateString()}
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[5]}
+                                            </div>
+                                            <div className="property-body">
+                                                <Switch
+                                                    onChange={(state) => {
+                                                        handleOnToggleClick(ticket, state)
+                                                    }}
+                                                    checked={ticket.seen === 1}/>
+                                            </div>
+                                        </Property>
+                                        <Property>
+                                            <div className="property-header">
+                                                {headers[6]}
+                                            </div>
+                                            <div className="property-body controlls-property">
+                                                <button
+                                                    onClick={() => {
+                                                        handleAnswerClick(ticket)
+                                                    }}>
+                                                    <span>Answer</span>
+                                                    <Icon icon="iconamoon:send-fill"/>
+                                                </button>
+                                            </div>
+                                        </Property>
+                                    </Row>
+                                ))
                     }
                 </TableBody>
-                <TablePaginations>
-                    <ResponsivePagination
-                        current={data?.currentPage}
-                        total={data?.maxPageNumber}
-                        onPageChange={(pageNumber) => {
-                            setUrl(API.ADMIN_DASHBOARD.TICKETS.GET + pageNumber)
-                        }}
-                    />
-                </TablePaginations>
+                {
+                    (loading)
+                        ? <h1>Loading...</h1>
+                        : (error)
+                            ? <h1>Error</h1>
+                            : (data.entities.count > 15)
+                                ? (
+                                    <TablePaginations>
+                                        <ResponsivePagination
+                                            current={currentPage}
+                                            total={Math.round(data.entities.count / 10)}
+                                            onPageChange={(pageNumber) => {
+                                                setCurrentPage(pageNumber);
+                                                refresh();
+                                            }}
+                                        />
+                                    </TablePaginations>
+                                ) : false
+                }
             </Table>
         </div>
     )
