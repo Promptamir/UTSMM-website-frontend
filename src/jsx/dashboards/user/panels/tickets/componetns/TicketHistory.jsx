@@ -1,7 +1,9 @@
 import { Icon } from "@iconify/react"
 import { useFetch } from "../../../../../../lib/useFetch";
 import { API } from "../../../../../../lib/envAccess";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import Modal from "../../../../../pop-ups/modal";
+import Swal from "sweetalert2";
 
 const TicketHistory = () => {
 
@@ -25,38 +27,109 @@ const TicketHistory = () => {
         return `${timeData.getFullYear()} / ${timeData.getMonth()} / ${timeData.getDate()} `
     }
 
+    // Creating inner component of ticket items
+    const TicketItem = ({seen, created_at, subject, id}) => {
+        // Defining states
+        const [modalOpened, setModalOpened] = useState(false);
+        const [data, setData] = useState({});
+        const [fetchLoading, setFetchLoading] = useState(true);
+        const [fetchError, setFetchError] = useState('');
+
+        // Using useEffect hook to fetch data of ticket
+        useEffect(() => {
+            if (modalOpened) {
+                fetch(`https://utsmm.liara.run/api/tickets/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                    }
+                })
+                    .then((data) => data.json())
+                    .then(resp => {
+                        setFetchLoading(false);
+
+                        if (resp.message === "Unauthenticated.") {setFetchError('Unauthenticated.')}
+                        else {setData(resp.entities.ticket);}
+                    })
+                    .catch(() => {
+                        setFetchLoading(true);
+                        setFetchError('There was an error while fetching the data')
+                    })
+            }
+        }, [modalOpened]);
+
+        // Returning JSX
+        return (
+            <div className={`item ${(seen === 1) ? 'seen' : 'pending'}`}>
+                <Modal closeFn={() => setModalOpened(false)} title={'Ticket Info'} isOpened={modalOpened}>
+                    {
+                        (fetchLoading)
+                            ? <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                            : (fetchError)
+                                ? <h1>{fetchError}</h1>
+                                : (
+                                    <div className={'table_2'}>
+                                        <div className={'col'}>Subject</div>
+                                        <div className={'col'}>{data.subject}</div>
+                                        <div className={'col'}>Answer</div>
+                                        <div className={'col'}>{data.answer}</div>
+                                        <div className={'col'}>Answered At</div>
+                                        <div className={'col'}>{new Date(data.answered_at).toLocaleDateString()}</div>
+                                        <div className={'col'}>Anything id</div>
+                                        <div className={'col'}>{data.anything_id}</div>
+                                        <div className={'col'}>Content</div>
+                                        <div className={'col'}>{data.content}</div>
+                                    </div>
+                                )
+                    }
+                </Modal>
+                <div className="item-header">
+                <div className="status">
+                        {
+                            (seen === 1)
+                                ? <Icon icon="quill:checkmark-double"/>
+                                : <Icon icon="uil:clock"/>
+                        }
+                    </div>
+                </div>
+                <div className="item-body">
+                    <div className="subject row">
+                        <Icon icon="fluent:document-header-24-filled"/>
+                        <span> {subject}</span>
+                    </div>
+                    <div className="last-update row">
+                        <Icon icon="material-symbols:date-range"/>
+                        <span>{new Date(created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <div className="item-buttons">
+                    <button onClick={() => setModalOpened(prevState => !prevState)}>View</button>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="ticket-history">
             {
                 (loading)
-                    ? <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                    ? <Icon icon={'eos-icons:loading'} width={40} href={40}/>
                     : (error)
                         ? <h1>There was an error.</h1>
                         : (tickets.entities.tickets.length === 0)
                             ? <h1>There is no ticket</h1>
                             : (
                                 tickets.entities.tickets.map((item, index) => (
-                                    <div className={`item ${(item.seen === 1) ? 'seen' : 'pending'}`} key={index}>
-                                        <div className="item-header">
-                                            <div className="status">
-                                                {
-                                                    (item.seen === 1)
-                                                        ? <Icon icon="quill:checkmark-double" />
-                                                        : <Icon icon="uil:clock" />
-                                                }
-                                            </div>
-                                        </div>
-                                        <div className="item-body">
-                                            <div className="subject row">
-                                                <Icon icon="fluent:document-header-24-filled"/>
-                                                <span> {item.subject}</span>
-                                            </div>
-                                            <div className="last-update row">
-                                                <Icon icon="material-symbols:date-range"/>
-                                                <span>{new Date(item.created_at).toLocaleDateString()}</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <TicketItem
+                                        key={index}
+                                        id={item.id}
+                                        created_at={item.created_at}
+                                        subject={item.subject}
+                                        seen={item.seen}
+                                    />
                                 ))
                             )
             }
