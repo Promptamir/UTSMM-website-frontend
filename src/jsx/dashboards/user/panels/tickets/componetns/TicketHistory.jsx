@@ -74,6 +74,14 @@ const TicketHistory = () => {
                                     <div className={'table_2'}>
                                         <div className={'col'}>Subject</div>
                                         <div className={'col'}>{data.subject}</div>
+                                        <div className={'col'}>Seen</div>
+                                        <div className={'col'}>
+                                            {
+                                                (seen === 1)
+                                                    ? <Icon icon="quill:checkmark-double"/>
+                                                    : <Icon icon="uil:clock"/>
+                                            }
+                                        </div>
                                         <div className={'col'}>Answer</div>
                                         <div className={'col'}>{data.answer}</div>
                                         <div className={'col'}>Answered At</div>
