@@ -14,6 +14,7 @@ import PaymentMethods from "./components/payment-methods/PaymentMethods";
 import CommentPage from './components/comment/commentPage';
 import Settings from "./components/settings/Settings";
 import Categories from "./components/categories/Categories";
+import HotCategories from "./components/hot-categories/HotCategories";
 
 const AdminDashboard = () => {
 
@@ -88,6 +89,10 @@ const AdminDashboard = () => {
             title: "Categories",
             svg: <Icon icon="bx:category-alt" />,
             component: <Categories />
+        },{
+            title: "Hot Categories",
+            svg: <Icon icon="bx:category-alt" />,
+            component: <HotCategories />
         },
     ]
 
