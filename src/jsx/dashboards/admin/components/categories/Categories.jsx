@@ -15,6 +15,7 @@ import {useFetch} from "../../../../../lib/useFetch";
 import NewCatModal from "./component/NewCatModal";
 import EditCatModal from "./component/EditCatModal";
 import Swal from "sweetalert2";
+import InfoCatModal from "./component/infoCatModal";
 
 export default function Categories() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +28,7 @@ export default function Categories() {
         "Platform",
         "",
         "",
-        "",
+        "info",
         "Controls",
     ]
 
@@ -44,6 +45,14 @@ export default function Categories() {
             type: ADMIN_PANEL_CREATE_BLOG,
             duration: 2000,
             component: <EditCatModal id={id} setCustomLoading={setCustomLoading} refresh={refresh} />
+        }))
+    }
+
+    const handleInfoNewCatClick = (id) => {
+        dispatcher(showPopUp({
+            type: ADMIN_PANEL_CREATE_BLOG,
+            duration: 2000,
+            component: <InfoCatModal id={id} />
         }))
     }
 
@@ -144,7 +153,24 @@ export default function Categories() {
                                         </Property>
                                         <Property />
                                         <Property />
-                                        <Property />
+                                        <Property>
+                                            <div className="property-header">
+                                                {headerList[5]}
+                                            </div>
+                                            <div className="property-body">
+                                                <button onClick={() => handleInfoNewCatClick(category.id)} style={{
+                                                    display: 'block',
+                                                    borderRadius: '45rem',
+                                                    backgroundColor: 'blueviolet',
+                                                    color: 'white',
+                                                    paddingBlock: '10px',
+                                                    paddingInline: '15px'
+                                                }}>
+                                                    <Icon icon="material-symbols:info"/>
+                                                    Info
+                                                </button>
+                                            </div>
+                                        </Property>
                                         <Property>
                                             <div className="property-header">
                                                 {headerList[6]}
