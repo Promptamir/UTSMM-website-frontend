@@ -13,10 +13,11 @@ import Platforms from "./components/platforms/Platforms";
 import PaymentMethods from "./components/payment-methods/PaymentMethods";
 import CommentPage from './components/comment/commentPage';
 import Settings from "./components/settings/Settings";
+import Categories from "./components/categories/Categories";
 
 const AdminDashboard = () => {
 
- 
+
     const menu = [
         {
             title: "Dashboard",
@@ -82,7 +83,12 @@ const AdminDashboard = () => {
             title: "Comment",
             svg: <Icon icon="ant-design:message-filled" />,
             component: <CommentPage />
-        }
+        },
+        {
+            title: "Categories",
+            svg: <Icon icon="bx:category-alt" />,
+            component: <Categories />
+        },
     ]
 
     const [selectedMenu, setSelectedMenu] = useState(menu[0])
