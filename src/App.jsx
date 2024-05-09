@@ -1,6 +1,7 @@
 import {lazy, useState} from "react"
 import {Suspense} from "react"
 import CommentPage from './jsx/pages/comment/commentPage';
+import QuestionPage from './jsx/pages/question/Question';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 
 // Application styles
@@ -205,6 +206,12 @@ function App() {
                             path="/comment"
                             element={<Suspense fallback={<PagesLoaders/>}>
                                 <CommentPage />
+                            </Suspense>}
+                        />
+                        <Route
+                            path="/question"
+                            element={<Suspense fallback={<PagesLoaders/>}>
+                                <QuestionPage />
                             </Suspense>}
                         />
                         <Route
