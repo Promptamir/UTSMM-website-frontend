@@ -15,6 +15,7 @@ import CommentPage from './components/comment/commentPage';
 import Settings from "./components/settings/Settings";
 import Categories from "./components/categories/Categories";
 import HotCategories from "./components/hot-categories/HotCategories";
+import Question from "./components/question/Question";
 
 const AdminDashboard = () => {
 
@@ -94,6 +95,11 @@ const AdminDashboard = () => {
             svg: <Icon icon="bx:category-alt" />,
             component: <HotCategories />
         },
+        {
+            title: "Questions",
+            svg: <Icon icon="bi:question" />,
+            component: <Question />
+        }
     ]
 
     const [selectedMenu, setSelectedMenu] = useState(menu[0])
