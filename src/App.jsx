@@ -71,6 +71,7 @@ import Header from "./jsx/primaries/header/Header";
 import Footer from "./jsx/primaries/footer/Footer";
 import PagesLoaders from "./jsx/loaders/PagesLoaders"
 import PasswordRecoveryPage from "./jsx/pages/password-recovery-page/passwordRecoveryPage";
+import ExternalQuestionPage from "./jsx/pages/external-question-page/externalQuestionPage";
 
 // Pages
 // import other dependencies...
@@ -212,6 +213,12 @@ function App() {
                             path="/question"
                             element={<Suspense fallback={<PagesLoaders/>}>
                                 <QuestionPage />
+                            </Suspense>}
+                        />
+                        <Route
+                            path="/external-question"
+                            element={<Suspense fallback={<PagesLoaders/>}>
+                                <ExternalQuestionPage />
                             </Suspense>}
                         />
                         <Route

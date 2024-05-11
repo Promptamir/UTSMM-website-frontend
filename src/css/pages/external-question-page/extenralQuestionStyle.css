@@ -1,0 +1,12 @@
+.external-question-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+}
+.external-question-page .centred-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*# sourceMappingURL=extenralQuestionStyle.css.map */

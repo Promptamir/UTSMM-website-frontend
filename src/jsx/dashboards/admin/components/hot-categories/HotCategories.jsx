@@ -227,8 +227,8 @@ export default function HotCategories() {
                                                 total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
+                                                    setUrl(`https://utsmm.liara.run/api/admin/hot-categories?page=${currentPage}`)
                                                     refresh();
-                                                    alert(`${pageNumber}-${currentPage}`)
                                                 }}
                                             />
                                         </TablePaginations>

@@ -302,6 +302,7 @@ export default function CommentPage() {
                                                 total={Math.round(data.entities.count / 10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
+                                                    setUrl(`https://utsmm.liara.run/api/admin/comments?page=${pageNumber}`)
                                                     refresh();
                                                 }}
                                             />

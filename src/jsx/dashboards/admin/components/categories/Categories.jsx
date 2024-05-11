@@ -226,9 +226,8 @@ export default function Categories() {
                                                 current={currentPage}
                                                 total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
+                                                    setUrl(`https://utsmm.liara.run/api/admin/categories?page=${pageNumber}`);
                                                     refresh();
-                                                    alert(`${pageNumber}-${currentPage}`)
                                                 }}
                                             />
                                         </TablePaginations>

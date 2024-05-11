@@ -16,10 +16,13 @@ export function useFetch(defaultUrl, deafultValue) {
     const [refresh, setRefresh] = useState(false)
     const navigator = useNavigate()
     const token = JSON.parse(sessionStorage.getItem("token"))
+    const [val ,setVal] = useState(0);
 
     function refreshData() {
         setRefresh(!refresh)
     }
+
+    function refetch() {setVal(prevState => prevState + 1)}
 
     useEffect(() => {
         (
@@ -47,9 +50,9 @@ export function useFetch(defaultUrl, deafultValue) {
                 }
             }
         )()
-    }, [url, refresh])
+    }, [url, refresh, val])
 
-    return [data, error, loading, setUrl, refreshData]
+    return [data, error, loading, setUrl, refreshData, refetch]
 
 }
 

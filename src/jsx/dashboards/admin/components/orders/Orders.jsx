@@ -16,53 +16,27 @@ import ResponsivePagination from 'react-responsive-pagination';
 
 
 export default function Orders() {
-
-    const [pageNumber, setPageNumber] = useState(1)
-    const [data, error, loading, setUrl] = useFetch(
-        API.ADMIN_DASHBOARD.ORDERS.GET + pageNumber,
-    )
-
-
     const headersList = [
-        "Order ID",
-        "User Id",
+        "Id",
+        "Link",
         "Service",
         "Charge",
-        "Date",
-        "Quantity",
-        "Link",
+        "Created at",
         "Status",
+        "Quantity"
     ]
 
     const orderListButtons = [
-        "All Orders",
-        "success",
-        "on progress",
-        "on error",
-        "on pause"
+        "All",
+        "Success",
+        "Processing",
+        "Errored",
+        "Paused"
     ]
 
     const [ordersStatus, setOrdersStatus] = useState(orderListButtons[0])
-
-    const [sortedList, setSortedList] = useState([])
-
-    useEffect(() => {
-
-        if (ordersStatus === orderListButtons[0]) {
-            setSortedList(data.orders)
-            return
-        }
-
-        const temp = data?.orders?.filter(item => {
-            return item.status === ordersStatus
-        })
-
-        setSortedList(temp)
-    }, [ordersStatus, data])
-
-
-
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`https://utsmm.liara.run/api/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
 
     return (
         <div className="admin-panel-orders">
@@ -73,9 +47,12 @@ export default function Orders() {
                         orderListButtons.map((record, index) => {
                             return <button
                                 key={index}
-                                className={`status-${record ===
-                                    ordersStatus}`}
-                                onClick={() => setOrdersStatus(record)}
+                                className={`status-${record === ordersStatus}`}
+                                onClick={() => {
+                                    setOrdersStatus(record);
+                                    setUrl(`https://utsmm.liara.run/api/orders?page=${currentPage}&statuses=${(record === 'All') ? '' : record.toLowerCase()}`);
+                                    refreshData();
+                                }}
                             >
                                 {record}
                             </button>
@@ -84,104 +61,102 @@ export default function Orders() {
                 </div>
             </div>
             <Table columnsStyle={"6rem 6rem 1.8fr 6rem 1fr 6rem 5rem 8rem"}>
-                <TableHeader>
-                    {
-                        headersList.map((record, index) => {
-                            return <ItemHeader key={index}>
-                                {record}
-                            </ItemHeader>
-                        })
-                    }
-                </TableHeader>
                 {
-                    <TableBody>
-                        {
-                            !loading ? sortedList?.map((record) => {
-                                return <Row key={record.orderId}>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[0]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record._id}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[1]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record.userID}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[2]}
-                                        </div>
-                                        <div className="property-body ">
-                                            {record.service.name}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[3]}
-                                        </div>
-                                        <div className="property-body">
-                                            ${record.charge}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[4]}
-                                        </div>
-                                        <div className="property-body">
-                                            {new Date(record.createdAt).toUTCString()}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[5]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record.quantity}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[6]}
-                                        </div>
-                                        <div className="property-body">
-                                            {record.link}
-                                        </div>
-                                    </Property>
-                                    <Property>
-                                        <div className="property-header">
-                                            {headersList[7]}
-                                        </div>
-                                        <div className="property-body status-property">
-                                            <span className={`status
-                        ${record.status.replace(" ", "")}`}>
-                                                {record.status}
-                                            </span>
-                                        </div>
-                                    </Property>
+                    (loading)
+                        ? <h1>Loading</h1>
+                        : (error)
+                            ? <h1>Error</h1>
+                            : (
+                                <>
+                                    <TableHeader>
+                                        {
+                                            headersList.map((record, index) => {
+                                                return <ItemHeader key={index}>
+                                                    {record}
+                                                </ItemHeader>
+                                            })
+                                        }
+                                    </TableHeader>
+                                    <TableBody>
+                                        {
+                                            !loading ? data.entities.orders?.map((record, index) => {
+                                                return <Row key={record.orderId} key={index}>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[0]}
+                                                        </div>
+                                                        <div className="property-body">
+                                                            {record.id}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[1]}
+                                                        </div>
+                                                        <div className="property-body">
+                                                            {record.link}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[2]}
+                                                        </div>
+                                                        <div className="property-body ">
+                                                            {record.service.title}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[3]}
+                                                        </div>
+                                                        <div className="property-body">
+                                                            ${record.charge}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[4]}
+                                                        </div>
+                                                        <div className="property-body">
+                                                            {new Date(record.created_at).toLocaleDateString()}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[5]}
+                                                        </div>
+                                                        <div className="property-body status-property">
+                                                            {record.status}
+                                                        </div>
+                                                    </Property>
+                                                    <Property>
+                                                        <div className="property-header">
+                                                            {headersList[6]}
+                                                        </div>
+                                                        <div className="property-body">
+                                                            <p>${record.quantity}</p>
+                                                        </div>
+                                                    </Property>
 
-                                </Row>
-                            }) : <h1>Loading...</h1>
-                        }
+                                                </Row>
+                                            }) : <h1>Loading...</h1>
+                                        }
 
-                    </TableBody>
+                                    </TableBody>
+                                    <TablePaginations>
+                                        <ResponsivePagination
+                                            current={currentPage}
+                                            total={Math.round(data.entities.count/10)}
+                                            onPageChange={(pageNumber) => {
+                                                setCurrentPage(pageNumber);
+                                                setUrl(`https://utsmm.liara.run/api/orders?page=${pageNumber}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`);
+                                                refreshData();
+                                            }}
+                                        />
+                                    </TablePaginations>
+                                </>
+                            )
                 }
-
-                <TablePaginations>
-                    <ResponsivePagination
-                        current={data?.currentPage}
-                        total={data?.maxPageNumber}
-                        onPageChange={(pageNumber) => {
-                            setUrl(API.ADMIN_DASHBOARD.ORDERS.GET + pageNumber)
-                        }}
-                    />
-                </TablePaginations>
             </Table>
         </div>
     )

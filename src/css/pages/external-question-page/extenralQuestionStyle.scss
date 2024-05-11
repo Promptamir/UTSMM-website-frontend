@@ -1,0 +1,16 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.external-question-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+
+  .centred-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
