@@ -27,17 +27,6 @@ export default function Faqs() {
     const [data, error, loading, createFaq] = usePost(API.FAQS.POST)
 
 
-    const handleFAQMessage = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target)
-        formData.forEach((key, value) => {
-            console.log(key, " -> ", value)
-        })
-        createFaq(formData)
-
-    }
-
-
     const faqsLeftList = [
         {
             "question": "What is social media marketing (SMM)?",
@@ -111,7 +100,7 @@ export default function Faqs() {
                         animationData={faqs}
                         play
                         loop />
-                    <Link to={'#'}>
+                    <Link to={'/faq'}>
                         <span>
                             Find More Q&A
                         </span>
@@ -144,77 +133,13 @@ export default function Faqs() {
                         <p> We've got answers! Please take a moment to browse through our frequently asked questions. If you can't find what you're looking for, feel free to submit your question using the form below.</p>
                     </div>
 
-                    <form
-                        action='#'
-                        onSubmit={handleFAQMessage}
-                    >
-
-                        <FiledSet
-                            legend={{
-                                title: "FullName",
-                                svg: <Icon icon="fluent:rename-16-filled" />
-                            }}
-                            inputName={"fullName"}
-                            isRequired={true}
-                        />
-
-                        <FiledSet
-                            legend={{
-                                title: "Email",
-                                svg: <Icon icon="mdi:email" />
-                            }}
-                            inputName={"email"}
-                            inputType={"email"}
-                            isRequired={true}
-                        />
-
-                        <FiledSet
-                            legend={{
-                                title: "Phone Number",
-                                svg: <Icon icon="solar:phone-bold" />
-                            }}
-                            inputName={"phoneNumber"}
-                            isRequired={true}
-                        />
-
-                        <FiledSet
-                            fieldClassName={"message-box"}
-                            legend={{
-                                title: "Message",
-                                svg: <Icon icon="ic:baseline-message" />
-                            }}
-                            contentComponent={
-                                <textarea
-                                    name={"message"}
-                                    rows={10}
-                                >
-
-                                </textarea>
-                            }
-                            inputName={"Message"}
-                            isRequired={true}
-                        />
-
-                        {
-                            error ? <div className="error-box fade-animation">
-                                <Icon className="icon" icon="bxs:error" />
-                                <div className="errors">
-
-                                    {error.map(err => {
-                                        return <span>
-                                            {err}
-                                        </span>
-                                    })}
-                                </div>
-
-                            </div> : ""
-                        }
-
-                        <button>
-                            <span>{loading ? "Submitting" : "Submit"}</span>
-                            <Icon icon="formkit:submit" />
-                        </button>
-
+                    <form action='#'>
+                        <Link to={'/question'}>
+                            <button>
+                                <span>Submit a question</span>
+                                <Icon icon="formkit:submit"/>
+                            </button>
+                        </Link>
                     </form>
 
                 </div>

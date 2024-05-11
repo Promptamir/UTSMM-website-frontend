@@ -47,12 +47,6 @@ export default function Reviews() {
 
     const [rightSwiper, setRightSwiper] = useState(null)
 
-    
-
-  
-
-
-
     return (
         <section className="customers-reviews">
             <img src={cBackground} className="background" />
