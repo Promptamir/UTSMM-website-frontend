@@ -12,13 +12,8 @@ import QuickView from "./components/QuickView";
 
 
 export default function Dashboard() {
-
-    const [newOrders, newOrdersError, newOrdersLoading] = useFetch(
-        API.ADMIN_DASHBOARD.NEW_ORDERS.GET
-    )
-
-
-
+    // Getting data from database
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/admin-index-page-data');
 
     return (
         <div className="admin-dashboard-panel">
@@ -30,16 +25,26 @@ export default function Dashboard() {
                     </small>
                 </div>
                 <div className="right">
-                    <div className="new-orders notif">
-                        <span>{newOrders}</span>
-                        <small>New orders</small>
-                    </div>
-                    <div className="new-messages notif">
-                        <span>99</span>
-                        <small>New Messages</small>
-                    </div>
+                    {
+                        (loading)
+                            ? <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                            : (error)
+                                ? <h1>Error</h1>
+                                : (
+                                    <>
+                                        <div className="new-orders notif">
+                                            <span>{data.entities.count_of_not_canceled_orders_in_last_week[0].total_count}</span>
+                                            <small>Orders</small>
+                                        </div>
+                                        <div className="new-messages notif">
+                                            <span>{data.entities.count_of_new_and_verified_users_in_last_week[0].total_count}</span>
+                                            <small>Users</small>
+                                        </div>
+                                    </>
+                                )
+                    }
                     <div className="date">
-                        <Icon icon="clarity:date-solid" />
+                        <Icon icon="clarity:date-solid"/>
                         <span>
                             {(new Date()).toDateString()}
                         </span>
@@ -47,23 +52,18 @@ export default function Dashboard() {
 
                 </div>
             </div>
-
-            <QuickView />
-
-            <div className="row-one row">
-                <OrderStatusChart />
-                <ReviewByCountry />
-            </div>
-
-            <div className="row-two row">
-                <RecentCustomers />
-                <PopularCharts />
-                <TodoList />
-            </div>
-            <div className="row-three row">
-                <MessageAll />
-                <EconomySummary />
-            </div>
+            {
+                (loading)
+                    ? <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                    : (error)
+                        ? <h1>Error</h1>
+                        : <QuickView
+                            orders={data.entities.count_of_not_canceled_orders_in_last_week[0].total_count}
+                            countOfOrders={data.entities.count_of_success_payments_in_last_week[0].total_count}
+                            income={data.entities.sum_of_success_payments_in_last_week[0].total_sum}
+                            customers={data.entities.count_of_new_and_verified_users_in_last_week[0].total_count}
+                        />
+            }
         </div>
     )
 }
