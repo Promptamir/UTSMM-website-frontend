@@ -228,7 +228,6 @@ export default function Question() {
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
                                                     refresh();
-                                                    alert(`${pageNumber}-${currentPage}`)
                                                 }}
                                             />
                                         </TablePaginations>
