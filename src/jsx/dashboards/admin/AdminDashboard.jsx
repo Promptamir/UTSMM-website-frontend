@@ -16,6 +16,7 @@ import Settings from "./components/settings/Settings";
 import Categories from "./components/categories/Categories";
 import HotCategories from "./components/hot-categories/HotCategories";
 import Question from "./components/question/Question";
+import ExternalReviews from "./components/external-reviews/externalReviewsPage";
 
 const AdminDashboard = () => {
 
@@ -99,6 +100,11 @@ const AdminDashboard = () => {
             title: "Questions",
             svg: <Icon icon="bi:question" />,
             component: <Question />
+        },
+        {
+            title: 'External reviews',
+            svg: <Icon icon="mage:preview-circle" />,
+            component: <ExternalReviews />
         }
     ]
 

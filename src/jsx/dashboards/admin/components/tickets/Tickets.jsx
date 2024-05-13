@@ -107,7 +107,7 @@ export default function Tickets() {
                         }
                     })
                     .catch(() => {
-                        setCustomLoading(true);
+                        setCustomLoading(false);
                         Swal.fire({
                            icon: 'error',
                            text: 'There was an error while fetching the data'
