@@ -13,4 +13,56 @@ $ColorPrimary: #4976f3;
     align-items: center;
     justify-content: center;
   }
+
+  .custom-table {
+    background: $ColorPrimary;
+    border: 1px solid $ColorPrimary;
+    border-radius: 20px;
+    overflow: auto;
+
+    .header {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      background-color: $ColorPrimary;
+
+      .item {
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        padding: 15px;
+      }
+    }
+
+    .body .row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      background-color: white;
+
+      .item {
+        font-size: 16px;
+        font-weight: normal;
+        color: black;
+        padding: 15px;
+
+        .id {
+          color: white;
+          background-color: orange;
+          width: fit-content;
+          padding-block: 10px;
+          padding-inline: 20px;
+          border-radius: 50rem;
+        }
+
+        .img {
+          width: 50px;
+          height: 50px;
+          aspect-ratio: 1/1;
+          object-fit: cover;
+          border-radius: 100%;
+        }
+      }
+    }
+  }
 }

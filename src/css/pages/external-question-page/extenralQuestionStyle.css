@@ -8,5 +8,50 @@
   align-items: center;
   justify-content: center;
 }
+.external-question-page .custom-table {
+  background: #4976f3;
+  border: 1px solid #4976f3;
+  border-radius: 20px;
+  overflow: auto;
+}
+.external-question-page .custom-table .header {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  background-color: #4976f3;
+}
+.external-question-page .custom-table .header .item {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  padding: 15px;
+}
+.external-question-page .custom-table .body .row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  background-color: white;
+}
+.external-question-page .custom-table .body .row .item {
+  font-size: 16px;
+  font-weight: normal;
+  color: black;
+  padding: 15px;
+}
+.external-question-page .custom-table .body .row .item .id {
+  color: white;
+  background-color: orange;
+  width: fit-content;
+  padding-block: 10px;
+  padding-inline: 20px;
+  border-radius: 50rem;
+}
+.external-question-page .custom-table .body .row .item .img {
+  width: 50px;
+  height: 50px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 100%;
+}
 
 /*# sourceMappingURL=extenralQuestionStyle.css.map */
