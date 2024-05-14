@@ -6,27 +6,50 @@ import Row from "../../../../cutsome-components/table/components/Row"
 import TableBody from "../../../../cutsome-components/table/components/TableBody"
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader"
 import Property from "../../../../cutsome-components/table/components/Property"
+import {useState} from "react";
+import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
+import ResponsivePagination from "react-responsive-pagination";
+import {Icon} from "@iconify/react";
+import {showPopUp} from "../../../../../features/popUpReducer";
+import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
+import {useDispatch} from "react-redux";
+import InfoModal from "./components/infoModal";
+import EditModal from "./components/editModal";
 
 export default function Services() {
 
+  const [customLoading, setCustomLoading] = useState(false);
+  const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/services?page=1`)
 
-  const [services, error, loading, setUrl, refresh] = useFetch(
-    API.ADMIN_DASHBOARD.SERVICES.GET
-  )
-
-
+  const dispatcher = useDispatch()
 
   const headersList = [
-    "Service ID",
-    "Name",
-    "Category",
-    "Dripfeed",
+    "ID",
+    "Title",
+    "Rate",
     "Min",
     "Max",
-    "Rate",
-    "Refill",
+    "Status",
+    "Category",
+    "Actions",
   ]
 
+
+  const handleInfoButtonClick = (id) => {
+    dispatcher(showPopUp({
+      type: ADMIN_PANEL_CREATE_BLOG,
+      duration: 2000,
+      component: <InfoModal id={id} />
+    }))
+  }
+
+  const handleEditClick = (id) => {
+    dispatcher(showPopUp({
+      type: ADMIN_PANEL_CREATE_BLOG,
+      duration: 2000,
+      component: <EditModal setCustomLoading={setCustomLoading} refresh={refresh} id={id} />
+    }))
+  }
 
 
   return (
@@ -44,82 +67,125 @@ export default function Services() {
         {
           <TableBody>
             {
-              !loading ? services?.map((record) => {
-                return <Row key={record.service}>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[0]}
-                    </div>
-                    <div className="property-body">
-                      {record.service}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[1]}
-                    </div>
-                    <div className="property-body">
-                      {record.name}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[2]}
-                    </div>
-                    <div className="property-body ">
-                      {record.category}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[3]}
-                    </div>
-                    <div className="property-body">
-                      {`${record.dripfeed}`}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[4]}
-                    </div>
-                    <div className="property-body">
-                      {record.min}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[5]}
-                    </div>
-                    <div className="property-body">
-                      {record.max}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[6]}
-                    </div>
-                    <div className="property-body">
-                      ${record.rate}
-                    </div>
-                  </Property>
-                  <Property>
-                    <div className="property-header">
-                      {headersList[7]}
-                    </div>
-                    <div className="property-body">
-                    {`${record.refill}`}
-
-                    </div>
-                  </Property>
-
-                </Row>
-              }) : <h1>Loading...</h1>
+              (loading)
+                ? <h1>Loading</h1>
+                : (error)
+                    ? <h1>Error</h1>
+                    : data.entities.services.map((record) => {
+                        return <Row key={record.id}>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[0]}
+                            </div>
+                            <div className="property-body">
+                              {record.id}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[1]}
+                            </div>
+                            <div className="property-body">
+                              {record.title}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[2]}
+                            </div>
+                            <div className="property-body ">
+                              ${record.rate}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[3]}
+                            </div>
+                            <div className="property-body">
+                              ${record.min}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[4]}
+                            </div>
+                            <div className="property-body">
+                              ${record.max}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[5]}
+                            </div>
+                            <div className="property-body">
+                              {record.status}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[6]}
+                            </div>
+                            <div className="property-body">
+                              ${record.category.title}
+                            </div>
+                          </Property>
+                          <Property>
+                            <div className="property-header">
+                              {headersList[7]}
+                            </div>
+                            <div className="property-body">
+                              <button onClick={() => handleInfoButtonClick(record.id)} style={{
+                                display: 'block',
+                                borderRadius: '45rem',
+                                backgroundColor: 'blueviolet',
+                                color: 'white',
+                                paddingBlock: '10px',
+                                paddingInline: '15px',
+                                marginBottom: '10px'
+                              }}>
+                                <Icon icon="material-symbols:info"/>
+                                Info
+                              </button>
+                              <button
+                                  onClick={() => handleEditClick(record.id)}
+                                  style={{
+                                    display: 'block',
+                                    borderRadius: '45rem',
+                                    backgroundColor: 'orange',
+                                    color: 'white',
+                                    paddingBlock: '10px',
+                                    paddingInline: '15px',
+                                  }}
+                              >
+                                <Icon icon="bxs:edit"/>
+                                Edit
+                              </button>
+                            </div>
+                          </Property>
+                        </Row>
+                      })
             }
-
           </TableBody>
         }
-
-
+        {
+          (loading)
+              ? <h1>Loading...</h1>
+              : (error)
+                  ? <h1>Error</h1>
+                  : (data.entities.count > 15)
+                      ? (
+                          <TablePaginations>
+                            <ResponsivePagination
+                                current={1}
+                                total={Math.round(data.entities.count / 10)}
+                                onPageChange={(pageNumber) => {
+                                  setUrl(`https://utsmm.liara.run/api/admin/services?page=${pageNumber}`);
+                                  refresh();
+                                }}
+                            />
+                          </TablePaginations>
+                      ) : false
+        }
       </Table>
     </div>
   )

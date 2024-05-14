@@ -188,7 +188,7 @@ export default function ExternalReviews() {
                                             total={Math.round(data.entities.count / 10)}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
-                                                setUrl(`https://utsmm.liara.run/api/admin/tickets?page=${pageNumber}`);
+                                                setUrl(`https://utsmm.liara.run/api/admin/external-reviews?page=${pageNumber}`);
                                                 refresh();
                                             }}
                                         />
