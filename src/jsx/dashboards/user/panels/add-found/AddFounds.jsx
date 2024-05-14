@@ -29,13 +29,8 @@ import { showError } from '../../../../../lib/alertHandler'
 
 const AddFounds = () => {
 
-    const [paymentMethods, methodError, methodLoading] = useFetch(
-        API.DASHBOARD.USER_PAYMENT_METHODS.GET
-    )
-    const [checkout, checkoutError, checkoutLoading, createCheckout] = usePost(API.DASHBOARD.USER_PAYMENT_CHECKOUT.POST)
-
+    const [paymentMethods, methodError, methodLoading] = useFetch('https://utsmm.liara.run/api/payments')
     const [selectedMethod, setSelectedMethod] = useState()
-
     const [amountOfMoney, setAmountOfMoney] = useState({
         amount: 0,
         fee: 0,
@@ -58,7 +53,7 @@ const AddFounds = () => {
             type: SELECT_PAYMENT_METHOD_POP_UP,
             duration: 2000,
             component: <SelectPaymentPopup
-                methods={paymentMethods}
+                methods={paymentMethods.entities.payments}
                 resultFunction={resultFunction}
                 currentSelected={selectedMethod} />
         }))
@@ -327,19 +322,24 @@ const AddFounds = () => {
                 </div>
             </div>
             <div className="avaialble-methods-intro">
-                {paymentMethods.map((item, index) => {
-                    return <div className="item" key={index}>
-                        <div className="item-header">
-                            <img src={SERVER.BASE_URL + item.image} />
-                            <span>{item.name}</span>
-                        </div>
-                        <div className="item-body">
-                            <p>
-                                {item.description}
-                            </p>
-                        </div>
-                    </div>
-                })}
+                {
+                    (methodLoading)
+                        ? <h1>Loading</h1>
+                        : (methodError)
+                            ? <h1>Error</h1>
+                            : paymentMethods.entities.payments.map((item, index) => {
+                                return <div className="item" key={index}>
+                                    <div className="item-header">
+                                        <span>{item.payment_method}</span>
+                                    </div>
+                                    <div className="item-body">
+                                        <p>
+                                            {item.payment_amount}
+                                        </p>
+                                    </div>
+                                </div>
+                            })
+                }
             </div>
         </section>
     )

@@ -51,11 +51,9 @@ const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
                             key={index}
                             onClick={() => handleItemClick(item)}
                         >
-                            <img src={SERVER.BASE_URL + item.image} />
-
                             <span>{index} - </span>
                             <p>
-                                {item.name}
+                                {item.payment_method}
                             </p>
                         </div>
                     })
