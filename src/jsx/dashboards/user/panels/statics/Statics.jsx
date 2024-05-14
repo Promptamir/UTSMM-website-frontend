@@ -83,6 +83,7 @@ ChartJS.defaults.plugins.legend.align = "start"
 
 const Statics = () => {
     const [data, error, loading] = useFetch('https://utsmm.liara.run/api/user-index-page-data');
+    const [savedServicesData, savedServicesError, savedServicesLoading] = useFetch('https://utsmm.liara.run/api/user/favorite-services');
 
     return (
         <section className="statics">
@@ -107,7 +108,16 @@ const Statics = () => {
 
 
 
-            <SavedServices />
+            {
+                (savedServicesLoading)
+                    ? (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: "center", width: '100%', padding: '20px'}}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                        </div>
+                    ) : (savedServicesError)
+                        ? <h1>There was an error while fetching the data</h1>
+                        : <SavedServices data={savedServicesData.entities.services} />
+            }
 
 
 

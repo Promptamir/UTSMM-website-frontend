@@ -13,13 +13,7 @@ import { API } from "../../../../../../../lib/envAccess"
 
 
 
-export default function SavedServices() {
-
-    const [savedServices, error, loading] =
-        useFetch(API.DASHBOARD.USER_SAVED_SERVICES.GET)
-
-
-
+export default function SavedServices({data}) {
     return (
 
         <div className="services-offer">
@@ -29,7 +23,7 @@ export default function SavedServices() {
             <div className="body">
 
                 {
-                    savedServices?.map((item, index) => {
+                    data.map((item, index) => {
                         return <div
                             key={index}
                             className="item">
@@ -38,7 +32,7 @@ export default function SavedServices() {
                                     maxLine={2}
                                     content={
                                         <h1>
-                                            {item.name}
+                                            {item.title}
                                         </h1>
                                     } />
                             </div>
@@ -52,7 +46,7 @@ export default function SavedServices() {
                                             </span>
                                         </div>
                                         <div className="value">
-                                            {item?.service}
+                                            {item.id}
                                         </div>
                                     </li>
                                     <li>
@@ -63,7 +57,7 @@ export default function SavedServices() {
                                             </span>
                                         </div>
                                         <div className="value">
-                                            {item?.min}
+                                            {item.min}
                                         </div>
                                     </li>
                                     <li>
@@ -74,7 +68,7 @@ export default function SavedServices() {
                                             </span>
                                         </div>
                                         <div className="value">
-                                            {item?.max}
+                                            {item.max}
                                         </div>
                                     </li>
                                     <li>
@@ -85,7 +79,7 @@ export default function SavedServices() {
                                             </span>
                                         </div>
                                         <div className="value">
-                                            ${item?.rate}
+                                            ${item.rate}
                                         </div>
                                     </li>
                                     <li>
