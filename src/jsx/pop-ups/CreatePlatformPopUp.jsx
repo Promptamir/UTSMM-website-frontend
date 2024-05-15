@@ -9,17 +9,21 @@ import { post, put } from "../../lib/useFetch"
 import { API } from "../../lib/envAccess"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import { logFormData } from "../../lib/helperTools"
+import Swal from "sweetalert2";
 
 
 
-export default function CreatePlatformPopUp({ refresh }) {
+export default function CreatePlatformPopUp({refresh, customLoading }) {
 
 
-    const [image, setImage] = useState(require("../../images/place-holder/1.png"))
 
 
+    const [image, setImage] = useState(require("../../images/place-holder/1.png"));
+    const [imageFile, setImageFile] = useState();
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [order, setOrder] = useState('');
     const dispatcher = useDispatch()
-
     const handleCloseButtonClick = () => {
         dispatcher(closePopUp())
     }
@@ -34,103 +38,134 @@ export default function CreatePlatformPopUp({ refresh }) {
             setImage(result)
         }
 
-        fileReader.readAsDataURL(file)
+        fileReader.readAsDataURL(file);
+        setImageFile(e.target.files[0]);
     }
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
 
+        customLoading(true);
 
-        post(API.ADMIN_DASHBOARD.PLATFORMS.POST,
-            formData)
-            .then(resp => {
-                showSuccess(resp).finally(end => {
-                    handleCloseButtonClick()
+        const myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Authorization", `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`);
+
+        const formdata = new FormData();
+        formdata.append("title", name);
+        formdata.append("description", description);
+        formdata.append("order", order);
+        formdata.append("image", imageFile, "[PROXY]");
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow"
+        };
+
+        fetch(`https://utsmm.liara.run/api/admin/platforms/`, requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result)
+                customLoading(false);
+                if (result.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: result.message
+                    });
+                    refresh();
+                }
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
                 })
+                customLoading(false);
             })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
-            })
-            .finally(end => {
-                refresh()
-            })
-
     }
-    
-
-
     return (
         <form className="admin-panel-create-platform-pop-up"
-            onSubmit={handleSubmit}>
+              onSubmit={handleSubmit}>
             <button className="close-button"
-                onClick={handleCloseButtonClick}>
-                <Icon icon="mingcute:close-fill" />
+                    onClick={handleCloseButtonClick}>
+                <Icon icon="mingcute:close-fill"/>
             </button>
 
             <div className="pop-up-header">
                 <h1>
-                    Create Platform
+                    Edit Platform
                 </h1>
             </div>
             <div className="pop-up-body">
 
 
                 <div className="image-input">
-                    <img src={image} />
+                    <img src={image}/>
                     <input
                         type="file"
                         name="image"
+                        required
                         accept="image/*"
-                        onChange={handleOnImageChange} />
+                        onChange={handleOnImageChange}/>
                 </div>
 
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
-                        <Icon icon="pajamas:title" />
+                        <Icon icon="pajamas:title"/>
                         <span>name</span>
                     </Legend>
                     <FieldBody>
-                        <input
-                            type="text"
-                            name="name"
-                            defaultValue={""} />
+                        <input onChange={(e) => setName(e.target.value)} required minLength={5} maxLength={255}
+                               type="text" name="title" placeholder={'Title'}/>
                     </FieldBody>
                 </AdminPanelFiledset>
 
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
-                        <Icon icon="material-symbols:description-outline" />
+                        <Icon icon="material-symbols:description-outline"/>
                         <span>Description</span>
                     </Legend>
                     <FieldBody>
                         <textarea
                             cols={10}
                             rows={10}
-                            type="description"
-                            name="shortDescription"
-                            defaultValue={""} />
+                            required
+                            minLength={20}
+                            onChange={(e) => setDescription(e.target.value)}
+                            maxLength={350}
+                            name="description"
+                            placeholder={'Description'}/>
                     </FieldBody>
                 </AdminPanelFiledset>
 
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
-                        <Icon icon="fluent-mdl2:color-solid" />
-                        <span>Color</span>
+                        <Icon icon="pajamas:title"/>
+                        <span>Order</span>
                     </Legend>
                     <FieldBody>
                         <input
-                            type="color"
-                            name="colorPalette"
-                            defaultValue={""} />
+                            type="number"
+                            min={1}
+                            name="order"
+                            onChange={(e) => setOrder(e.target.value)}
+                            required
+                            placeholder={'Order'}/>
                     </FieldBody>
                 </AdminPanelFiledset>
 
                 <button className="submit">
                     <span>Submit </span>
-                    <Icon icon="iconamoon:send-fill" />
+                    <Icon icon="iconamoon:send-fill"/>
                 </button>
             </div>
 

@@ -20,7 +20,7 @@ export default function InfoModal({id}) {
             </button>
             <div className="pop-up-header" style={{marginBottom: '20px'}}>
                 <h1>
-                    Create category
+                    Info
                 </h1>
             </div>
             <div className="pop-up-body">
