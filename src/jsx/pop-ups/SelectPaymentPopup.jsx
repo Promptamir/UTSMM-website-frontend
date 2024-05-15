@@ -8,7 +8,7 @@ import { SERVER } from "../../lib/envAccess"
 
 
 
-const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
+const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSelected }) => {
 
 
 
@@ -45,18 +45,22 @@ const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
             </div>
             <div className="pop-up-body">
                 {
-                    methods.map((item, index) => {
-                        return <div
-                            className={`item ${item?.name === currentSelected?.name}`}
-                            key={index}
-                            onClick={() => handleItemClick(item)}
-                        >
-                            <span>{index} - </span>
-                            <p>
-                                {item.payment_method}
-                            </p>
-                        </div>
-                    })
+                    (loading)
+                        ? <h1>Loading</h1>
+                        : (error)
+                            ? <h1>Error</h1>
+                            : methods.entities.payments.map((item, index) => {
+                                return <div
+                                    className={`item ${item?.name === currentSelected?.name}`}
+                                    key={index}
+                                    onClick={() => handleItemClick(item)}
+                                >
+                                    <span>{index} - </span>
+                                    <p>
+                                        {item.payment_method}
+                                    </p>
+                                </div>
+                            })
                 }
             </div>
         </div>

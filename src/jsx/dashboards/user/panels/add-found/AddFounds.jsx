@@ -53,7 +53,9 @@ const AddFounds = () => {
             type: SELECT_PAYMENT_METHOD_POP_UP,
             duration: 2000,
             component: <SelectPaymentPopup
-                methods={paymentMethods.entities.payments}
+                methods={paymentMethods}
+                loading={methodLoading}
+                error={methodError}
                 resultFunction={resultFunction}
                 currentSelected={selectedMethod} />
         }))
