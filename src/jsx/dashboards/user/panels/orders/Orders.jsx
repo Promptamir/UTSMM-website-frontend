@@ -7,21 +7,8 @@ import { API } from '../../../../../lib/envAccess';
 
 const Orders = () => {
 
-    const [orders, error, loading] =
-        useFetch(API.DASHBOARD.USER_ORDERS_HISTORY.GET)
-    const [platforms, errorPlatforms, loadingPlatforms]
-        = useFetch(API.PLATFORM.GET)
-
-
-    const [selectedOrder, setSelectedOrder] = useState({
-        "Service_id": "4255",
-        "Service": "Instagram Ultrafast Likes-(Max 300K)(Speed:10-20K/Per Hour)(Good Quality)(Non Drop)INSTANT",
-        "Rate per 1000": "$0.03 ",
-        "Min order": "20",
-        "Max order": "300000",
-        "Average time": "6 hours 22 minutes"
-    })
-
+    const [orders, error, loading] = useFetch('https://utsmm.liara.run/api/orders')
+    const [selectedOrder, setSelectedOrder] = useState({});
 
     function getDate(string) {
         let date = new Date(string);
@@ -47,25 +34,42 @@ const Orders = () => {
                 <div className="left">
                     <div className="orders">
                         {
-                            orders.map((item, index) => {
-                                return <RecentOrderItem
-                                    key={index}
-                                    platform={
-                                        platforms.find(platform => {
-                                            const serviceName = item.service.name.toLowerCase().trim()
-                                            const platformName = platform.name.toLowerCase().trim()
-                                            return serviceName.includes(platformName)
-                                        })
-                                    }
-                                    service={item}
-                                    stateClass={item.status}
-                                    currentSelected={selectedOrder._id === item._id}
-                                    selectFunction={(item) => setSelectedOrder(item)} />
-
-                            })
-
+                            (loading)
+                                ? <h1>Loading</h1>
+                                : (error)
+                                    ? <h1>There was an error while fetching the data</h1>
+                                    : (orders.entities.orders.length === 0)
+                                        ? <h1>There is nothing to show</h1>
+                                        : orders.entities.orders.map((item, index) => (
+                                            <div
+                                                onClick={() => setSelectedOrder(item)}
+                                                data-selected={(selectedOrder === item)}
+                                                className={'order-item'}
+                                                key={index}
+                                            >
+                                                <div className={'order-name-container'}>
+                                                    <h1 className={'order-name'}>{item.service.title}</h1>
+                                                    <h6 className={'order-id'}>#{item.id}</h6>
+                                                </div>
+                                                <div className={'order-row'}>
+                                                    <h3 className={'order-row-title'}>Quantity</h3>
+                                                    <h6 className={'order-row-value'}>{item.quantity}</h6>
+                                                </div>
+                                                <div className={'order-row'}>
+                                                    <h3 className={'order-row-title'}>Charge</h3>
+                                                    <h6 className={'order-row-value'}>{item.charge}</h6>
+                                                </div>
+                                                <div className={'order-row'}>
+                                                    <h3 className={'order-row-title'}>Date</h3>
+                                                    <h6 className={'order-row-value'}>{new Date(item.created_at).toLocaleDateString()}</h6>
+                                                </div>
+                                                <div className={'order-row'}>
+                                                    <h3 className={'order-row-title'}>Status</h3>
+                                                    <div className={'order-row-value'}>{item.status}</div>
+                                                </div>
+                                            </div>
+                                        ))
                         }
-
                     </div>
                 </div>
                 <div className="right">
@@ -73,11 +77,11 @@ const Orders = () => {
                         <div className="header">
                             <h1>
                                 <span>
-                                    #{selectedOrder?.service?.service}
+                                    #{selectedOrder?.service?.id}
                                 </span>
                             </h1>
                             <p>
-                                {selectedOrder?.service?.name}
+                                {selectedOrder?.service?.title}
                             </p>
                         </div>
                         <div className="body">
@@ -90,7 +94,7 @@ const Orders = () => {
                                 </div>
                                 <div className="property-right">
                                     <span>
-                                        {getDate(selectedOrder?.createdAt)}
+                                        {new Date(selectedOrder.created_at).toLocaleDateString()}
                                     </span>
                                 </div>
                             </div>
@@ -103,7 +107,7 @@ const Orders = () => {
                                 </div>
                                 <div className="property-right">
                                     <span>
-                                        100
+                                        {selectedOrder.start_count}
                                     </span>
                                 </div>
                             </div>
@@ -116,7 +120,7 @@ const Orders = () => {
                                 </div>
                                 <div className="property-right">
                                     <span>
-                                        500
+                                        {selectedOrder.remains}
                                     </span>
                                 </div>
                             </div>
@@ -129,7 +133,7 @@ const Orders = () => {
                                 </div>
                                 <div className="property-right">
                                     <span>
-                                        {selectedOrder?.status}
+                                        {selectedOrder.status}
                                     </span>
                                 </div>
                             </div>
@@ -142,7 +146,7 @@ const Orders = () => {
                                 </div>
                                 <p className="property-right">
                                     <span>
-                                        {selectedOrder?.link}
+                                        {selectedOrder.link}
                                     </span>
                                 </p>
                             </div>
@@ -155,7 +159,7 @@ const Orders = () => {
                                 </div>
                                 <p className="property-right">
                                     <span>
-                                        {selectedOrder?._id}
+                                        {selectedOrder.id}
                                     </span>
                                 </p>
                             </div>
@@ -165,13 +169,13 @@ const Orders = () => {
                                 <div className="time">
                                     <span>
                                         <Icon icon="ri:time-fill" />
-                                        {getTime(selectedOrder?.createdAt)}
+                                        {getTime(selectedOrder?.created_at)}
                                     </span>
                                 </div>
                                 <div className="date">
                                     <span>
                                         <Icon icon="clarity:date-solid" />
-                                        {getDate(selectedOrder?.createdAt)}
+                                        {getDate(selectedOrder?.created_at)}
                                     </span>
                                 </div>
                             </div>

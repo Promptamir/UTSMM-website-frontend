@@ -2562,6 +2562,68 @@ $gradient-degree: 0deg;
     }
 }
 
+.recent-orders {
+    .orders{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.order-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    cursor: pointer;
+
+    &[data-selected="true"] {
+        background-color: #9cb6ff;
+    }
+
+    .order-name-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        .order-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: black;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .order-id {
+            color: grey;
+            font-size: 16px;
+            font-weight: normal;
+        }
+    }
+
+    .order-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        .order-row-title {
+            font-size: 18px;
+            color: black;
+            font-weight: 600;
+        }
+
+        .order-row-value {
+            font-size: 16px;
+            color: black;
+            font-weight: 400;
+        }
+    }
+}
+
 @media only screen and (max-width: 1100px) {
     .user-dashboard {
         display: flex;
