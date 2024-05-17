@@ -1,8 +1,9 @@
 import React from 'react'
 import UserQuickView from '../../Components/UserQuickView'
 import Lottie from 'react-lottie-player'
-
-
+import Swal from 'sweetalert2';
+import { useFetch } from '../../../../../lib/useFetch'; 
+import { useState } from 'react';
 
 // Animation 
 import massOrderAnimation from "../../../../../animations/user-dashboard/mass-order-animation.json"
@@ -14,9 +15,49 @@ const MassOrders = () => {
     massOrderAnimation.fr = 10
     massOrderBackground.fr = 5
 
+    const [data, error, loading] = useFetch('https://utsmm.liara.run/api/user-index-page-data');
+    const [val, setVal] = useState('');
+    const [formLoading, setFormLoading] = useState(false);
+
+
 
     const handleSubmitClick = (e) => {
         e.preventDefault();
+        setFormLoading(true);
+        fetch(`https://utsmm.liara.run/api/mass-orders`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({"orders": val})
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                setFormLoading(false);
+                if (data.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: data.message
+                    });
+                }
+
+                console.log(data);
+            })
+            .catch(() => {
+                setFormLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
+                })
+            })
     }
 
 
@@ -30,8 +71,21 @@ const MassOrders = () => {
                     play
                     loop />
             </div>
-            <UserQuickView />
-
+            {
+                (loading)
+                    ? (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: "center", width: '100%', padding: '20px'}}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                        </div>
+                    ) : (error)
+                        ? <h1>There was an error while fetching the data</h1>
+                        : <UserQuickView
+                            orders={data.entities.total_orders}
+                            spend={data.entities.total_spend}
+                            balance={data.entities.balance}
+                            activeOrders={data.entities.active_orders}
+                        />
+            }
             <div className="intro row">
                 <div className="left">
                     <Lottie
@@ -183,13 +237,31 @@ const MassOrders = () => {
                 onSubmit={handleSubmitClick}>
                 <div className="form-header"></div>
                 <div className="form-groups">
-                    <textarea name="order" cols="30" rows="10" placeholder='service_id | link | quantity'>
-                    </textarea>
+                    <textarea 
+                        name="order" 
+                        cols="30" 
+                        rows="10"
+                        placeholder='service_id | link | quantity' 
+                        required 
+                        onChange={(e) => setVal(e.target.value)}
+                    />
                 </div>
                 <div className="form-buttons">
-                    <button>
-                        <span>Submit</span>
-                        <Icon icon="formkit:submit" />
+                    <button disabled={formLoading}>
+                        {
+                            (!formLoading)
+                                ? (
+                                    <>
+                                        <span>Submit</span>
+                                        <Icon icon="formkit:submit" />
+                                    </>
+                                ) : (
+                                  <>
+                                      <span>Loading</span>
+                                      <Icon icon={'eos-icons:loading'} width={20} href={20} />
+                                  </>
+                                )
+                        }
                     </button>
                 </div>
 
