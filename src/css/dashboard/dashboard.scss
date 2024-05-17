@@ -2624,6 +2624,14 @@ $gradient-degree: 0deg;
     }
 }
 
+.drop-down-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+}
+
 @media only screen and (max-width: 1100px) {
     .user-dashboard {
         display: flex;
