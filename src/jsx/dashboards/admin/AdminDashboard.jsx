@@ -1,6 +1,6 @@
-import { useState } from "react"
+import {useState} from "react"
 import Dashboard from "./components/dashboard/Dashboard"
-import { Icon } from "@iconify/react"
+import {Icon} from "@iconify/react"
 import Services from "./components/services/Services"
 import Users from "./components/users/Users";
 import ContactsUs from "./components/contact-us/ContactsUs";
