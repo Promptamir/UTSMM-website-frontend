@@ -1,14 +1,20 @@
 import RecentOrderItem from './components/RecentOrderItem';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { useFetch } from '../../../../../lib/useFetch';
 import { API } from '../../../../../lib/envAccess';
+import Swal from "sweetalert2";
 
 
 const Orders = () => {
 
     const [orders, error, loading] = useFetch('https://utsmm.liara.run/api/orders')
     const [selectedOrder, setSelectedOrder] = useState({});
+    const [refileLoading, setRefileLoading] = useState(false);
+
+    useEffect(() => {
+        if (!loading) {setSelectedOrder(orders.entities.orders[0])}
+    }, [loading]);
 
     function getDate(string) {
         let date = new Date(string);
@@ -73,119 +79,184 @@ const Orders = () => {
                     </div>
                 </div>
                 <div className="right">
-                    <div className="order-detail">
-                        <div className="header">
-                            <h1>
+                    {
+                        (loading)
+                            ? <h1>Loading</h1>
+                            : (error)
+                                ? <h1>Error</h1>
+                                : (
+                                    <div className="order-detail">
+                                        <div className="header">
+                                            <h1>
                                 <span>
                                     #{selectedOrder?.service?.id}
                                 </span>
-                            </h1>
-                            <p>
-                                {selectedOrder?.service?.title}
-                            </p>
-                        </div>
-                        <div className="body">
-                            <div className="property">
-                                <div className="property-left">
-                                    <Icon icon="fluent:calendar-date-28-filled" />
-                                    <span>
+                                            </h1>
+                                            <p>
+                                                {selectedOrder?.service?.title}
+                                            </p>
+                                        </div>
+                                        <div className="body">
+                                            <div className="property">
+                                                <div className="property-left">
+                                                    <Icon icon="fluent:calendar-date-28-filled"/>
+                                                    <span>
                                         Date
                                     </span>
-                                </div>
-                                <div className="property-right">
+                                                </div>
+                                                <div className="property-right">
                                     <span>
                                         {new Date(selectedOrder.created_at).toLocaleDateString()}
                                     </span>
-                                </div>
-                            </div>
-                            <div className="property">
-                                <div className="property-left">
-                                    <Icon icon="mdi:auto-start" />
-                                    <span>
+                                                </div>
+                                            </div>
+                                            <div className="property">
+                                                <div className="property-left">
+                                                    <Icon icon="mdi:auto-start"/>
+                                                    <span>
                                         Start count
                                     </span>
-                                </div>
-                                <div className="property-right">
+                                                </div>
+                                                <div className="property-right">
                                     <span>
                                         {selectedOrder.start_count}
                                     </span>
-                                </div>
-                            </div>
-                            <div className="property">
-                                <div className="property-left">
-                                    <Icon icon="uim:process" />
-                                    <span>
+                                                </div>
+                                            </div>
+                                            <div className="property">
+                                                <div className="property-left">
+                                                    <Icon icon="uim:process"/>
+                                                    <span>
                                         Remains
                                     </span>
-                                </div>
-                                <div className="property-right">
+                                                </div>
+                                                <div className="property-right">
                                     <span>
                                         {selectedOrder.remains}
                                     </span>
-                                </div>
-                            </div>
-                            <div className="property">
-                                <div className="property-left">
-                                    <Icon icon="majesticons:chat-status" />
-                                    <span>
+                                                </div>
+                                            </div>
+                                            <div className="property">
+                                                <div className="property-left">
+                                                    <Icon icon="majesticons:chat-status"/>
+                                                    <span>
                                         Status
                                     </span>
-                                </div>
-                                <div className="property-right">
+                                                </div>
+                                                <div className="property-right">
                                     <span>
                                         {selectedOrder.status}
                                     </span>
-                                </div>
-                            </div>
-                            <div className="property link">
-                                <div className="property-left">
-                                    <Icon icon="mingcute:link-fill" />
-                                    <span>
+                                                </div>
+                                            </div>
+                                            <div className="property link">
+                                                <div className="property-left">
+                                                    <Icon icon="mingcute:link-fill"/>
+                                                    <span>
                                         Link
                                     </span>
-                                </div>
-                                <p className="property-right">
+                                                </div>
+                                                <p className="property-right">
                                     <span>
                                         {selectedOrder.link}
                                     </span>
-                                </p>
-                            </div>
-                            <div className="property description">
-                                <div className="property-left">
-                                    <Icon icon="ion:rocket-sharp" />
-                                    <span>
+                                                </p>
+                                            </div>
+                                            <div className="property description">
+                                                <div className="property-left">
+                                                    <Icon icon="ion:rocket-sharp"/>
+                                                    <span>
                                         Order ID
                                     </span>
-                                </div>
-                                <p className="property-right">
+                                                </div>
+                                                <p className="property-right">
                                     <span>
                                         {selectedOrder.id}
                                     </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div className="footer">
-                            <div className="time-date">
-                                <div className="time">
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="footer">
+                                            <div className="time-date">
+                                                <div className="time">
                                     <span>
-                                        <Icon icon="ri:time-fill" />
+                                        <Icon icon="ri:time-fill"/>
                                         {getTime(selectedOrder?.created_at)}
                                     </span>
-                                </div>
-                                <div className="date">
+                                                </div>
+                                                <div className="date">
                                     <span>
-                                        <Icon icon="clarity:date-solid" />
+                                        <Icon icon="clarity:date-solid"/>
                                         {getDate(selectedOrder?.created_at)}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                </div>
+                                            </div>
+                                            {
+                                                (selectedOrder.service.refillable === 1)
+                                                    ? (
+                                                        <button
+                                                            disabled={refileLoading}
+                                                            style={{
+                                                                marginTop: '20px',
+                                                                backgroundColor: 'white',
+                                                                fontSize: '20px',
+                                                                fontWeight: '600',
+                                                                textAlign: 'center',
+                                                                color: 'black',
+                                                                padding: '20px',
+                                                                borderRadius: '50rem',
+                                                                width: '100%',
+                                                                opacity: (refileLoading) ? '50%' : '100%'
+                                                            }}
+                                                            onClick={() => {
+                                                                setRefileLoading(true);
+                                                                fetch(`https://utsmm.liara.run/api/order-refills`, {
+                                                                    method: "POST",
+                                                                    headers: {
+                                                                        "Content-Type": "application/json",
+                                                                        "Accept": "application/json",
+                                                                        "X-Requested-With": "XMLHttpRequest",
+                                                                        "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`,
+                                                                    },
+                                                                    body: JSON.stringify({order: selectedOrder.id})
+                                                                })
+                                                                    .then((data) => data.json())
+                                                                    .then((data) => {
+                                                                        setRefileLoading(false);
+
+                                                                        if (data.message === "Unauthenticated.") {
+                                                                            Swal.fire({
+                                                                                icon: 'error',
+                                                                                text: 'Unauthenticated.'
+                                                                            });
+                                                                        } else {
+                                                                            Swal.fire({
+                                                                                icon: 'success',
+                                                                                text: 'The item is now refilled'
+                                                                            });
+                                                                        }
+                                                                    })
+                                                                    .catch(() => {
+                                                                        setRefileLoading(false);
+                                                                        Swal.fire({
+                                                                            icon: 'error',
+                                                                            title: 'There was an error while fetching the data'
+                                                                        })
+                                                                    })
+                                                            }}
+                                                        >
+                                                            {(refileLoading) ? "Loading" : 'Refile'}
+                                                        </button>
+                                                    ) : false
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                    }
 
                 </div>
-
             </div>
-        </section >
+        </section>
     )
 }
 
