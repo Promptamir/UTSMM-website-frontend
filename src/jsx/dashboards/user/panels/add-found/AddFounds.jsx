@@ -126,9 +126,7 @@ const AddFounds = () => {
                         body: JSON.stringify({"amount": amountOfMoney.total})
                     })
                         .then((data) => data.json())
-                        .then((data) => {
-                            window.open(data.entities.payment_page_url, '_self').focus();
-                        })
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
                         .catch(() => {
                             Swal.fire({
                                 icon: 'error',
@@ -147,7 +145,7 @@ const AddFounds = () => {
                         body: JSON.stringify({"amount": amountOfMoney.total})
                     })
                         .then((data) => data.json())
-                        .then((data) => console.log(data))
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
                         .catch(() => {
                             Swal.fire({
                                 icon: 'error',
@@ -166,7 +164,7 @@ const AddFounds = () => {
                         body: JSON.stringify({"amount": amountOfMoney.total})
                     })
                         .then((data) => data.json())
-                        .then((data) => console.log(data))
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
                         .catch(() => {
                             Swal.fire({
                                 icon: 'error',
