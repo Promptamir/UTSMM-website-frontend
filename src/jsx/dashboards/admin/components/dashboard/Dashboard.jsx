@@ -33,11 +33,11 @@ export default function Dashboard() {
                                 : (
                                     <>
                                         <div className="new-orders notif">
-                                            <span>{data.entities.count_of_not_canceled_orders_in_last_week[0].total_count}</span>
+                                            <span>{data.entities.count_of_daily_not_canceled_orders_in_last_week[0].total_count}</span>
                                             <small>Orders</small>
                                         </div>
                                         <div className="new-messages notif">
-                                            <span>{data.entities.count_of_new_and_verified_users_in_last_week[0].total_count}</span>
+                                            <span>{data.entities.count_of_daily_new_and_verified_users_in_last_week[0].total_count}</span>
                                             <small>Users</small>
                                         </div>
                                     </>
@@ -49,7 +49,6 @@ export default function Dashboard() {
                             {(new Date()).toDateString()}
                         </span>
                     </div>
-
                 </div>
             </div>
             {
@@ -58,10 +57,10 @@ export default function Dashboard() {
                     : (error)
                         ? <h1>Error</h1>
                         : <QuickView
-                            orders={data.entities.count_of_not_canceled_orders_in_last_week[0].total_count}
-                            countOfOrders={data.entities.count_of_success_payments_in_last_week[0].total_count}
-                            income={data.entities.sum_of_success_payments_in_last_week[0].total_sum}
-                            customers={data.entities.count_of_new_and_verified_users_in_last_week[0].total_count}
+                            orders={data.entities.count_of_daily_not_canceled_orders_in_last_week[0].total_count}
+                            countOfOrders={data.entities.count_of_daily_not_canceled_orders_in_last_week[0].total_count}
+                            income={data.entities.sum_of_daily_success_payments_in_last_week[0].total_sum}
+                            customers={data.entities.count_of_daily_success_payments_in_last_week[0].total_count}
                         />
             }
         </div>

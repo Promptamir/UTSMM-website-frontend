@@ -17,6 +17,7 @@ import Categories from "./components/categories/Categories";
 import HotCategories from "./components/hot-categories/HotCategories";
 import Question from "./components/question/Question";
 import ExternalReviews from "./components/external-reviews/externalReviewsPage";
+import RefileOrders from "./components/refile-orders/RefileOrders";
 
 const AdminDashboard = () => {
 
@@ -36,6 +37,11 @@ const AdminDashboard = () => {
             title: "Orders",
             svg: <Icon icon="ri:dashboard-fill" />,
             component: <Orders />
+        },
+        {
+            title: "Refiled Orders",
+            svg: <Icon icon="ri:dashboard-fill" />,
+            component: <RefileOrders />
         },
         {
             title: "Tickets",
