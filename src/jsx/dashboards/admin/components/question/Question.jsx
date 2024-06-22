@@ -15,6 +15,7 @@ import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import {useDispatch} from "react-redux";
 import InfoModal from "./component/infoModal";
 import Swal from "sweetalert2";
+import BE_URL from "../../../../../lib/envAccess";
 
 // Creating and exporting question section of admin panel as default
 export default function Question() {
@@ -23,7 +24,7 @@ export default function Question() {
     const [customLoading, setCustomLoading] = useState(false);
 
     // Fetching data
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/questions`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/questions?page=${currentPage}`)
 
     // Defining dispatcher of modals
     const dispatcher = useDispatch()
@@ -62,7 +63,7 @@ export default function Question() {
             if (what.isConfirmed) {
                 setCustomLoading(true);
                 const message = what.value;
-                fetch(`https://utsmm.liara.run/api/admin/questions/${id}/answers`, {
+                fetch(`${BE_URL}/admin/questions/${id}/answers`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -224,9 +225,10 @@ export default function Question() {
                                         <TablePaginations>
                                             <ResponsivePagination
                                                 current={currentPage}
-                                                total={Math.round(data.entities.count / 10)}
+                                                total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
+                                                    setUrl(`${BE_URL}/admin/questions?page=${pageNumber}`);
                                                     refresh();
                                                 }}
                                             />

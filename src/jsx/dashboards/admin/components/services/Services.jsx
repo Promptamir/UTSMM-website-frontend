@@ -1,4 +1,4 @@
-import { API } from "../../../../../lib/envAccess"
+import BE_URL, { API } from "../../../../../lib/envAccess"
 import { useFetch } from "../../../../../lib/useFetch"
 import Table from "../../../../cutsome-components/table/Table"
 import ItemHeader from "../../../../cutsome-components/table/components/ItemHeader"
@@ -19,7 +19,7 @@ import EditModal from "./components/editModal";
 export default function Services() {
 
   const [customLoading, setCustomLoading] = useState(false);
-  const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/services?page=1`)
+  const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/services?page=1`)
 
   const dispatcher = useDispatch()
 
@@ -179,7 +179,7 @@ export default function Services() {
                                 current={1}
                                 total={Math.round(data.entities.count / 10)}
                                 onPageChange={(pageNumber) => {
-                                  setUrl(`https://utsmm.liara.run/api/admin/services?page=${pageNumber}`);
+                                  setUrl(`${BE_URL}/admin/services?page=${pageNumber}`);
                                   refresh();
                                 }}
                             />

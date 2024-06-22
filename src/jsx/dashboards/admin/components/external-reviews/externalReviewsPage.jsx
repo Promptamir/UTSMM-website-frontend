@@ -15,13 +15,13 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from 'react-responsive-pagination';
 import Swal from "sweetalert2"
 import {showError, showSuccess} from "../../../../../lib/alertHandler"
-import {API} from '../../../../../lib/envAccess'
+import BE_URL, {API} from '../../../../../lib/envAccess'
 
 
 export default function ExternalReviews() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/external-reviews?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/external-reviews?page=${currentPage}`)
 
     const headers = [
         "ID",
@@ -35,7 +35,7 @@ export default function ExternalReviews() {
 
     const handleOnToggleClick = (review, state) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/external-reviews/${review.id}/confirmation-status`, {
+        fetch(`${BE_URL}/admin/external-reviews/${review.id}/confirmation-status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -188,7 +188,7 @@ export default function ExternalReviews() {
                                             total={Math.round(data.entities.count / 10)}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
-                                                setUrl(`https://utsmm.liara.run/api/admin/external-reviews?page=${pageNumber}`);
+                                                setUrl(`${BE_URL}/admin/external-reviews?page=${pageNumber}`);
                                                 refresh();
                                             }}
                                         />

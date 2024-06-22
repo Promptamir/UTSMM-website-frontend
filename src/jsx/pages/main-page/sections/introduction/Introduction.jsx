@@ -34,12 +34,11 @@ import CompanyStaticsItem from "./components/CompanyStaticsItem";
 import { useFetch } from "../../../../../lib/useFetch";
 import { API, SERVER } from "../../../../../lib/envAccess";
 import {Link} from "react-router-dom";
-
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 export default function Introduction() {
-    const [data, error, loadingAPI, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/index-page-data');
+    const [data, error, loadingAPI, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
     const [currentSelected, setCurrentSelected] = useState({
         svg: itemOne,
         title: "Users",

@@ -2,13 +2,13 @@ import RecentOrderItem from './components/RecentOrderItem';
 import { Icon } from '@iconify/react';
 import {useEffect, useState} from 'react';
 import { useFetch } from '../../../../../lib/useFetch';
-import { API } from '../../../../../lib/envAccess';
+import BE_URL, { API } from '../../../../../lib/envAccess';
 import Swal from "sweetalert2";
 
 
 const Orders = () => {
 
-    const [orders, error, loading] = useFetch('https://utsmm.liara.run/api/orders')
+    const [orders, error, loading] = useFetch(`${BE_URL}/api/orders`)
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
 
@@ -210,7 +210,7 @@ const Orders = () => {
                                                             }}
                                                             onClick={() => {
                                                                 setRefileLoading(true);
-                                                                fetch(`https://utsmm.liara.run/api/order-refills`, {
+                                                                fetch(`${BE_URL}/order-refills`, {
                                                                     method: "POST",
                                                                     headers: {
                                                                         "Content-Type": "application/json",

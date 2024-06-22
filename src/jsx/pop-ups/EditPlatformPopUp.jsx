@@ -10,7 +10,7 @@ import { API, SERVER } from "../../lib/envAccess"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import { logFormData } from "../../lib/helperTools"
 import Swal from "sweetalert2";
-
+import BE_URL from "../../lib/envAccess";
 
 
 export default function EditPlatformPopUp({ platform, refresh, customLoading }) {
@@ -65,7 +65,7 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
             redirect: "follow"
         };
 
-        fetch(`https://utsmm.liara.run/api/admin/platforms/${platform.id}`, requestOptions)
+        fetch(`${BE_URL}/admin/platforms/${platform.id}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result)

@@ -7,6 +7,7 @@ import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
 import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import {useState} from "react";
 import Swal from "sweetalert2";
+import BE_URL from "../../lib/envAccess";
 
 
 export default function CreateFaqsPopUp({ refresh, setLoading }) {
@@ -32,7 +33,7 @@ export default function CreateFaqsPopUp({ refresh, setLoading }) {
         e.preventDefault()
 
         setLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/faqs`, {
+        fetch(`${BE_URL}/admin/faqs`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

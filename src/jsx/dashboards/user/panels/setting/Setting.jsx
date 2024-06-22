@@ -1,6 +1,7 @@
 // Importing part
 import '../../../../../css/dashboard/user/setting.css';
 import {useState} from "react";
+import BE_URL from "../../../../../lib/envAccess";
 
 // Creating and exporting setting panel as default
 export default function Setting() {
@@ -22,7 +23,7 @@ export default function Setting() {
                     setSuccses('');
                     setLoading(true);
 
-                    fetch('https://utsmm.liara.run/api/reset-password', {
+                    fetch(`${BE_URL}/reset-password`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

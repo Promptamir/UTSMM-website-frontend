@@ -5,10 +5,11 @@ import {useFetch} from "../../../../../../lib/useFetch";
 import {Icon} from "@iconify/react";
 import {closePopUp} from "../../../../../../features/popUpReducer";
 import {useDispatch} from "react-redux";
+import BE_URL from "../../../../../../lib/envAccess";
 
 export default function InfoCatModal({id}) {
     // Getting data from the server
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/categories/${id}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/categories/${id}`)
     const dispatcher = useDispatch();
 
     // Returning JSX

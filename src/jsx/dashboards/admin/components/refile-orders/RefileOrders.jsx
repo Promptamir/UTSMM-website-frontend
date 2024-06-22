@@ -12,11 +12,12 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
 import {useFetch} from "../../../../../lib/useFetch";
+import BE_URL from "../../../../../lib/envAccess";
 
 export default function RefileOrders() {
     // Defining states of component
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/refills?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/refills?page=${currentPage}`)
 
     // Defining header list
     const headerList = [
@@ -93,7 +94,7 @@ export default function RefileOrders() {
                                                 total={Math.round(data.entities.refills.count/ 10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
-                                                    setUrl(`https://utsmm.liara.run/api/admin/refills?page=${pageNumber}`);
+                                                    setUrl(`${BE_URL}/admin/refills?page=${pageNumber}`);
                                                     refresh();
                                                 }}
                                             />

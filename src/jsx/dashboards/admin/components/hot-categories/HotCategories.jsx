@@ -16,11 +16,12 @@ import NewHotCatModal from "./component/NewCatModal";
 import EditHotCatModal from "./component/EditCatModal";
 import Swal from "sweetalert2";
 import InfoHotCatModal from "./component/infoCatModal";
+import BE_URL from "../../../../../lib/envAccess";
 
 export default function HotCategories() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/hot-categories?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/hot-categories?page=${currentPage}`)
     const dispatcher = useDispatch()
     const headerList = [
         "ID",
@@ -58,7 +59,7 @@ export default function HotCategories() {
 
     const handleOnDelete = (id) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/hot-categories/${id}`, {
+        fetch(`${BE_URL}/admin/hot-categories/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -227,7 +228,7 @@ export default function HotCategories() {
                                                 total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
-                                                    setUrl(`https://utsmm.liara.run/api/admin/hot-categories?page=${currentPage}`)
+                                                    setUrl(`${BE_URL}/admin/hot-categories?page=${currentPage}`)
                                                     refresh();
                                                 }}
                                             />

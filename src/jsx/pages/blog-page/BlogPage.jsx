@@ -5,6 +5,7 @@ import {useQuery} from "@tanstack/react-query";
 import {Link} from "react-router-dom";
 import '../../../css/pages/blog-page/BlogPageStyle.css';
 import {useEffect, useState} from "react";
+import BE_URL from '../../../lib/envAccess';
 
 const BlogPage = () => {
     const [paginationNumber, setPaginationNumber] = useState(1);
@@ -17,7 +18,7 @@ const BlogPage = () => {
     } = useQuery({
         queryKey: ['Blog'],
         queryFn: async () => {
-            const {data} = await axios.get(`https://utsmm.liara.run/api/blogs?page=${paginationNumber}`);
+            const {data} = await axios.get(`${BE_URL}/blogs?page=${paginationNumber}`);
             return data.entities.blogs;
         }
     });

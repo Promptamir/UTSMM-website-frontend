@@ -10,12 +10,12 @@ import Property from "../../../../cutsome-components/table/components/Property"
 import {useEffect, useState} from "react"
 import SelectedFaqs from "./SelectedFaqs"
 import { post, put, useFetch } from "../../../../../lib/useFetch"
-import { API } from "../../../../../lib/envAccess"
+import BE_URL, { API } from "../../../../../lib/envAccess"
 import { showError, showSuccess } from "../../../../../lib/alertHandler"
 import Swal from "sweetalert2"
 
 export default function Faqs() {
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/faqs`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/api/faqs`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headerList = [
@@ -40,7 +40,7 @@ export default function Faqs() {
             if (what.isConfirmed) {
                 setCustomLoading(true);
                 const message = what.value;
-                fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
+                fetch(`${BE_URL}/admin/faqs/${faq.id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function Faqs() {
 
     const deleteFaq = (faq) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/faqs/${faq.id}`, {
+        fetch(`${BE_URL}/admin/faqs/${faq.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

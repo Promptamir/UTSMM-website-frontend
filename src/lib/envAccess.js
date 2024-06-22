@@ -265,3 +265,9 @@ export const API = {
     },
   },
 };
+
+// Defining Backends url
+const BE_URL = "https://back.utsmm.com/api"
+
+// Exporting the back end url
+export default BE_URL;

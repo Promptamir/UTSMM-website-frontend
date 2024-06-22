@@ -54,7 +54,7 @@ import { Icon } from "@iconify/react"
 import UserSection from "./components/user/UserSection"
 import SavedServices from "./components/saved-services/SavedServices"
 import {useFetch, usePost} from "../../../../../lib/useFetch";
-import {API} from "../../../../../lib/envAccess";
+import BE_URL, {API} from "../../../../../lib/envAccess";
 
 
 ChartJS.register(
@@ -82,8 +82,8 @@ ChartJS.defaults.plugins.legend.align = "start"
 
 
 const Statics = () => {
-    const [data, error, loading] = useFetch('https://utsmm.liara.run/api/user-index-page-data');
-    const [savedServicesData, savedServicesError, savedServicesLoading] = useFetch('https://utsmm.liara.run/api/user/favorite-services');
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
+    const [savedServicesData, savedServicesError, savedServicesLoading] = useFetch(`${BE_URL}/user/favorite-services`);
 
     return (
         <section className="statics">

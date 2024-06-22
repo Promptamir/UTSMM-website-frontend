@@ -13,7 +13,7 @@ import { API } from "../../../../../lib/envAccess"
 import { useFetch, usePost } from "../../../../../lib/useFetch"
 import {Link} from "react-router-dom";
 
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 export default function Faqs() {
@@ -24,7 +24,7 @@ export default function Faqs() {
     faqsBackground.fr = 5
     faqsFormQuestion.fr = 30
 
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/index-page-data');
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
 
     return (
 

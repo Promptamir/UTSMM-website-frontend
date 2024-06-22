@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { API, SERVER } from '../../../../../lib/envAccess';
 import { useFetch } from '../../../../../lib/useFetch';
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 
@@ -23,7 +23,8 @@ import { useFetch } from '../../../../../lib/useFetch';
 
 
 export default function Blogs() {
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/index-page-data')
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
+
 
     return (
         <div className="blogs">

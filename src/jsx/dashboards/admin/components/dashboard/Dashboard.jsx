@@ -10,10 +10,11 @@ import { useFetch } from "../../../../../lib/useFetch"
 import { API } from "../../../../../lib/envAccess";
 import QuickView from "./components/QuickView";
 
+import BE_URL from "../../../../../lib/envAccess";
 
 export default function Dashboard() {
     // Getting data from database
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/admin-index-page-data');
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index-page-data`);
 
     return (
         <div className="admin-dashboard-panel">

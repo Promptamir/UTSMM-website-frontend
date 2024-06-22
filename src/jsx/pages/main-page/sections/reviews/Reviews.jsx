@@ -25,7 +25,7 @@ import FiledSet from '../../../../cutsome-components/Fieldset/FiledSet';
 import {Link} from "react-router-dom";
 import {useFetch} from "../../../../../lib/useFetch";
 
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 
@@ -50,7 +50,7 @@ function getRandomHexColor() {
 export default function Reviews() {
 
     const [rightSwiper, setRightSwiper] = useState(null)
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch('https://utsmm.liara.run/api/index-page-data');
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
 
     return (
         <section className="customers-reviews">

@@ -6,7 +6,7 @@ import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
 import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import { useState } from "react"
 import { post, put } from "../../lib/useFetch"
-import { API } from "../../lib/envAccess"
+import BE_URL, { API } from "../../lib/envAccess"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import { logFormData } from "../../lib/helperTools"
 import Swal from "sweetalert2";
@@ -66,7 +66,7 @@ export default function CreatePlatformPopUp({refresh, customLoading }) {
             redirect: "follow"
         };
 
-        fetch(`https://utsmm.liara.run/api/admin/platforms/`, requestOptions)
+        fetch(`${BE_URL}/admin/platforms/`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result)

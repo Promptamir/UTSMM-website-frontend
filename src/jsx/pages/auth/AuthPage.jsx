@@ -1,5 +1,6 @@
 // Importing part
 import '../../../css/pages/auth-page/AuthPageStyle.css';
+import BE_URL from "../../../lib/envAccess";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -41,7 +42,7 @@ export default function AuthPage() {
             setloading(true);
             setError('');
 
-            fetch('https://utsmm.liara.run/api/auth-tokens', {
+            fetch(`${BE_URL}/auth-tokens`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +73,7 @@ export default function AuthPage() {
                 setError('');
                 setloading(true);
 
-                fetch('https://utsmm.liara.run/api/users', {
+                fetch(`${BE_URL}/api/users`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -103,7 +104,7 @@ export default function AuthPage() {
             setloading(true);
             setError('');
 
-            fetch('https://utsmm.liara.run/api/password-reset-links', {
+            fetch(`${BE_URL}/password-reset-links`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

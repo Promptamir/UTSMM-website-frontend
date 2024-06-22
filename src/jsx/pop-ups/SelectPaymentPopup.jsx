@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux"
 import { closePopUp } from "../../features/popUpReducer"
 import { Icon } from "@iconify/react"
-import { SERVER } from "../../lib/envAccess"
+import BE_URL, { SERVER } from "../../lib/envAccess"
 import TablePaginations from "../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
@@ -79,7 +79,7 @@ const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSe
                                             total={Math.round(count/10)}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
-                                                setUrl(`https://utsmm.liara.run/api/payments?page=${pageNumber}`);
+                                                setUrl(`${BE_URL}/payments?page=${pageNumber}`);
                                                 refresh();
                                             }}
                                         />

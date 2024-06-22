@@ -16,7 +16,7 @@ import { ADMIN_PANEL_CREATE_BLOG } from '../../../../pop-ups/Constaints'
 import CreateNewBlogPopUp from '../../../../pop-ups/CreateNewBlogPopUp'
 import EditBlogPopUp from '../../../../pop-ups/EditBlogPopUp'
 import { deletE, put, useFetch } from "../../../../../lib/useFetch"
-import { API, SERVER } from '../../../../../lib/envAccess'
+import BE_URL, { API, SERVER } from '../../../../../lib/envAccess'
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from 'react-responsive-pagination';
 import { showError, showSuccess } from '../../../../../lib/alertHandler'
@@ -30,7 +30,7 @@ export default function Blogs() {
     const [customLoading, setCustomLoading] = useState(false);
 
 
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/blogs?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/blogs?page=${currentPage}`)
 
     const dispatcher = useDispatch()
 
@@ -75,7 +75,7 @@ export default function Blogs() {
         let content = '';
         let keywords = '';
 
-        fetch(`https://utsmm.liara.run/api/blogs/${blog.slug}`, {
+        fetch(`${BE_URL}/blogs/${blog.slug}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default function Blogs() {
                 content = data.entities.blog.content;
                 keywords = data.entities.blog.keywords;
 
-                fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+                fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -144,7 +144,7 @@ export default function Blogs() {
 
     const handleOnDelete = (blog) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+        fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -327,7 +327,7 @@ export default function Blogs() {
                                                 total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
-                                                    setUrl(`https://utsmm.liara.run/api/blogs?page=${pageNumber}`);
+                                                    setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
                                                     refresh();
                                                 }}
                                             />

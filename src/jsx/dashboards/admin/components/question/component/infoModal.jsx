@@ -3,11 +3,12 @@ import {closePopUp} from "../../../../../../features/popUpReducer";
 import {Icon} from "@iconify/react";
 import {useDispatch} from "react-redux";
 import {useFetch} from "../../../../../../lib/useFetch";
+import BE_URL from "../../../../../../lib/envAccess";
 
 // Creating and exporting info modal as default
 export default function InfoModal({id}) {
     // Defining states of component
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/questions/${id}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/questions/${id}`)
 
     // Defining modal dispatcher
     const dispatcher = useDispatch();

@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import { useFetch } from "../../../../../../lib/useFetch";
-import { API } from "../../../../../../lib/envAccess";
+import BE_URL, { API } from "../../../../../../lib/envAccess";
 import {useEffect, useState} from "react";
 import Modal from "../../../../../pop-ups/modal";
 import Swal from "sweetalert2";
@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 const TicketHistory = () => {
 
 
-    const [tickets, error, loading] = useFetch('https://utsmm.liara.run/api/tickets')
+    const [tickets, error, loading] = useFetch(`${BE_URL}/tickets`)
 
     useEffect(() => {
         if (!loading) {

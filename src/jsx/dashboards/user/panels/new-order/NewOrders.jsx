@@ -7,9 +7,10 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
+import BE_URL from "../../../../../lib/envAccess";
 const NewOrders = () => {
-    const [data, error, loading] = useFetch('https://utsmm.liara.run/api/user-index-page-data');
-    const [categoriesData, categoriesError, categoriesLoading] = useFetch('https://utsmm.liara.run/api/categories');
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
+    const [categoriesData, categoriesError, categoriesLoading] = useFetch(`${BE_URL}/categories`);
     const [services, setServices] = useState([]);
     const [servicesLoading, setServicesLoading] = useState(false);
     const [servicesObj, setServicesObj] = useState();
@@ -25,7 +26,7 @@ const NewOrders = () => {
     useEffect(() => {
         if (categroy) {
             setServicesLoading(true);
-            fetch(`https://utsmm.liara.run/api/categories/${categroy}/services `, {
+            fetch(`${BE_URL}/categories/${categroy}/services `, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const NewOrders = () => {
                         e.preventDefault();
 
                         setFormLoading(true);
-                        fetch(`https://utsmm.liara.run/api/default-orders`, {
+                        fetch(`${BE_URL}/default-orders`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

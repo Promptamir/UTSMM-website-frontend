@@ -4,6 +4,7 @@ import Lottie from 'react-lottie-player'
 import Swal from 'sweetalert2';
 import { useFetch } from '../../../../../lib/useFetch'; 
 import { useState } from 'react';
+import BE_URL from "../../../../../lib/envAccess";
 
 // Animation 
 import massOrderAnimation from "../../../../../animations/user-dashboard/mass-order-animation.json"
@@ -15,7 +16,7 @@ const MassOrders = () => {
     massOrderAnimation.fr = 10
     massOrderBackground.fr = 5
 
-    const [data, error, loading] = useFetch('https://utsmm.liara.run/api/user-index-page-data');
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
     const [val, setVal] = useState('');
     const [formLoading, setFormLoading] = useState(false);
 
@@ -24,7 +25,7 @@ const MassOrders = () => {
     const handleSubmitClick = (e) => {
         e.preventDefault();
         setFormLoading(true);
-        fetch(`https://utsmm.liara.run/api/mass-orders`, {
+        fetch(`${BE_URL}/mass-orders`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

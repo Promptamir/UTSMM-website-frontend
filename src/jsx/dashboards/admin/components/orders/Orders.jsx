@@ -6,7 +6,7 @@ import TableBody from "../../../../cutsome-components/table/components/TableBody
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader";
 import { useEffect, useState } from "react";
 import { useFetch } from "../../../../../lib/useFetch"
-import { API } from "../../../../../lib/envAccess";
+import BE_URL, { API } from "../../../../../lib/envAccess";
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from 'react-responsive-pagination';
 
@@ -36,7 +36,7 @@ export default function Orders() {
 
     const [ordersStatus, setOrdersStatus] = useState(orderListButtons[0])
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`https://utsmm.liara.run/api/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
 
     return (
         <div className="admin-panel-orders">
@@ -50,7 +50,7 @@ export default function Orders() {
                                 className={`status-${record === ordersStatus}`}
                                 onClick={() => {
                                     setOrdersStatus(record);
-                                    setUrl(`https://utsmm.liara.run/api/orders?page=${currentPage}&statuses=${(record === 'All') ? '' : record.toLowerCase()}`);
+                                    setUrl(`${BE_URL}/orders?page=${currentPage}&statuses=${(record === 'All') ? '' : record.toLowerCase()}`);
                                     refreshData();
                                 }}
                             >
@@ -149,7 +149,7 @@ export default function Orders() {
                                             total={Math.round(data.entities.count/10)}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
-                                                setUrl(`https://utsmm.liara.run/api/orders?page=${pageNumber}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`);
+                                                setUrl(`${BE_URL}/orders?page=${pageNumber}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`);
                                                 refreshData();
                                             }}
                                         />

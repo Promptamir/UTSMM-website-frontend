@@ -81,7 +81,6 @@ const ServicesPage = lazy(() => import('./jsx/pages/services-page/ServicesPage')
 const AuthPage = lazy(() => import("./jsx/pages/auth/AuthPage"));
 const ErrorPage = lazy(() => import("./jsx/pages/404/ErrorPage"));
 const BlogDetailPage = lazy(() => import("./jsx/pages/blog-page/BlogDetailPage"));
-const ContactUsPage = lazy(() => import("./jsx/pages/contact-us-page/ContactUsPage"));
 const AboutUsPage = lazy(() => import("./jsx/pages/about-us-page/AboutUsPage"));
 const BlogPage = lazy(() => import("./jsx/pages/blog-page/BlogPage"));
 const FAQsPage = lazy(() => import("./jsx/pages/Faq-page/FAQsPage"));
@@ -162,12 +161,6 @@ function App() {
                             path="/about-us"
                             element={<Suspense fallback={<PagesLoaders/>}>
                                 <AboutUsPage/>
-                            </Suspense>}
-                        />
-                        <Route
-                            path="/contact-us"
-                            element={<Suspense fallback={<PagesLoaders/>}>
-                                <ContactUsPage/>
                             </Suspense>}
                         />
                         <Route

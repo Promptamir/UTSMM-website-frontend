@@ -36,16 +36,6 @@ const Header = (
             route: "/about-us",
             icon: <Icon icon="mdi:about" />
         },
-        // {
-        //     title: "API",
-        //     route: "/api",
-        //     icon: <Icon icon="ic:twotone-api" />
-        // },
-        {
-            title: "Contact Us",
-            route: "/contact-us",
-            icon: <Icon icon="entypo:network" />
-        },
         {
             title: "Services",
             route: "/services",

@@ -4,11 +4,12 @@ import {useState} from "react";
 import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
+import BE_URL from "../../../../../lib/envAccess";
 
 // Creating and exporting settings tab of admin dashboard as default
 export default function Settings() {
     // Getting data
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/general-configs`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/general-configs`);
 
     // Defining states
     const [customError, setCustomError] = useState('');
@@ -30,7 +31,7 @@ export default function Settings() {
                             e.preventDefault();
 
                             setCustomLoading(true);
-                            fetch('https://utsmm.liara.run/api/admin/general-configs', {
+                            fetch(`${BE_URL}/admin/general-configs`, {
                                 method: "PUT",
                                 headers: {
                                     "Content-Type": "application/json",

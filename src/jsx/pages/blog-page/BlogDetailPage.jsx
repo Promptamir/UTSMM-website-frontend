@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation } from 'react-router-dom';
 import '../../../css/pages/blogs-page/BlogsPageStyle.css';
 import parse from 'html-react-parser';
+import BE_URL from "../../../lib/envAccess";
 
 export default function BlogDetailPage() {
   const location = useLocation();
@@ -16,7 +17,7 @@ export default function BlogDetailPage() {
     isError
   } = useQuery({
     queryFn: async () => {
-      const {data} = await axios.get(`https://utsmm.liara.run/api/blogs/${lastRoute}`);
+      const {data} = await axios.get(`${BE_URL}/api/blogs/${lastRoute}`);
       return data.entities.blog;
     }
   });

@@ -7,6 +7,7 @@ import {useState} from "react";
 import {closePopUp} from "../../../../../../features/popUpReducer";
 import {useDispatch} from "react-redux";
 import Swal from "sweetalert2";
+import BE_URL from "../../../../../../lib/envAccess";
 
 // Creating and exporting edit category modal as default
 export default function EditCatModal({setCustomLoading, refresh, id}) {
@@ -21,7 +22,7 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
             e.preventDefault();
 
             setCustomLoading(true);
-            fetch(`https://utsmm.liara.run/api/admin/categories/${id}`, {
+            fetch(`${BE_URL}/admin/categories/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

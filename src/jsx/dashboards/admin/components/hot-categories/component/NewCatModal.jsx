@@ -7,6 +7,7 @@ import {useState} from "react";
 import {closePopUp} from "../../../../../../features/popUpReducer";
 import {useDispatch} from "react-redux";
 import Swal from "sweetalert2";
+import BE_URL from "../../../../../../lib/envAccess";
 
 // Creating and exporting new category modal as default
 export default function NewCatModal({setCustomLoading, refresh}) {
@@ -21,7 +22,7 @@ export default function NewCatModal({setCustomLoading, refresh}) {
             e.preventDefault();
 
             setCustomLoading(true);
-            fetch(`https://utsmm.liara.run/api/admin/hot-categories`, {
+            fetch(`${BE_URL}/admin/hot-categories`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

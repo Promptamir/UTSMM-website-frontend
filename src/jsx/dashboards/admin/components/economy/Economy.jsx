@@ -4,11 +4,12 @@ import {useState} from "react";
 import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
+import BE_URL from "../../../../../lib/envAccess";
 
 // Creating and exporting settings tab of admin dashboard as default
 export default function Economy() {
     // Getting data
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/economy-configs`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/economy-configs`);
 
     // Defining states
     const [customLoading, setCustomLoading] = useState(false);
@@ -21,12 +22,12 @@ export default function Economy() {
             {
                 (loading)
                     ? <h1>Loading</h1>
-                    : (
+                    : (error) ? <h1>Error</h1> : (
                         <form onSubmit={(e) => {
                             e.preventDefault();
 
                             setCustomLoading(true);
-                            fetch('https://utsmm.liara.run/api/admin/economy-configs', {
+                            fetch(`${BE_URL}/admin/economy-configs`, {
                                 method: "PUT",
                                 headers: {
                                     "Content-Type": "application/json",

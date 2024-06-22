@@ -11,11 +11,12 @@ import ResponsivePagination from 'react-responsive-pagination';
 import {Icon} from "@iconify/react";
 import Switch from "react-switch";
 import Swal from "sweetalert2";
+import BE_URL from "../../../../../lib/envAccess";
 
 
 export default function CommentPage() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/comments?page=${currentPage}`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/comments?page=${currentPage}`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headersList = [
@@ -56,7 +57,7 @@ export default function CommentPage() {
 
     const onPublishedClick = (record, published) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}/confirmation-status`, {
+        fetch(`${BE_URL}/admin/comments/${record.id}/confirmation-status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -96,7 +97,7 @@ export default function CommentPage() {
 
     const onPublishedClickMain = (record, published) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}/show-on-main-page-status`, {
+        fetch(`${BE_URL}/admin/comments/${record.id}/show-on-main-page-status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -242,7 +243,7 @@ export default function CommentPage() {
                                                     }}
                                                     onClick={() => {
                                                         setCustomLoading(true);
-                                                        fetch(`https://utsmm.liara.run/api/admin/comments/${record.id}`, {
+                                                        fetch(`${BE_URL}/admin/comments/${record.id}`, {
                                                             method: "DELETE",
                                                             headers: {
                                                                 "Content-Type": "application/json",
@@ -302,7 +303,7 @@ export default function CommentPage() {
                                                 total={Math.round(data.entities.count / 10)}
                                                 onPageChange={(pageNumber) => {
                                                     setCurrentPage(pageNumber);
-                                                    setUrl(`https://utsmm.liara.run/api/admin/comments?page=${pageNumber}`)
+                                                    setUrl(`${BE_URL}/admin/comments?page=${pageNumber}`)
                                                     refresh();
                                                 }}
                                             />

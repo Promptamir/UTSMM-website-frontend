@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { post } from '../../../../../lib/useFetch';
 import { API } from '../../../../../lib/envAccess';
 import Swal from "sweetalert2"
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 
@@ -50,7 +50,7 @@ export default function Poster() {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        fetch('https://utsmm.liara.run/api/auth-tokens', {
+        fetch(`${BE_URL}/auth-tokens`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

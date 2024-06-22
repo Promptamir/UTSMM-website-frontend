@@ -5,7 +5,7 @@ import AdminPanelFiledset from "../dashboards/admin/components/tools/fieldset/Ad
 import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
 import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import { useState } from "react"
-import { API, SERVER } from "../../lib/envAccess"
+import BE_URL, { API, SERVER } from "../../lib/envAccess"
 import { put } from "../../lib/useFetch"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import Swal from "sweetalert2";
@@ -30,7 +30,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
 
         if (error === '') {
             setLoading(true);
-            fetch(`https://utsmm.liara.run/api/admin/blogs/${blog.id}`, {
+            fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

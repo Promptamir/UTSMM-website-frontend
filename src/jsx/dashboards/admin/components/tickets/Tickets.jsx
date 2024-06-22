@@ -15,13 +15,13 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from 'react-responsive-pagination';
 import Swal from "sweetalert2"
 import { showError, showSuccess } from "../../../../../lib/alertHandler"
-import { API } from '../../../../../lib/envAccess'
+import BE_URL, { API } from '../../../../../lib/envAccess'
 
 
 export default function Tickets() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/tickets?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/tickets?page=${currentPage}`)
 
 
     const headers = [
@@ -77,7 +77,7 @@ export default function Tickets() {
                 const message = end.value;
 
                 setCustomLoading(true);
-                fetch(`https://utsmm.liara.run/api/admin/tickets/${ticket.id}/answers`, {
+                fetch(`${BE_URL}/admin/tickets/${ticket.id}/answers`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -120,7 +120,7 @@ export default function Tickets() {
 
     const handleOnToggleClick = (ticket, state) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/tickets/${ticket.id}/seen-status`, {
+        fetch(`${BE_URL}/tickets/${ticket.id}/seen-status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -265,7 +265,7 @@ export default function Tickets() {
                                             total={Math.round(data.entities.count / 10)}
                                             onPageChange={(pageNumber) => {
                                                 setCurrentPage(pageNumber);
-                                                setUrl(`https://utsmm.liara.run/api/admin/tickets?page=${pageNumber}`);
+                                                setUrl(`${BE_URL}/admin/tickets?page=${pageNumber}`);
                                                 refresh();
                                             }}
                                         />

@@ -13,16 +13,7 @@ import Faqs from './sections/faqs/Faqs';
 import WhyChooseUs from './sections/why-choose-us/WhyChooseUs';
 
 
-
-axios.defaults.baseURL = SERVER.API_URL
-
-
-
 const MainPage = () => {
-
-
-
-
     return (
         <main className="main-page">
 

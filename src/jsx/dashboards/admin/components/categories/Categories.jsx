@@ -16,11 +16,12 @@ import NewCatModal from "./component/NewCatModal";
 import EditCatModal from "./component/EditCatModal";
 import Swal from "sweetalert2";
 import InfoCatModal from "./component/infoCatModal";
+import BE_URL from "../../../../../lib/envAccess";
 
 export default function Categories() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/admin/categories?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/categories?page=${currentPage}`)
     const dispatcher = useDispatch()
     const headerList = [
         "ID",
@@ -58,7 +59,7 @@ export default function Categories() {
 
     const handleOnDelete = (id) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/categories/${id}`, {
+        fetch(`${BE_URL}/admin/categories/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -226,7 +227,7 @@ export default function Categories() {
                                                 current={currentPage}
                                                 total={Math.round(data.entities.count/10)}
                                                 onPageChange={(pageNumber) => {
-                                                    setUrl(`https://utsmm.liara.run/api/admin/categories?page=${pageNumber}`);
+                                                    setUrl(`${BE_URL}/admin/categories?page=${pageNumber}`);
                                                     refresh();
                                                 }}
                                             />

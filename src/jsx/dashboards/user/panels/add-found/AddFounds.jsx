@@ -12,9 +12,10 @@ import { useEffect } from 'react'
 import SelectAmountOfMoney from '../../../../pop-ups/SelectAmountOfMoney'
 import {useFetch} from '../../../../../lib/useFetch'
 import Swal from "sweetalert2"
+import BE_URL from "../../../../../lib/envAccess";
 
 const AddFounds = () => {
-    const [paymentMethods, methodError, methodLoading, setUrl, refreshData] = useFetch('https://utsmm.liara.run/api/payments?page=1');
+    const [paymentMethods, methodError, methodLoading, setUrl, refreshData] = useFetch(`${BE_URL}/payments?page=1`);
     const [selectedMethod, setSelectedMethod] = useState()
     const [currentStep, setStep] = useState(1)
     const dispatcher = useDispatch()
@@ -115,7 +116,7 @@ const AddFounds = () => {
             if (result.isConfirmed) {
                 console.log(selectedMethod.payment_method)
                 if (selectedMethod.payment_method === "Payeer") {
-                    fetch('https://utsmm.liara.run/api/payeer-payments', {
+                    fetch(`${BE_URL}/payeer-payments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -134,7 +135,7 @@ const AddFounds = () => {
                             })
                         })
                 } else if (selectedMethod.payment_method === "Cryptomus") {
-                    fetch('https://utsmm.liara.run/api/cryptomus-payments', {
+                    fetch(`${BE_URL}/cryptomus-payments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -153,7 +154,7 @@ const AddFounds = () => {
                             })
                         })
                 } else if (selectedMethod.payment_method === "NowPayments") {
-                    fetch('https://utsmm.liara.run/api/nowpayments-payments', {
+                    fetch(`${BE_URL}/nowpayments-payments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -172,7 +173,7 @@ const AddFounds = () => {
                             })
                         })
                 } else if (selectedMethod.payment_method === "PerfectMoney") {
-                    fetch('https://utsmm.liara.run/api/perfectmoney-payments', {
+                    fetch(`${BE_URL}/perfectmoney-payments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -191,7 +192,7 @@ const AddFounds = () => {
                             })
                         })
                 } else if (selectedMethod.payment_method === "WebMoney") {
-                    fetch('https://utsmm.liara.run/api/webmoney-payments', {
+                    fetch(`${BE_URL}/webmoney-payments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

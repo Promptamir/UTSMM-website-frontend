@@ -8,6 +8,7 @@ import {API} from "../../../lib/envAccess"
 import {useEffect} from "react";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
+import BE_URL from "../../../lib/envAccess";
 
 const FAQsPage = () => {
     const {
@@ -16,7 +17,7 @@ const FAQsPage = () => {
         isLoading
     } = useQuery({
         queryFn: async () => {
-            const {data} = await axios.get('https://utsmm.liara.run/api/faqs')
+            const {data} = await axios.get(`${BE_URL}/faqs`)
             return data.entities.faqs;
         }
     })
@@ -42,31 +43,38 @@ const FAQsPage = () => {
                 </div>
             </div>
 
-            <div className="faqs-items">
-                <div className="col">
-                    {
-                        !isLoading ? data.map((item, index) => {
-                            return <FAQsAccordion
-                                key={index}
-                                headerTitle={item.question}
-                                bodyTitle={item.answer}
-                                isExpanded={item.isExpanded}/>
-                        }) : <h1>Loading ...</h1>
-                    }
-                </div>
-                <div className="col">
-                    {
-                        !isLoading ? data.map((item, index) => {
-                            return <FAQsAccordion
-                                key={index}
-                                headerTitle={item.question}
-                                bodyTitle={item.answer}
-                                isExpanded={item.isExpanded}/>
-                        }) : null
-                    }
-                </div>
-
-            </div>
+            {
+                (isLoading)
+                    ? <h1>Loading ....</h1>
+                    : (isError)
+                        ? <h1>Error</h1>
+                        : (
+                            <div className="faqs-items">
+                                <div className="col">
+                                    {
+                                        data.map((item, index) => {
+                                            return <FAQsAccordion
+                                                key={index}
+                                                headerTitle={item.question}
+                                                bodyTitle={item.answer}
+                                                isExpanded={item.isExpanded}/>
+                                        })
+                                    }
+                                </div>
+                                <div className="col">
+                                    {
+                                        data.map((item, index) => {
+                                            return <FAQsAccordion
+                                                key={index}
+                                                headerTitle={item.question}
+                                                bodyTitle={item.answer}
+                                                isExpanded={item.isExpanded}/>
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        )
+            }
 
             <div className="background">
                 <Lottie

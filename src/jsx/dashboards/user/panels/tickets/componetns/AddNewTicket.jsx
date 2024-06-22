@@ -2,6 +2,7 @@ import { useState } from "react"
 import FiledSet from "../../../../../cutsome-components/Fieldset/FiledSet"
 import { Icon } from "@iconify/react"
 import Swal from "sweetalert2"
+import BE_URL from "../../../../../../lib/envAccess";
 
 const AddNewTicket = () => {
     const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ const AddNewTicket = () => {
             errArray = [];
 
             setLoading(true);
-            fetch('https://utsmm.liara.run/api/tickets', {
+            fetch(`${BE_URL}/tickets`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

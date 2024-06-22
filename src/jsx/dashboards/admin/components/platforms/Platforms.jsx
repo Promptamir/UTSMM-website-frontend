@@ -6,7 +6,7 @@ import TableBody from "../../../../cutsome-components/table/components/TableBody
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader"
 import Property from "../../../../cutsome-components/table/components/Property"
 import { deletE, useFetch } from '../../../../../lib/useFetch'
-import { API, SERVER } from '../../../../../lib/envAccess'
+import BE_URL, { API, SERVER } from '../../../../../lib/envAccess'
 import { Icon } from '@iconify/react'
 import { useDispatch } from 'react-redux'
 import CreatePlatformPopUp from '../../../../pop-ups/CreatePlatformPopUp'
@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 export default function Platforms() {
 
 
-    const [platforms, error, loading, setUrl, refresh] = useFetch('https://utsmm.liara.run/api/platforms')
+    const [platforms, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/platforms`)
     const dispatcher = useDispatch()
     const [customLoading, setCustomLoading] = useState(false);
     const headersList = [
@@ -52,7 +52,7 @@ export default function Platforms() {
 
     const onDeleteClick = (platform) => {
         setCustomLoading(true);
-        fetch(`https://utsmm.liara.run/api/admin/platforms/${platform.id}`, {
+        fetch(`${BE_URL}/admin/platforms/${platform.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

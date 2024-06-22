@@ -7,7 +7,7 @@ import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import { useState } from "react"
 import 'react-quill/dist/quill.snow.css';
 import Swal from "sweetalert2";
-import {SERVER} from "../../lib/envAccess";
+import BE_URL, {SERVER} from "../../lib/envAccess";
 import ReactQuill from "react-quill";
 
 
@@ -70,7 +70,7 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
                 redirect: "follow"
             };
 
-            fetch("https://utsmm.liara.run/api/admin/blogs", requestOptions)
+            fetch(`${BE_URL}/admin/blogs`, requestOptions)
                 .then((response) => response.json())
                 .then((result) => {
                     setLoading(false);
