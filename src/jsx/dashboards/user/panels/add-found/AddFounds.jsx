@@ -217,7 +217,15 @@ const AddFounds = () => {
         });
     }
 
+    function insertStringAtIndex(original, toInsert, index) {
+        return original.slice(0, index) + toInsert + original.slice(index);
+    }
 
+    function formatPaymentContent(string) {
+        const concatedString = insertStringAtIndex(string, '<button type="Submit">Submit</button>', string.length-7);
+        const removedHiddenString = concatedString.replace(/type="hidden"/gi, '')
+        return parse(removedHiddenString);
+    }
 
     return (
         <section className='panel-add-founds'>
@@ -228,7 +236,7 @@ const AddFounds = () => {
                         setWebmoneyModalContent(undefined);
                     }}>
                         <div className={'payment-method-modal-body'}>
-                            {parse(webmoneyModalContent.concat('<button type="Submit">Submit</button>').replace(/type="hidden"/gi, ''))}
+                            {formatPaymentContent(webmoneyModalContent)}
                         </div>
                     </Modal>
                 )
@@ -240,7 +248,7 @@ const AddFounds = () => {
                         setPerfectMoneyContent(undefined);
                     }}>
                         <div className={'payment-method-modal-body'}>
-                            {parse(perfectMoneyContent.concat('<button type="Submit">Submit</button>').replace(/type="hidden"/gi, ''))}
+                            {formatPaymentContent(perfectMoneyContent)}
                         </div>
                     </Modal>
                 )

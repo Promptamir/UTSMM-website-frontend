@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 const Orders = () => {
 
-    const [orders, error, loading] = useFetch(`${BE_URL}/api/orders`)
+    const [orders, error, loading] = useFetch(`${BE_URL}/orders`)
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
 
@@ -30,9 +30,6 @@ const Orders = () => {
         var hours = date.getHours();
         return hours + ':' + minutes;
     }
-
-
-
 
     return (
         <section className="panel-orders">
