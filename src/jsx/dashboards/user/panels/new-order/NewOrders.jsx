@@ -26,7 +26,7 @@ const NewOrders = () => {
     useEffect(() => {
         if (categroy) {
             setServicesLoading(true);
-            fetch(`${BE_URL}/categories/${categroy}/services `, {
+            fetch(`${BE_URL}/categories/${categroy}/services`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,14 +98,6 @@ const NewOrders = () => {
                     onSubmit={(e) => {
                         e.preventDefault();
 
-                        console.log({
-                            "service": selectedService,
-                            "link": link,
-                            "quantity": quantity,
-                            "runs": runs,
-                            "interval": interval
-                        })
-
                         setFormLoading(true);
                         fetch(`${BE_URL}/default-orders`, {
                             method: "POST",
@@ -116,7 +108,7 @@ const NewOrders = () => {
                                 "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                             },
                             body: JSON.stringify({
-                                "service": selectedService,
+                                "service": selectedService.id,
                                 "link": link,
                                 "quantity": quantity,
                                 "runs": runs,
@@ -125,6 +117,7 @@ const NewOrders = () => {
                         })
                             .then((data) => data.json())
                             .then((data) => {
+                                console.log(data);
                                 setFormLoading(false);
                                 if (data.message === "Unauthenticated.") {
                                     Swal.fire({
@@ -137,8 +130,6 @@ const NewOrders = () => {
                                         text: data.message
                                     });
                                 }
-
-                                console.log(data);
                             })
                             .catch(() => {
                                 setFormLoading(false);
@@ -162,7 +153,10 @@ const NewOrders = () => {
                                     ? <h1>Error</h1>
                                     : <Dropdown
                                         onChange={(e) => setCategory(e.value)}
-                                        options={categoriesData.entities.categories.map(item => {return { label: item.title, value: item.id }})}
+                                        options={categoriesData.entities.categories.map(item => {return {
+                                            label: item.title,
+                                            value: item.id
+                                        }})}
                                         placeholder="Select an option"
                                     />
                         }
@@ -179,7 +173,7 @@ const NewOrders = () => {
                                     <Dropdown
                                         onChange={(e) => setSelectedService(e.value)}
                                         disabled={(!categroy)}
-                                        options={services.map(item => {return { label: item.title, value: item.id }})}
+                                        options={services.map(item => {return { label: item.title, value: item }})}
                                         placeholder={(!categroy) ? "Select a category first" : "Select a service"}
                                     />
                                 )
@@ -202,32 +196,41 @@ const NewOrders = () => {
                             onChange={(e) => setQuantity(e.target.value)}
                             type="number"
                             className="input"
-                            min={(servicesObj) ? servicesObj.min : 0}
-                            max={(servicesObj) ? servicesObj.max : 0}
+                            min={(selectedService) ? Number(selectedService.min) : 0}
+                            max={(selectedService) ? Number(selectedService.max) : 0}
                             placeholder={'Type ...'}
                             required
                         />
                     </div>
-                    <div>
-                        <label className={'label'}>Runs</label>
-                        <input
-                            onChange={(e) => setRuns((e.target.value === '') ? undefined : e.target.value)}
-                            type="number"
-                            min={0}
-                            className="input"
-                            placeholder={'Type ...'}
-                        />
-                    </div>
-                    <div>
-                        <label className={'label'}>Interval</label>
-                        <input
-                            onChange={(e) => setInterval((e.target.value === '') ? undefined : e.target.value)}
-                            type="number"
-                            min={0}
-                            className="input"
-                            placeholder={'Type ...'}
-                        />
-                    </div>
+                    {
+                        (!selectedService)
+                            ? undefined
+                            : (selectedService.dripfeedable === "1")
+                                ? (
+                                    <>
+                                        <div>
+                                            <label className={'label'}>Runs</label>
+                                            <input
+                                                onChange={(e) => setRuns((e.target.value === '') ? undefined : e.target.value)}
+                                                type="number"
+                                                min={0}
+                                                className="input"
+                                                placeholder={'Type ...'}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className={'label'}>Interval</label>
+                                            <input
+                                                onChange={(e) => setInterval((e.target.value === '') ? undefined : e.target.value)}
+                                                type="number"
+                                                min={0}
+                                                className="input"
+                                                placeholder={'Type ...'}
+                                            />
+                                        </div>
+                                    </>
+                                ) : false
+                    }
                     <button disabled={formLoading} className={'submit-btn'}>Submit</button>
                 </form>
             </div>
