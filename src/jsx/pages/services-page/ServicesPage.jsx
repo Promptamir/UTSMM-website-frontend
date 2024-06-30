@@ -9,7 +9,7 @@ import puzzleMan from "../../../images/services-page/services/search/With Puzzle
 
 
 // Search
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Lottie from 'react-lottie-player';
 
 
@@ -24,9 +24,8 @@ import ItemHeader from '../../cutsome-components/table/components/ItemHeader';
 import TableBody from '../../cutsome-components/table/components/TableBody';
 import Row from '../../cutsome-components/table/components/Row';
 import Property from '../../cutsome-components/table/components/Property';
-import { useEffect } from 'react';
 import { useFetch } from '../../../lib/useFetch';
-import { API, SERVER } from '../../../lib/envAccess';
+import BE_URL, { API, SERVER } from '../../../lib/envAccess';
 import TableCategory from '../../cutsome-components/table/components/TableCategory';
 import Select from 'react-select'
 import PopularServices from './component/PopularServices';
@@ -45,7 +44,6 @@ const headerList = [
     "Min order",
     "Max order",
     "Avg. Time",
-    "Details"
 ]
 
 
@@ -55,213 +53,39 @@ servicesTextuareBackground.fr = 5
 
 
 const ServicesPage = () => {
+    // Fetching data
+    const [categoryFetch, categoryFetchError, categoryFetchLoading] = useFetch(`${BE_URL}/categories`);
 
+    // Defining states of component
+    const [category, setCategory] = useState(undefined);
+    const [service, setService] = useState(undefined);
+    const [serviceFetch, setServiceFetch] = useState(undefined);
+    const [serviceFetchLoading, setServiceFetchLoading] = useState(false);
+    const [serviceFetchError, setServiceFetchError] = useState(undefined);
 
-
-    const [
-        servicesData,
-        servicesError,
-        servicesLoading,
-        servicesSetUrl,
-        servicesRefresh
-    ] = useFetch(
-        API.PUBLIC.SERVICES.GET
-    )
-
-
-    const [
-        platformsData,
-        platformsError,
-        platformsLoading,
-        platformsSetUrl,
-        platformsRefresh
-    ] = useFetch(
-        API.PUBLIC.PLATFORMS.GET
-    )
-
-
-
-
-
-
-
-
-
-    const [sortedServices, setSortedServices] = useState([])
-    const [sortedCategories, setSortedCategories] = useState([])
-    const [visibleCategories, setVisibleCategoires] = useState([])
-
-
-
-
-    const [selectedPlatform, setSelectedPaltfrom] = useState(platformsData[0])
-    const [selectedCategory, setSelectedCategory] = useState()
-
-
-
+    // Using useEffect to fetch services
     useEffect(() => {
-        setSelectedPaltfrom(platformsData[0])
-    }, [platformsData])
-
-    useEffect(() => {
-        const catName = selectedPlatform?.name.toLowerCase().trim()
-
-
-
-        const temp = servicesData.filter(item => {
-            const targetCategory = item.category.toLowerCase().trim()
-
-            if (targetCategory.includes(catName)) {
-                return item
-            }
-        })
-
-
-        const temCats = temp.map(item => {
-            return item.category
-        })
-
-
-        const result = [...new Set(temCats)]
-
-
-        const tempSortedCategories = result.map(item => {
-            return {
-                label: item,
-                value: item
-            }
-        })
-
-        tempSortedCategories.unshift({
-            label: "All Categories",
-            value: "All Categories"
-        })
-
-        setSortedCategories(tempSortedCategories)
-
-
-        const final = result.map(cat => {
-
-            const temp =
-                servicesData.filter(ser => {
-                    return ser.category === cat
+        if (category) {
+            setServiceFetchLoading(true);
+            fetch(`${BE_URL}/categories/${category}/services`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    setServiceFetchLoading(false);
+                    setServiceFetch(data.entities.services);
                 })
-
-            return {
-                category: cat,
-                services: temp
-            }
-        })
-
-
-        setSortedServices(final)
-
-
-    }, [selectedPlatform, servicesData])
-
-    useEffect(() => {
-
-
-        let catName = selectedCategory?.value
-        if (catName === "All Categories") {
-            const catName = selectedPlatform?.name.toLowerCase().trim()
-
-
-
-            const temp = servicesData.filter(item => {
-                const targetCategory = item.category.toLowerCase().trim()
-
-                if (targetCategory.includes(catName)) {
-                    return item
-                }
-            })
-
-
-            const temCats = temp.map(item => {
-                return item.category
-            })
-
-
-            const result = [...new Set(temCats)]
-
-
-            const tempSortedCategories = result.map(item => {
-                return {
-                    label: item,
-                    value: item
-                }
-            })
-
-            tempSortedCategories.unshift({
-                label: "All Categories",
-                value: "All Categories"
-            })
-
-            setSortedCategories(tempSortedCategories)
-
-
-            const final = result.map(cat => {
-
-                const temp =
-                    servicesData.filter(ser => {
-                        return ser.category === cat
-                    })
-
-                return {
-                    category: cat,
-                    services: temp
-                }
-            })
-
-
-            setSortedServices(final)
-            return
+                .catch(() => {
+                    setServiceFetchLoading(false);
+                    setServiceFetchError('There was an error while fetching the data')
+                })
         }
-
-        const temp = servicesData?.filter(item => {
-            return item.category.includes(catName)
-        })
-
-        setSortedServices([
-            {
-                category: catName,
-                services: temp
-            }
-        ])
-
-
-    }, [selectedCategory])
-
-
-
-
-
-    const onSearchInputChange = (e) => {
-        const value = e.target.value.toLowerCase().trim()
-        const temp = sortedServices.filter(record => {
-            const category = record.category
-            const services = record.services
-            const findServices = services.filter(service => {
-                const serviceName = service.name.toLowerCase().trim()
-                return serviceName.includes(value)
-            })
-
-            if (findServices.length > 0) {
-                return record
-            }
-
-        })
-
-        setVisibleCategoires(temp)
-    }
-
-
-    const onPlatformClick = (platform) => {
-        setSelectedPaltfrom(platform)
-    }
-
-
-
+    }, [category]);
 
     const customStyles = {
         container: provided => ({
@@ -271,14 +95,10 @@ const ServicesPage = () => {
     };
 
 
-
-
     return (
         <main className="services-page">
             <section className="poster">
-
                 <div className="left">
-                 
                     <img src={window.location.origin + "/8.svg"} alt="" />
                 </div>
 
@@ -313,96 +133,93 @@ const ServicesPage = () => {
                 </div>
 
             </section>
-
-
-            <PopularServices platforms={platformsData} />
-
-
-            <section className="search">
+            <PopularServices />
+            <section className="search" style={{marginTop: '20px'}}>
                 <form className="right" action="#">
-                    <div className="form-search">
-                        <Icon icon="iconamoon:search" />
-                        <input
-                            onChange={onSearchInputChange}
-                            type="text"
-                            name="search"
-                            placeholder="Instagram services...."
-                        />
-
-
+                    <div className="form-select-box">
+                        {
+                            (categoryFetchLoading)
+                                ? <h1>Loading ...</h1>
+                                : (categoryFetchError)
+                                    ? <h1>There was an error while fetching the data</h1>
+                                    : (
+                                        <Select
+                                            styles={customStyles}
+                                            placeholder={"------- Select Category ------- "}
+                                            isSearchable={true}
+                                            onChange={(item) => {
+                                                setCategory(item.value);
+                                                setServiceFetch(undefined);
+                                                setService(undefined);
+                                            }}
+                                            options={categoryFetch.entities.categories.map(item => {
+                                                return {
+                                                    value: item.id,
+                                                    label: item.title
+                                                };
+                                            })}
+                                        />
+                                    )
+                        }
                     </div>
                     <div className="form-select-box">
-                        <Select
-                            styles={customStyles}
-
-                            options={
-                                sortedCategories
-                            }
-                            placeholder={
-                                "------- Select Category ------- "}
-                            isSearchable={true}
-                            onChange={(e) => { setSelectedCategory(e) }}
-                            defaultValue={sortedCategories[0]}
-                        >
-                        </Select>
+                        {
+                            (serviceFetchLoading)
+                                ? <h1>Loading</h1>
+                                : (serviceFetchError)
+                                    ? <h1>{serviceFetchError}</h1>
+                                    : (serviceFetch === undefined)
+                                        ? false
+                                        : <Select
+                                                styles={customStyles}
+                                                placeholder={"------- Select Services ------- "}
+                                                isSearchable={true}
+                                                options={serviceFetch.map(item => {
+                                                    return {
+                                                        value: item.id,
+                                                        label: item.title
+                                                    };
+                                                })}
+                                                onChange={(item) => setService(item.value)}
+                                            />
+                        }
                     </div>
                 </form>
             </section>
 
             <section className="social-icons">
-
-
-
-                {
-                    !platformsLoading ? platformsData.map((platform, index) => {
-
-                        return (
-
-                            <div
-                                className={`item ${platform === selectedPlatform}`}
-                                key={platform._id}
-                                onClick={() => { onPlatformClick(platform) }}
-                            >
-                                <div
-                                    className="item-header">
-                                    <img src={SERVER.BASE_URL + platform.image} />
-                                </div>
-                                <div
-                                    className="item-body">
-                                    {platform.name}
-                                </div>
-                            </div>
-                        )
-
-                    }) : <h1>Loading...</h1>
-                }
-
-
-
+                {/*<div*/}
+                {/*    className={`item ${platform === selectedPlatform}`}*/}
+                {/*    key={platform._id}*/}
+                {/*    onClick={() => { onPlatformClick(platform) }}*/}
+                {/*>*/}
+                {/*    <div*/}
+                {/*        className="item-header">*/}
+                {/*        <img src={SERVER.BASE_URL + platform.image} />*/}
+                {/*    </div>*/}
+                {/*    <div*/}
+                {/*        className="item-body">*/}
+                {/*        {platform.name}*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </section>
-
             <section className='avilable-services'>
-                <Table
-                    columnsStyle={"5rem 1fr 5rem 5rem 5rem 5rem 5rem"}
-                >
-                    <TableHeader>
-                        {headerList.map((item, index) => {
-                            return <ItemHeader key={index}>
-                                {item}
-                            </ItemHeader>
-                        })}
-                    </TableHeader>
-
-                    <TableBody>
-
-                        {
-                            sortedServices?.map((cat, index) => {
-                                return <TableCategory
-                                    key={index}>
-                                    <h1>{cat.category}</h1>
-                                    {
-                                        cat?.services?.map((service) => {
-                                            return <Row
+                {
+                    (service === undefined)
+                        ? false
+                        : <Table columnsStyle={"5rem 1fr 5rem 5rem 5rem 5rem 5rem"}>
+                            <TableHeader>
+                                {headerList.map((item, index) => {
+                                    return <ItemHeader key={index}>
+                                        {item}
+                                    </ItemHeader>
+                                })}
+                            </TableHeader>
+                            <TableBody>
+                                {
+                                    serviceFetch.filter(item => item.id === service).map((cat, index) => {
+                                        return <TableCategory key={index}>
+                                            <Row
                                                 headerList={headerList}
                                                 key={service.service} >
                                                 <Property >
@@ -410,7 +227,7 @@ const ServicesPage = () => {
                                                         {headerList[0]}
                                                     </div>
                                                     <div className="property-body">
-                                                        {service.service}
+                                                        {cat.id}
                                                     </div>
                                                 </Property>
                                                 <Property >
@@ -419,7 +236,7 @@ const ServicesPage = () => {
                                                     </div>
                                                     <div className="property-body long">
                                                         <p>
-                                                            {service.name}
+                                                            {cat.title}
                                                         </p>
                                                     </div>
                                                 </Property>
@@ -428,8 +245,7 @@ const ServicesPage = () => {
                                                         {headerList[2]}
                                                     </div>
                                                     <div className="property-body">
-                                                        ${service.rate}
-
+                                                        ${cat.rate}
                                                     </div>
                                                 </Property>
                                                 <Property >
@@ -437,8 +253,7 @@ const ServicesPage = () => {
                                                         {headerList[3]}
                                                     </div>
                                                     <div className="property-body">
-                                                        {service.min}
-
+                                                        {cat.min}
                                                     </div>
                                                 </Property>
                                                 <Property >
@@ -446,8 +261,7 @@ const ServicesPage = () => {
                                                         {headerList[4]}
                                                     </div>
                                                     <div className="property-body">
-                                                        {service.max}
-
+                                                        {cat.max}
                                                     </div>
                                                 </Property>
                                                 <Property >
@@ -458,34 +272,14 @@ const ServicesPage = () => {
                                                         N/A
                                                     </div>
                                                 </Property>
-                                                <Property >
-                                                    <div className="property-header">
-                                                        {headerList[6]}
-                                                    </div>
-                                                    <div className="property-body">
-                                                        Controlls
-                                                    </div>
-                                                </Property>
                                             </Row>
-                                        })
-                                    }
-
-                                </TableCategory>
-                            })
-                        }
-
-
-
-
-
-                    </TableBody>
-
-
-                </Table>
-
-
+                                        </TableCategory>
+                                    })
+                                }
+                            </TableBody>
+                        </Table>
+                }
             </section>
-
         </main>
     )
 }
