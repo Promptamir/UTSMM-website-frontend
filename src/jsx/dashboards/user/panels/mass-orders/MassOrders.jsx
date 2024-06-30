@@ -49,8 +49,6 @@ const MassOrders = () => {
                         text: data.message
                     });
                 }
-
-                console.log(data);
             })
             .catch(() => {
                 setFormLoading(false);
@@ -60,7 +58,6 @@ const MassOrders = () => {
                 })
             })
     }
-
 
 
     return (

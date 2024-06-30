@@ -85,9 +85,9 @@ const Orders = () => {
                                     <div className="order-detail">
                                         <div className="header">
                                             <h1>
-                                <span>
-                                    #{selectedOrder?.service?.id}
-                                </span>
+                                                <span>
+                                                    #{selectedOrder?.service?.id}
+                                                </span>
                                             </h1>
                                             <p>
                                                 {selectedOrder?.service?.title}
@@ -189,7 +189,7 @@ const Orders = () => {
                                                 </div>
                                             </div>
                                             {
-                                                (selectedOrder.service.refillable === 1)
+                                                (selectedOrder.refillable === "1")
                                                     ? (
                                                         <button
                                                             disabled={refileLoading}
