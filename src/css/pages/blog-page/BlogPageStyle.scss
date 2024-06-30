@@ -22,6 +22,11 @@ $primaryColor: rgb(49, 101, 243);
   font-weight: 700;
   margin: 10px 0;
   color: black;
+  display: block;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 16px;
 }
 
@@ -30,12 +35,18 @@ $primaryColor: rgb(49, 101, 243);
   margin-bottom: 30px;
   color: black;
   font-size: 14px;
+  display: block;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .blog-holder {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  overflow: hidden;
   gap: 20px;
 }
 
@@ -68,12 +79,5 @@ $primaryColor: rgb(49, 101, 243);
   &:hover {
     background-color: $primaryColor;
     color: whitesmoke;
-  }
-}
-
-// Media querys
-@media screen and (max-width: 1024px) {
-  .blog-holder {
-    grid-template-columns: repeat(1, 1fr);
   }
 }

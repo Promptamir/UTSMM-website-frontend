@@ -17,7 +17,7 @@ export default function BlogDetailPage() {
     isError
   } = useQuery({
     queryFn: async () => {
-      const {data} = await axios.get(`${BE_URL}/api/blogs/${lastRoute}`);
+      const {data} = await axios.get(`${BE_URL}/blogs/${lastRoute}`);
       return data.entities.blog;
     }
   });
@@ -42,8 +42,7 @@ export default function BlogDetailPage() {
                                   }
                                 </div>
                             }
-                            <img className="poster" src={`https://utsmm.liara.run/${data.image}`}
-                                 alt={data.short_description}/>
+                            <img className="poster" src={data.image} alt={data.short_description}/>
                             <h1 className={'title'}>{data.title}</h1>
                             <p className={'content'}>{data.short_description}</p>
                           </div>

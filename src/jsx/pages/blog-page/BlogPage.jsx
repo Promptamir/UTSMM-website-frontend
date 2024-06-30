@@ -1,27 +1,16 @@
 import Lottie from "react-lottie-player"
 import blogsBackgroud from "../../../animations/main-page/blogs-wave.json"
-import axios from "axios";
-import {useQuery} from "@tanstack/react-query";
-import {Link} from "react-router-dom";
 import '../../../css/pages/blog-page/BlogPageStyle.css';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import BE_URL from '../../../lib/envAccess';
+import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
+import ResponsivePagination from "react-responsive-pagination";
+import {useFetch} from "../../../lib/useFetch";
+import {Link} from "react-router-dom";
 
 const BlogPage = () => {
-    const [paginationNumber, setPaginationNumber] = useState(1);
-
-    const {
-        data,
-        isLoading,
-        isError,
-        refetch,
-    } = useQuery({
-        queryKey: ['Blog'],
-        queryFn: async () => {
-            const {data} = await axios.get(`${BE_URL}/blogs?page=${paginationNumber}`);
-            return data.entities.blogs;
-        }
-    });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/blogs?page=${currentPage}`);
 
     return (
         <main className="blog-page">
@@ -49,17 +38,37 @@ const BlogPage = () => {
             <div>
                 <div className={'blog-holder'}>
                     {
-                        (isLoading)
+                        (loading)
                             ? <h1>Loading</h1>
-                            : (isError)
+                            : (error)
                                 ? <h1>An Error Has Happened</h1>
-                                : data.slice((paginationNumber === 1) ? 0 : paginationNumber, 10*paginationNumber).map((item, index) => (
+                                : data.entities.blogs.map((item, index) => (
                                     <Link to={`/blog/${item.slug}`} key={index}>
-                                        <img className={'blog-img'} src={`https://utsmm.liara.run/${item.image}`} alt={item.short_description} />
+                                        <img className={'blog-img'} src={item.image} alt={item.title} />
                                         <h1 className={'blog-title'}>{item.title}</h1>
                                         <p className={'blog-p'}>{item.short_description}</p>
                                     </Link>
                                 ))
+                    }
+                    {
+                        (loading)
+                            ? <h1>Loading...</h1>
+                            : (error)
+                                ? <h1>Error</h1>
+                                : (data.entities.count > 15)
+                                    ? (
+                                        <TablePaginations>
+                                            <ResponsivePagination
+                                                current={currentPage}
+                                                total={Math.round(data.entities.count/10)}
+                                                onPageChange={(pageNumber) => {
+                                                    setCurrentPage(pageNumber);
+                                                    setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
+                                                    refetch();
+                                                }}
+                                            />
+                                        </TablePaginations>
+                                    ) : false
                     }
                 </div>
             </div>
