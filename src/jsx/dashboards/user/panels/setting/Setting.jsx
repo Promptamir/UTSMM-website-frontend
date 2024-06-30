@@ -10,7 +10,6 @@ export default function Setting() {
     const [succses, setSuccses] = useState('');
     const [loading, setLoading] = useState('');
 
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     // Returning JSX
@@ -23,33 +22,26 @@ export default function Setting() {
                     setSuccses('');
                     setLoading(true);
 
-                    fetch(`${BE_URL}/reset-password`, {
-                        method: "POST",
+                    fetch(`${BE_URL}/user/password`, {
+                        method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
                             "Accept" : "application/json",
-                            "X-Requested-With" : "XMLHttpRequest"
+                            "X-Requested-With" : "XMLHttpRequest",
+                            "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
                         },
                         body: JSON.stringify({
-                            "token": sessionStorage.getItem('token'),
-                            "email": email,
                             "password": password
                         })
                     })
                         .then((data) => data.json())
-                        .then((data) => {
-                            setSuccses('')
-                        })
+                        .then((data) => setSuccses(data.entities.message))
                         .catch(() => {
                             setLoading(false);
                             setError('There was an unexpected error. Please try again.');
                         })
                 }} action="#" className={'dashboard-form'}>
                     <h1 className={'dashboard-title'}>Reset password</h1>
-                    <div>
-                        <label className={'dashboard-form-label'} htmlFor="email">Email</label>
-                        <input onChange={(event) => setEmail(event.target.value)} required type="email" placeholder={'Example : x@gmail.com'} className={'dashboard-form-input'}/>
-                    </div>
                     <div>
                         <label className={'dashboard-form-label'} htmlFor="password">New password</label>
                         <input onChange={(event) => setPassword(event.target.value)} required type="password" placeholder={'Example: xxxxxxxx'} className={'dashboard-form-input'}/>
