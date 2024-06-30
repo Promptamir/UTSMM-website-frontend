@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
 const NewOrders = () => {
-    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
     const [categoriesData, categoriesError, categoriesLoading] = useFetch(`${BE_URL}/categories`);
     const [services, setServices] = useState([]);
     const [servicesLoading, setServicesLoading] = useState(false);
@@ -97,6 +97,14 @@ const NewOrders = () => {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
+
+                        console.log({
+                            "service": selectedService,
+                            "link": link,
+                            "quantity": quantity,
+                            "runs": runs,
+                            "interval": interval
+                        })
 
                         setFormLoading(true);
                         fetch(`${BE_URL}/default-orders`, {

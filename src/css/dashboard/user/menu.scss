@@ -1,3 +1,74 @@
+// Variables
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.payment-method-modal-body button {
+  background-color: $ColorPrimary;
+  padding: 10px;
+  border-radius: 20px;
+  display: block;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 20px;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 20%;
+  }
+}
+
+.payment-method-modal-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  & input {
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px;
+    border: 1px solid $ColorPrimary;
+    transition: 500ms;
+
+    &:focus {
+      background-color: $ColorPrimary;
+      color: white;
+    }
+
+    &:focus::placeholder {
+      color: white;
+    }
+
+    &::placeholder {
+      color: $ColorPrimary;
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+}
+
+.form-input-error {
+  background-color: rgba(255, 0, 0, .2);
+  color: red;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.form-input-succses {
+  background-color: rgba(0, 255, 13, 0.2);
+  color: rgba(0,255,13);
+  border: 1px solid rgba(0,255,13);
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .log-out {
   display: block;
   background-color: red;

@@ -13,6 +13,8 @@ import SelectAmountOfMoney from '../../../../pop-ups/SelectAmountOfMoney'
 import {useFetch} from '../../../../../lib/useFetch'
 import Swal from "sweetalert2"
 import BE_URL from "../../../../../lib/envAccess";
+import parse from 'html-react-parser';
+import Modal from "../../../../pop-ups/modal";
 
 const AddFounds = () => {
     const [paymentMethods, methodError, methodLoading, setUrl, refreshData] = useFetch(`${BE_URL}/payments?page=1`);
@@ -24,6 +26,11 @@ const AddFounds = () => {
         fee: 0,
         total: 0
     })
+
+    const [webmoneyModalOpened, setWebmoneyModalOpened] = useState(false);
+    const [webmoneyModalContent, setWebmoneyModalContent] = useState(undefined);
+    const [perfectMoneyOpened, setPerfectMoneyOpened] = useState(false);
+    const [perfectMoneyContent, setPerfectMoneyContent] = useState(undefined);
 
     const openSelectPaymentPopup = () => {
 
@@ -62,7 +69,6 @@ const AddFounds = () => {
         }))
     }
 
-
     const stepIcon = (counter) => {
         if (counter < currentStep) {
             return <Icon icon="flat-color-icons:ok" />
@@ -72,8 +78,6 @@ const AddFounds = () => {
 
 
     }
-
-
     const isCompleted = (stepIndex) => {
         if (stepIndex < currentStep) {
             return "completed"
@@ -82,8 +86,6 @@ const AddFounds = () => {
             return ""
         }
     }
-
-
     const isCurrentStep = (stepIndex) => {
         if (stepIndex === currentStep) {
             return "currnet-step"
@@ -91,17 +93,12 @@ const AddFounds = () => {
             return ""
         }
     }
-
-
     useEffect(() => {
 
         if (selectedMethod) setStep(2)
         if (amountOfMoney.total > 0) setStep(3)
 
     }, [selectedMethod, amountOfMoney])
-
-
-
 
     async function handlePayButtonSubmit() {
         Swal.fire({
@@ -114,7 +111,6 @@ const AddFounds = () => {
             confirmButtonText: "Yes, continue"
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(selectedMethod.payment_method)
                 if (selectedMethod.payment_method === "Payeer") {
                     fetch(`${BE_URL}/payeer-payments`, {
                         method: "POST",
@@ -184,7 +180,10 @@ const AddFounds = () => {
                         body: JSON.stringify({"amount": amountOfMoney.total})
                     })
                         .then((data) => data.json())
-                        .then((data) => console.log(data))
+                        .then((data) => {
+                            setPerfectMoneyContent(data.entities.payment_form);
+                            setPerfectMoneyOpened(true);
+                        })
                         .catch(() => {
                             Swal.fire({
                                 icon: 'error',
@@ -203,7 +202,10 @@ const AddFounds = () => {
                         body: JSON.stringify({"amount": amountOfMoney.total})
                     })
                         .then((data) => data.json())
-                        .then((data) => console.log(data))
+                        .then((data) => {
+                            setWebmoneyModalContent(data.entities.payment_form);
+                            setWebmoneyModalOpened(true);
+                        })
                         .catch(() => {
                             Swal.fire({
                                 icon: 'error',
@@ -219,6 +221,30 @@ const AddFounds = () => {
 
     return (
         <section className='panel-add-founds'>
+            {
+                webmoneyModalContent && (
+                    <Modal isOpened={webmoneyModalOpened} title={'Web money'} closeFn={() => {
+                        setWebmoneyModalOpened(false);
+                        setWebmoneyModalContent(undefined);
+                    }}>
+                        <div className={'payment-method-modal-body'}>
+                            {parse(webmoneyModalContent.concat('<button type="Submit">Submit</button>').replace(/type="hidden"/gi, ''))}
+                        </div>
+                    </Modal>
+                )
+            }
+            {
+                perfectMoneyContent && (
+                    <Modal isOpened={perfectMoneyOpened} title={'Perfect money'} closeFn={() => {
+                        setPerfectMoneyOpened(false);
+                        setPerfectMoneyContent(undefined);
+                    }}>
+                        <div className={'payment-method-modal-body'}>
+                            {parse(perfectMoneyContent.concat('<button type="Submit">Submit</button>').replace(/type="hidden"/gi, ''))}
+                        </div>
+                    </Modal>
+                )
+            }
             <div className="road-map">
                 <div className={`item ${isCurrentStep(1)}
                  ${isCompleted(1)}`}>

@@ -46,7 +46,10 @@ const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSe
                     Select Payment Method
                 </h1>
             </div>
-            <div className="pop-up-body">
+            <div className="pop-up-body" style={{
+                height: '25vh',
+                overflow: 'auto'
+            }}>
                 {
                     (loading)
                         ? <h1>Loading</h1>

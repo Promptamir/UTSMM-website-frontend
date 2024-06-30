@@ -82,7 +82,7 @@ ChartJS.defaults.plugins.legend.align = "start"
 
 
 const Statics = () => {
-    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
     const [savedServicesData, savedServicesError, savedServicesLoading] = useFetch(`${BE_URL}/user/favorite-services`);
 
     return (
