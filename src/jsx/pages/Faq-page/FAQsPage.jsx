@@ -57,7 +57,7 @@ const FAQsPage = () => {
                                                 key={index}
                                                 headerTitle={item.question}
                                                 bodyTitle={item.answer}
-                                                isExpanded={item.isExpanded}/>
+                                                isExpanded={false}/>
                                         })
                                     }
                                 </div>
@@ -68,7 +68,7 @@ const FAQsPage = () => {
                                                 key={index}
                                                 headerTitle={item.question}
                                                 bodyTitle={item.answer}
-                                                isExpanded={item.isExpanded}/>
+                                                isExpanded={false}/>
                                         })
                                     }
                                 </div>
