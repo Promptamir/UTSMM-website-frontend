@@ -23,7 +23,7 @@ import BE_URL from "../../../../../lib/envAccess";
 
 
 export default function Blogs() {
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
 
 
     return (

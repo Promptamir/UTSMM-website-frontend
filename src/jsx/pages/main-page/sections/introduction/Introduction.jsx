@@ -38,7 +38,7 @@ import BE_URL from "../../../../../lib/envAccess";
 
 
 export default function Introduction() {
-    const [data, error, loadingAPI, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
+    const [data, error, loadingAPI, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
     const [currentSelected, setCurrentSelected] = useState({
         svg: itemOne,
         title: "Users",

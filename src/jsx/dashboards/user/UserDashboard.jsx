@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BE_URL from "../../../lib/envAccess";
 import Statics from "./panels/statics/Statics"
 import PanelsItem from "./Components/PanelsItem"
 import { Icon } from "@iconify/react"
@@ -220,7 +221,7 @@ const UserDashboard = (
                         setError('');
                         setloading(true);
 
-                        fetch('https://utsmm.liara.run/api/auth-tokens', {
+                        fetch(`${BE_URL}/current-auth-token`, {
                             method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
@@ -236,7 +237,8 @@ const UserDashboard = (
                                 sessionStorage.removeItem('token');
                                 navigate('/');
                             })
-                            .catch(() => {
+                            .catch((err) => {
+                                console.log(err);
                                 setloading(false);
                                 setError('There was an unexpected error. Please try again.');
                             })

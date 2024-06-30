@@ -24,7 +24,7 @@ export default function Faqs() {
     faqsBackground.fr = 5
     faqsFormQuestion.fr = 30
 
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index-page-data`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
 
     return (
 
