@@ -15,7 +15,7 @@ import { showError, showSuccess } from "../../../../../lib/alertHandler"
 import Swal from "sweetalert2"
 
 export default function Faqs() {
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/api/faqs`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/faqs`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headerList = [
@@ -57,6 +57,7 @@ export default function Faqs() {
                 })
                     .then((data) => data.json())
                     .then(resp => {
+                        console.log(resp);
                         setCustomLoading(false);
                         if (resp.message === "Unauthenticated.") {
                             Swal.fire({
