@@ -14,7 +14,7 @@ import BE_URL from "../../../../../lib/envAccess";
 
 export default function Dashboard() {
     // Getting data from database
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index-page-data`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index`);
 
     return (
         <div className="admin-dashboard-panel">

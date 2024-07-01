@@ -147,11 +147,11 @@
 }
 .admin-dashboard .content .admin-dashboard-panel .quick-view {
   display: grid;
-  grid-template-columns: repeat(4, 15rem);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+  width: 100%;
   background-color: #3165f3;
-  padding: 2em;
-  padding-top: 0;
+  padding: 0 2em 2em 2em;
   border-radius: 0 0 1rem 1rem;
   overflow: auto;
 }
