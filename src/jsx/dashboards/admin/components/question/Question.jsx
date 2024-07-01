@@ -75,7 +75,6 @@ export default function Question() {
                 })
                     .then((data) => data.json())
                     .then(resp => {
-                        console.log(resp)
                         setCustomLoading(false);
                         if (resp.message === "Unauthenticated.") {
                             Swal.fire({
@@ -85,7 +84,7 @@ export default function Question() {
                         } else {
                             Swal.fire({
                                 icon: 'success',
-                                text: 'The question is answered now'
+                                text: resp.message
                             });
 
                             refresh();

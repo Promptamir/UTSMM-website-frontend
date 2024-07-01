@@ -164,7 +164,7 @@ export default function ExternalReviews() {
                                                                 <div className="property-body">
                                                                     <Switch
                                                                         onChange={(state) => {handleOnToggleClick(review, state)}}
-                                                                        checked={review.status === 1}
+                                                                        checked={review.status === "1"}
                                                                     />
                                                                 </div>
                                                             </Property>
