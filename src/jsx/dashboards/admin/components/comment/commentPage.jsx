@@ -203,7 +203,7 @@ export default function CommentPage() {
                                             </div>
                                             <div className="property-body">
                                                 <Switch
-                                                    checked={record.status === 1}
+                                                    checked={record.status === "1"}
                                                     onChange={() => {
                                                         onPublishedClick(record, (record.status !== 1))
                                                     }}/>
@@ -215,7 +215,7 @@ export default function CommentPage() {
                                             </div>
                                             <div className="property-body">
                                                 <Switch
-                                                    checked={record.show_on_main_page === 1}
+                                                    checked={record.show_on_main_page === "1"}
                                                     onChange={() => {
                                                         onPublishedClickMain(record, (record.show_on_main_page !== 1))
                                                     }}/>
