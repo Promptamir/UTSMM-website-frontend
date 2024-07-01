@@ -32,7 +32,7 @@ export default function NewCatModal({setCustomLoading, refresh}) {
                 },
                 body: JSON.stringify({
                     "remote_category_title": title,
-                    "local_category_id ": idState
+                    "local_category_id": idState
                 })
             })
                 .then((data) => data.json())
@@ -77,7 +77,7 @@ export default function NewCatModal({setCustomLoading, refresh}) {
                     </Legend>
                     <FieldBody>
                         <input
-                            minLength={5}
+                            minLength={3}
                             maxLength={255}
                             required
                             onChange={(event) => setTitle(event.target.value)}

@@ -126,94 +126,92 @@ export default function Categories() {
                     </TableHeader>
                     <TableBody>
                         {
-                            (!loading && !error) ? data?.entities.categories.map(category => {
-                                    return <Row key={category.id}>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[0]}
-                                            </div>
-                                            <div className="property-body">
-                                                {category.id}
-                                            </div>
-                                        </Property>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[1]}
-                                            </div>
-                                            <div className="property-body">
-                                                {category.title}
-                                            </div>
-                                        </Property>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[2]}
-                                            </div>
-                                            <div className="property-body">
-                                                {category.platform}
-                                            </div>
-                                        </Property>
-                                        <Property />
-                                        <Property />
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[5]}
-                                            </div>
-                                            <div className="property-body">
-                                                <button onClick={() => handleInfoNewCatClick(category.id)} style={{
-                                                    display: 'block',
-                                                    borderRadius: '45rem',
-                                                    backgroundColor: 'blueviolet',
-                                                    color: 'white',
-                                                    paddingBlock: '10px',
-                                                    paddingInline: '15px'
-                                                }}>
-                                                    <Icon icon="material-symbols:info"/>
-                                                    Info
-                                                </button>
-                                            </div>
-                                        </Property>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[6]}
-                                            </div>
-                                            <div className="property-body">
-                                                <button onClick={() => handleOnDelete(category.id)} style={{
-                                                    display: 'block',
-                                                    borderRadius: '45rem',
-                                                    backgroundColor: 'red',
-                                                    color: 'white',
-                                                    paddingBlock: '10px',
-                                                    paddingInline: '15px',
-                                                    marginBottom: '10px'
-                                                }}>
-                                                    <Icon icon="fluent:delete-48-filled"/>
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    onClick={() => handleEditNewCatClick(category.id)}
-                                                    style={{
+                            (loading)
+                                ? <h1>Loading</h1>
+                                : (error)
+                                    ? <h1>There was an error while fetching the data</h1>
+                                    : data?.entities.categories.map(category => {
+                                        return <Row key={category.id}>
+                                            <Property>
+                                                <div className="property-header">
+                                                    {headerList[0]}
+                                                </div>
+                                                <div className="property-body">
+                                                    {category.id}
+                                                </div>
+                                            </Property>
+                                            <Property>
+                                                <div className="property-header">
+                                                    {headerList[1]}
+                                                </div>
+                                                <div className="property-body">
+                                                    {category.title}
+                                                </div>
+                                            </Property>
+                                            <Property>
+                                                <div className="property-header">
+                                                    {headerList[2]}
+                                                </div>
+                                                <div className="property-body">
+                                                    {category.platform_id}
+                                                </div>
+                                            </Property>
+                                            <Property />
+                                            <Property />
+                                            <Property>
+                                                <div className="property-header">
+                                                    {headerList[5]}
+                                                </div>
+                                                <div className="property-body">
+                                                    <button onClick={() => handleInfoNewCatClick(category.id)} style={{
                                                         display: 'block',
                                                         borderRadius: '45rem',
-                                                        backgroundColor: 'orange',
+                                                        backgroundColor: 'blueviolet',
+                                                        color: 'white',
+                                                        paddingBlock: '10px',
+                                                        paddingInline: '15px'
+                                                    }}>
+                                                        <Icon icon="material-symbols:info"/>
+                                                        Info
+                                                    </button>
+                                                </div>
+                                            </Property>
+                                            <Property>
+                                                <div className="property-header">
+                                                    {headerList[6]}
+                                                </div>
+                                                <div className="property-body">
+                                                    <button onClick={() => handleOnDelete(category.id)} style={{
+                                                        display: 'block',
+                                                        borderRadius: '45rem',
+                                                        backgroundColor: 'red',
                                                         color: 'white',
                                                         paddingBlock: '10px',
                                                         paddingInline: '15px',
-                                                    }}
-                                                >
-                                                    <Icon icon="bxs:edit"/>
-                                                    Edit
-                                                </button>
-                                            </div>
-                                        </Property>
-                                    </Row>
-                                }) :
-                                (loading)
-                                    ? <h1>Loading...</h1>
-                                    : (error)
-                                        ? <h1>Error</h1>
-                                        : false
+                                                        marginBottom: '10px'
+                                                    }}>
+                                                        <Icon icon="fluent:delete-48-filled"/>
+                                                        Delete
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleEditNewCatClick(category.id)}
+                                                        style={{
+                                                            display: 'block',
+                                                            borderRadius: '45rem',
+                                                            backgroundColor: 'orange',
+                                                            color: 'white',
+                                                            paddingBlock: '10px',
+                                                            paddingInline: '15px',
+                                                        }}
+                                                    >
+                                                        <Icon icon="bxs:edit"/>
+                                                        Edit
+                                                    </button>
+                                                </div>
+                                            </Property>
+                                        </Row>
+                                    })
                         }
-
                     </TableBody>
                     {
                         (loading)

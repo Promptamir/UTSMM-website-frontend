@@ -48,12 +48,12 @@ export default function InfoCatModal({id}) {
                                         color: 'black'
                                     }}>{data.entities.category.title}</div>
 
-                                    <div style={{fontSize: '16px', fontWeight: 'normal', color: 'black'}}>Platofrom</div>
+                                    <div style={{fontSize: '16px', fontWeight: 'normal', color: 'black'}}>Platform</div>
                                     <div style={{
                                         fontSize: '16px',
                                         fontWeight: 'normal',
                                         color: 'black'
-                                    }}>{data.entities.category.platform}</div>
+                                    }}>{data.entities.category.platform_id}</div>
                                 </div>
                             </div>
                         )
