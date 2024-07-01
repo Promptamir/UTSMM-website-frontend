@@ -30,7 +30,7 @@ export default function Blogs() {
     const [customLoading, setCustomLoading] = useState(false);
 
 
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/blogs?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/blogs?page=${currentPage}`)
 
     const dispatcher = useDispatch()
 
@@ -110,6 +110,7 @@ export default function Blogs() {
                 })
                     .then((data) => data.json())
                     .then((data) => {
+                        console.log(data);
                         setCustomLoading(false);
                         if (data.message === "Unauthenticated.") {
                             Swal.fire({
@@ -278,7 +279,7 @@ export default function Blogs() {
                                             </div>
                                             <div className="property-body">
                                                 <Switch
-                                                    checked={blog.status === 1}
+                                                    checked={blog.status === "1"}
                                                     onChange={() => {
                                                         onPublishedClick(blog, (blog.status !== 1))
                                                     }}/>
