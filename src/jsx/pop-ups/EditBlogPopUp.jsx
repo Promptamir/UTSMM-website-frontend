@@ -149,18 +149,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     </FieldBody>
                 </AdminPanelFiledset>
 
-                <ReactQuill
-                    style={{width: '100%', marginTop: '20px'}}
-                    theme="snow"
-                    onChange={(val) => {
-                        if (val.length <= 100) {
-                            setError('The content should at least be 100 character.');
-                        } else {
-                            setError('');
-                            setContent(val)
-                        }
-                    }}
-                />
+
                 {error !== '' && <div className={'input-error'}>{error}</div>}
 
                 <button className="submit">
