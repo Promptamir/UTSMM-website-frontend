@@ -92,8 +92,8 @@ export default function AuthPage() {
                         setloading(false);
                         setError('');
 
-                        sessionStorage.setItem('token', JSON.stringify(data.entities.token));
-                        navigate('/');
+                        // sessionStorage.setItem('token', JSON.stringify(data.entities.token));
+                        // navigate('/');
                     })
                     .catch(() => {
                         setloading(false);
