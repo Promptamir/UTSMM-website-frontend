@@ -35,16 +35,21 @@ export default function Setting() {
                         })
                     })
                         .then((data) => data.json())
-                        .then((data) => setSuccses(data.entities.message))
+                        .then((data) => {
+                            setLoading(false);
+                            setError('');
+                            setSuccses(data.entities.message)
+                        })
                         .catch(() => {
                             setLoading(false);
                             setError('There was an unexpected error. Please try again.');
+                            setSuccses('');
                         })
                 }} action="#" className={'dashboard-form'}>
                     <h1 className={'dashboard-title'}>Reset password</h1>
                     <div>
                         <label className={'dashboard-form-label'} htmlFor="password">New password</label>
-                        <input onChange={(event) => setPassword(event.target.value)} required type="password" placeholder={'Example: xxxxxxxx'} className={'dashboard-form-input'}/>
+                        <input minLength={8} maxLength={30} onChange={(event) => setPassword(event.target.value)} required type="password" placeholder={'Example: xxxxxxxx'} className={'dashboard-form-input'}/>
                     </div>
                     {error !== '' && <div className={'dashboard-error'}>{error}</div>}
                     {succses !== '' && <div className={'dashboard-succses'}>{succses}</div>}

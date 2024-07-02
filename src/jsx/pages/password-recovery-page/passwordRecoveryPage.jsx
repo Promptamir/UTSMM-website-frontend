@@ -63,7 +63,7 @@ export default function PasswordRecoveryPage() {
                             <input placeholder={'x@gmail.com'} required className={'input'} type={'text'} id={'email'}
                                    onChange={(e) => setEmail(e.target.value)}/>
                             <label className={'input-label'} htmlFor="password">Password</label>
-                            <input required className={'input'} type={'password'} id={'password'} placeholder={'xxxxxxxxx'}
+                            <input minLength={8} maxLength={30} required className={'input'} type={'password'} id={'password'} placeholder={'xxxxxxxxx'}
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <button disabled={loading} className={'submit-btn'}>{(loading) ? 'Loading' : 'Submit'}</button>
                             {error !== '' && <div className={'form-input-error'}>{error}</div>}

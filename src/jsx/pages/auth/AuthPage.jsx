@@ -138,8 +138,8 @@ export default function AuthPage() {
                             <>
                                 <input onChange={(event) => setEmail(event.target.value)} name={'email'} id={'email'}
                                        type="email" required className={'form-input'} placeholder={'Email'}/>
-                                <input onChange={(event) => setPassword(event.target.value)} name={'password'}
-                                       id={'password'} type="password" minLength={8} maxLength={12} required
+                                <input minLength={8} maxLength={30} onChange={(event) => setPassword(event.target.value)} name={'password'}
+                                       id={'password'} type="password" required
                                        className={'form-input'} placeholder={'Password'}/>
                             </>
                         ) : (mode === 'signup') ? (
@@ -150,12 +150,12 @@ export default function AuthPage() {
                                 <input onChange={(event) => setEmailSignUp(event.target.value)} name={'email'}
                                        id={'email'} type="email" required className={'form-input'}
                                        placeholder={'Email'}/>
-                                <input onChange={(event) => setPasswordSignup(event.target.value)} name={'password'}
-                                       id={'password'} type="password" minLength={8} maxLength={12} required
+                                <input minLength={8} maxLength={30} onChange={(event) => setPasswordSignup(event.target.value)} name={'password'}
+                                       id={'password'} type="password" required
                                        className={'form-input'} placeholder={'Password'}/>
-                                <input onChange={(event) => setPasswordRepeat(event.target.value)}
-                                       name={'password-repeat'} id={'password-repeat'} type="password" minLength={8}
-                                       maxLength={12} required className={'form-input'}
+                                <input minLength={8} maxLength={30} onChange={(event) => setPasswordRepeat(event.target.value)}
+                                       name={'password-repeat'} id={'password-repeat'} type="password"
+                                       required className={'form-input'}
                                        placeholder={'Password Repeat'}/>
                             </>
                         ) : (mode === 'password-forgotten')
