@@ -32,7 +32,7 @@ const NewOrders = () => {
                     "Content-Type": "application/json",
                     "Accept" : "application/json",
                     "X-Requested-With" : "XMLHttpRequest",
-                    "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                 }
             })
                 .then((data) => data.json())
@@ -105,7 +105,7 @@ const NewOrders = () => {
                                 "Content-Type": "application/json",
                                 "Accept" : "application/json",
                                 "X-Requested-With" : "XMLHttpRequest",
-                                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                             },
                             body: JSON.stringify({
                                 "service": selectedService.id,

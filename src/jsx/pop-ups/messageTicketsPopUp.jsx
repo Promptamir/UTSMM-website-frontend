@@ -36,7 +36,7 @@ export default function MessageTicketsPopUp({id, setCustomLoading, refresh}) {
                             const myHeaders = new Headers();
                             myHeaders.append("Accept", "application/json");
                             myHeaders.append("X-Requested-With", "XMLHttpRequest");
-                            myHeaders.append("Authorization", `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`);
+                            myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem('token'))}`);
 
                             const formdata = new FormData();
                             formdata.append("content", content);

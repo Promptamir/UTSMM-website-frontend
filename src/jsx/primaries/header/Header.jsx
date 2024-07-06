@@ -12,7 +12,7 @@ const Header = (
 
 ) => {
 
-    const tokenExists = sessionStorage.getItem('token') && sessionStorage.getItem('token') !== '';
+    const tokenExists = localStorage.getItem('token');
 
 
     const menuList = [

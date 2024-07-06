@@ -28,7 +28,7 @@ export default function NewCatModal({setCustomLoading, refresh}) {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
                     "X-Requested-With": "XMLHttpRequest",
-                    "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`,
+                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
                 },
                 body: JSON.stringify({
                     "title": title,

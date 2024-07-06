@@ -63,7 +63,7 @@ export default function CommentPage() {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
-                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "confirmation_status": (published) ? 1 : 0
@@ -103,7 +103,7 @@ export default function CommentPage() {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
-                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
             },
             body: JSON.stringify({
                 "show_on_main_page_status": (published) ? 1 : 0
@@ -249,7 +249,7 @@ export default function CommentPage() {
                                                                 "Content-Type": "application/json",
                                                                 "Accept": "application/json",
                                                                 "X-Requested-With": "XMLHttpRequest",
-                                                                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                                                                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                                                             }
                                                         })
                                                             .then((data) => data.json())

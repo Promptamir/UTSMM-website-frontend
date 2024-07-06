@@ -48,7 +48,7 @@ export default function SignUpPage() {
                     setloading(false);
                     setError('');
 
-                    sessionStorage.setItem('token', JSON.stringify(data.entities.token));
+                    localStorage.setItem('token', JSON.stringify(data.entities.token));
                     navigate('/');
                 })
                 .catch(() => {

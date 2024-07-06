@@ -1,4 +1,4 @@
-import {lazy, useState} from "react"
+import {lazy, useEffect, useState} from "react"
 import {Suspense} from "react"
 import CommentPage from './jsx/pages/comment/commentPage';
 import QuestionPage from './jsx/pages/question/Question';
@@ -93,6 +93,12 @@ const queryClient = new QueryClient();
 function App() {
     const [mainMenuState, setMainMenuState] = useState(false);
     const [userPanelMenuState, setUserPanelMenuState] = useState(false);
+
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        console.log(token)
+    }, [token]);
 
     return (
         <div className="App">

@@ -229,14 +229,14 @@ const UserDashboard = (
                                 "Content-Type": "application/json",
                                 "Accept" : "application/json",
                                 "X-Requested-With" : "XMLHttpRequest",
-                                "Authorization" : `Bearer ${sessionStorage.getItem('token')}`
+                                "Authorization" : `Bearer ${localStorage.getItem('token')}`
                             }
                         })
                             .then(() => {
                                 setloading(false);
                                 setError('');
 
-                                sessionStorage.removeItem('token');
+                                localStorage.removeItem('token');
                                 navigate('/');
                             })
                             .catch((err) => {

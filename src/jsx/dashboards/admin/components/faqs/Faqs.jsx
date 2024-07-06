@@ -46,7 +46,7 @@ export default function Faqs() {
                         "Content-Type": "application/json",
                         "Accept" : "application/json",
                         "X-Requested-With" : "XMLHttpRequest",
-                        "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                        "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                     },
                     body: JSON.stringify({
                         "question": faq.question,
@@ -93,7 +93,7 @@ export default function Faqs() {
                 "Content-Type": "application/json",
                 "Accept" : "application/json",
                 "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
             }
         })
             .then((resp) => resp.json())

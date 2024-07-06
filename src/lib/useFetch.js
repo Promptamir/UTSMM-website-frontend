@@ -15,7 +15,7 @@ export function useFetch(defaultUrl, deafultValue) {
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
     const navigator = useNavigate()
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
     const [val ,setVal] = useState(0);
 
     function refreshData() {
@@ -35,13 +35,12 @@ export function useFetch(defaultUrl, deafultValue) {
                             "Content-Type": "application/json",
                             "Accept" : "application/json",
                             "X-Requested-With" : "XMLHttpRequest",
-                            "Authorization" : `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`
+                            "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                         },
                     })
                     setData(response.data)
                 } catch (err) {
                     if (err?.response?.status === 403) {
-                        sessionStorage.removeItem("token")
                         navigator("/auth")
                     }
                     setError(err)
@@ -63,7 +62,7 @@ export function usePost(url) {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
 
@@ -109,7 +108,7 @@ export function usePost(url) {
 
 export async function post(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -130,7 +129,7 @@ export async function post(url, postData) {
 
 export async function put(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -150,7 +149,7 @@ export async function put(url, postData) {
 
 export async function deletE(url, deleteData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -171,7 +170,7 @@ export async function deletE(url, deleteData) {
 
 export async function get(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({

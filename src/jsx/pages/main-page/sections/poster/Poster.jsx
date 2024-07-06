@@ -65,7 +65,7 @@ export default function Poster() {
             .then((data) => data.json())
             .then((data) => {
                 Swal.fire('You are logged in now.');
-                sessionStorage.setItem('token', JSON.stringify(data.entities.token));
+                localStorage.setItem('token', JSON.stringify(data.entities.token));
                 window.location.reload();
             })
             .catch(() => {

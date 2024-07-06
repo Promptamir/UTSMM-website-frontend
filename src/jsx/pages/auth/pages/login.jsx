@@ -43,7 +43,7 @@ export default function LoginPage() {
                 setError('');
                 setSuccses("You're succesfully logged in now.")
 
-                sessionStorage.setItem('token', JSON.stringify(data.entities.token));
+                localStorage.setItem('token', JSON.stringify(data.entities.token));
                 navigate('/');
             })
             .catch(() => {
