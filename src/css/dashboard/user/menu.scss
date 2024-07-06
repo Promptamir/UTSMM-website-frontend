@@ -2,6 +2,62 @@
 $ColorPrimary: #4976f3;
 
 // Defining styles
+.user-panel-updates {
+  width: 100%;
+  padding: 2em;
+
+  .filter-divider {
+    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 20px;
+  }
+
+  .filter-input {
+    grid-column: span 3;
+    padding: 1em;
+    border-radius: 1em;
+    outline: none;
+    border: none;
+    height: 40px;
+    background-color: white;
+  }
+
+  .dropdown-control {
+    border-radius: .5em;
+    height: 40px;
+  }
+
+  .centred-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .service-update-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .service-update-col {
+    font-weight: normal;
+    color: white;
+    font-size: 16px;
+    padding: 2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .payment-method-modal-body button {
   background-color: $ColorPrimary;
   padding: 10px;

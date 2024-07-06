@@ -20,6 +20,7 @@ import FreeCredits from "./panels/free-credits/FreeCredits"
 import Tutorials from "./panels/tutorials/Tutorials"
 import '../../../css/dashboard/user/menu.css';
 import Setting from './panels/setting/Setting';
+import Updates from "./panels/updates/updates";
 
 const UserDashboard = (
     {
@@ -91,6 +92,7 @@ const UserDashboard = (
             type: "normal",
             title: "Updates",
             icon: <Icon icon="dashicons:update-alt" /> ,
+            component: <Updates />
         },
         {
             type: "normal",

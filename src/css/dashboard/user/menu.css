@@ -1,3 +1,52 @@
+.user-panel-updates {
+  width: 100%;
+  padding: 2em;
+}
+.user-panel-updates .filter-divider {
+  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 20px;
+}
+.user-panel-updates .filter-input {
+  grid-column: span 3;
+  padding: 1em;
+  border-radius: 1em;
+  outline: none;
+  border: none;
+  height: 40px;
+  background-color: white;
+}
+.user-panel-updates .dropdown-control {
+  border-radius: 0.5em;
+  height: 40px;
+}
+.user-panel-updates .centred-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-panel-updates .service-update-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+.user-panel-updates .list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.user-panel-updates .service-update-col {
+  font-weight: normal;
+  color: white;
+  font-size: 16px;
+  padding: 2em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .payment-method-modal-body button {
   background-color: #4976f3;
   padding: 10px;
