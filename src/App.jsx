@@ -72,13 +72,15 @@ import Footer from "./jsx/primaries/footer/Footer";
 import PagesLoaders from "./jsx/loaders/PagesLoaders"
 import PasswordRecoveryPage from "./jsx/pages/password-recovery-page/passwordRecoveryPage";
 import ExternalQuestionPage from "./jsx/pages/external-question-page/externalQuestionPage";
+import PasswordResetPage from "./jsx/pages/auth/pages/password-forgotten";
+import LoginPage from "./jsx/pages/auth/pages/login";
+import SignUpPage from "./jsx/pages/auth/pages/sign-up";
 
 // Pages
 // import other dependencies...
 
 const MainPage = lazy(() => import("./jsx/pages/main-page/MainPage"));
 const ServicesPage = lazy(() => import('./jsx/pages/services-page/ServicesPage'));
-const AuthPage = lazy(() => import("./jsx/pages/auth/AuthPage"));
 const ErrorPage = lazy(() => import("./jsx/pages/404/ErrorPage"));
 const BlogDetailPage = lazy(() => import("./jsx/pages/blog-page/BlogDetailPage"));
 const AboutUsPage = lazy(() => import("./jsx/pages/about-us-page/AboutUsPage"));
@@ -128,9 +130,21 @@ function App() {
                             </Suspense>}
                         />
                         <Route
-                            path='/auth/'
+                            path='/auth/password-forgotten'
                             element={<Suspense fallback={<PagesLoaders/>}>
-                                <AuthPage/>
+                                <PasswordResetPage />
+                            </Suspense>}
+                        />
+                        <Route
+                            path='/auth/login'
+                            element={<Suspense fallback={<PagesLoaders/>}>
+                                <LoginPage />
+                            </Suspense>}
+                        />
+                        <Route
+                            path='/auth/sign-up'
+                            element={<Suspense fallback={<PagesLoaders/>}>
+                                <SignUpPage />
                             </Suspense>}
                         />
                         <Route
