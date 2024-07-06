@@ -82,12 +82,12 @@ const UserDashboard = (
             icon: <Icon icon="ion:ticket-sharp" />,
             component: <Tickets />
         },
-        {
-            type: "normal",
-            title: "Child-Panel",
-            icon: <Icon icon="material-symbols:left-panel-open-sharp" />,
-            component: <ChildPanel />
-        },
+        // {
+        //     type: "normal",
+        //     title: "Child-Panel",
+        //     icon: <Icon icon="material-symbols:left-panel-open-sharp" />,
+        //     component: <ChildPanel />
+        // },
         {
             type: "normal",
             title: "Updates",
