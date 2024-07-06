@@ -18,7 +18,7 @@ const FreeCredits = () => {
 
     return (
         <main className="panel-free-creidits">
-            <EmailVerify />
+            {/*<EmailVerify />*/}
             <TrustPilot />
             <ShareTweet />
         </main>
