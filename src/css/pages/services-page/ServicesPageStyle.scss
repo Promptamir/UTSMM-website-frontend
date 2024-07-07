@@ -13,9 +13,27 @@ $panel-color-4: #ffa938;
 $panel-color-5: #17a2b8;
 $panel-color-6: #dc3545;
 
+.modal-row {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    & span {
+        display: block;
+        font-weight: normal;
+        color: black;
+        font-size: 15px;
+    }
+}
+
 .services-page {
     display: grid;
     flex-direction: column;
+
     .poster {
         position: relative;
         display: flex;
