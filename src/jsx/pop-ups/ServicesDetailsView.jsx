@@ -29,6 +29,10 @@ export default function ServicesDetailsView({service}) {
                     <span>{service.title}</span>
                 </div>
                 <div className={'modal-row'}>
+                    <span>Description</span>
+                    <span>{service.description}</span>
+                </div>
+                <div className={'modal-row'}>
                     <span>Rate</span>
                     <span>{service.rate}</span>
                 </div>

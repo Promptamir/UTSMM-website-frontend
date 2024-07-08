@@ -238,7 +238,7 @@ const ServicesPage = () => {
                                                                 <div className="property-body">
                                                                     <button style={{
                                                                         display: 'block',
-                                                                        background: 'red',
+                                                                        background: '#4976f3',
                                                                         color: "white",
                                                                         padding: '.5rem 1rem',
                                                                         borderRadius: '.5rem'
