@@ -1,0 +1,138 @@
+.api-panel {
+  padding: 2rem;
+  width: 100%;
+}
+.api-panel .inner {
+  background-color: #0e172f;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+.api-panel .inner .top-side {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+}
+.api-panel .inner .top-side .item {
+  flex-shrink: 0;
+}
+.api-panel .inner .top-side .item .icon-holder {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background: rgba(73, 118, 243, 0.2);
+  color: #4976f3;
+  border: 1px solid #4976f3;
+}
+.api-panel .inner .bottom-side {
+  padding: 2rem;
+}
+.api-panel .inner .bottom-side .title-3 {
+  margin: 20px 0;
+  font-size: 15px;
+  font-weight: normal;
+  color: white;
+}
+.api-panel .inner .bottom-side .info-holder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.api-panel .inner .bottom-side .info-holder .info {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.api-panel .inner .bottom-side .info-holder .info .info-value {
+  display: block;
+  font-weight: normal;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+  color: white;
+}
+.api-panel .inner .bottom-side .info-holder .info .info-value a {
+  color: white;
+  text-decoration: underline;
+}
+.api-panel .inner .bottom-side .info-holder .info .info-title {
+  color: white;
+  display: block;
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.api-panel .inner .bottom-side .service-list {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.api-panel .inner .bottom-side .service-list .title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+}
+.api-panel .inner .bottom-side .service-list .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.api-panel .inner .bottom-side .service-list .grid .item {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+  text-align: left;
+  color: white;
+  font-size: 15px;
+}
+.api-panel .inner .bottom-side .box {
+  margin: 20px 0;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.api-panel .inner .bottom-side .box .title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+}
+.api-panel .inner .bottom-side .box .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.api-panel .inner .bottom-side .box .grid .item {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+  text-align: left;
+  color: white;
+  font-size: 15px;
+}
+
+@media screen and (max-width: 1024px) {
+  .api-panel .bottom-side .info-holder {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+/*# sourceMappingURL=apiPanel.css.map */

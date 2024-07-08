@@ -21,6 +21,7 @@ import Tutorials from "./panels/tutorials/Tutorials"
 import '../../../css/dashboard/user/menu.css';
 import Setting from './panels/setting/Setting';
 import Updates from "./panels/updates/updates";
+import ApiPanel from "../../primaries/apiPanel";
 
 const UserDashboard = (
     {
@@ -97,7 +98,8 @@ const UserDashboard = (
         {
             type: "normal",
             title: "API",
-            icon: <Icon icon="ant-design:api-filled" />
+            icon: <Icon icon="ant-design:api-filled" />,
+            component: <ApiPanel />
         },
         {
             type: "normal",
