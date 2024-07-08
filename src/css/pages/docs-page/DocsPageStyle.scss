@@ -1,0 +1,16 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.docs-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+  background-color: $ColorPrimary;
+}
+
+.container {
+  margin-inline: auto;
+  max-width: $MqSize;
+}

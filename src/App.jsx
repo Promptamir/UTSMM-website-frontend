@@ -75,6 +75,7 @@ import ExternalQuestionPage from "./jsx/pages/external-question-page/externalQue
 import PasswordResetPage from "./jsx/pages/auth/pages/password-forgotten";
 import LoginPage from "./jsx/pages/auth/pages/login";
 import SignUpPage from "./jsx/pages/auth/pages/sign-up";
+import DocsPage from "./jsx/pages/docs/DocsPage";
 
 // Pages
 // import other dependencies...
@@ -181,6 +182,12 @@ function App() {
                             path="/about-us"
                             element={<Suspense fallback={<PagesLoaders/>}>
                                 <AboutUsPage/>
+                            </Suspense>}
+                        />
+                        <Route
+                            path="/docs"
+                            element={<Suspense fallback={<PagesLoaders/>}>
+                                <DocsPage/>
                             </Suspense>}
                         />
                         <Route
