@@ -30,7 +30,7 @@ export default function ServicesDetailsView({service}) {
                 </div>
                 <div className={'modal-row'}>
                     <span>Description</span>
-                    <span>{service.description}</span>
+                    <span>{(service.description) ? service.description : '-'}</span>
                 </div>
                 <div className={'modal-row'}>
                     <span>Rate</span>

@@ -19,14 +19,16 @@ $panel-color-6: #dc3545;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 10px;
 
     & span {
+        width: 50%;
         display: block;
         font-weight: normal;
         color: black;
         font-size: 15px;
+
+        &:first-of-type {font-weight: bold;}
     }
 }
 
