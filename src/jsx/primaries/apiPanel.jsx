@@ -218,7 +218,7 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
                             <div className={'item'}>status</div>
-                            <div className={'item'}>order</div>
+                            <div className={'item'}>orders  </div>
                             <div className={'item'}>Order IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
                             <div className={'item'}>refill</div>
-                            <div className={'item'}>order</div>
+                            <div className={'item'}>orders</div>
                             <div className={'item'}>Order IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
