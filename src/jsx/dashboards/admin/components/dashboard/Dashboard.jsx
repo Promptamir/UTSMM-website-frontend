@@ -76,7 +76,7 @@ export default function Dashboard() {
                                         labels: data.entities.count_of_daily_success_payments_in_last_week.map(item => item.date),
                                         datasets: [
                                             {
-                                                label: 'My First Dataset',
+                                                label: 'Daily Success Payments',
                                                 data: data.entities.count_of_daily_success_payments_in_last_week.map(item => Number(item.total_count)),
                                                 fill: true,
                                                 borderColor: 'rgb(73, 118, 243)',
@@ -91,7 +91,7 @@ export default function Dashboard() {
                                         labels: data.entities.count_of_daily_not_canceled_orders_in_last_week.map(item => item.date),
                                         datasets: [
                                             {
-                                                label: 'My First Dataset',
+                                                label: 'Daily Not canceled Orders',
                                                 data: data.entities.count_of_daily_not_canceled_orders_in_last_week.map(item => Number(item.total_count)),
                                                 fill: true,
                                                 borderColor: 'rgb(73, 118, 243)',
@@ -106,7 +106,7 @@ export default function Dashboard() {
                                         labels: data.entities.count_of_daily_new_and_verified_users_in_last_week.map(item => item.date),
                                         datasets: [
                                             {
-                                                label: 'My First Dataset',
+                                                label: 'New users',
                                                 data: data.entities.count_of_daily_new_and_verified_users_in_last_week.map(item => Number(item.total_count)),
                                                 fill: true,
                                                 borderColor: 'rgb(73, 118, 243)',
@@ -121,8 +121,8 @@ export default function Dashboard() {
                                         labels: data.entities.sum_of_daily_success_payments_in_last_week.map(item => item.date),
                                         datasets: [
                                             {
-                                                label: 'My First Dataset',
-                                                data: data.entities.sum_of_daily_success_payments_in_last_week.map(item => Number(item.total_count)),
+                                                label: 'Sum of Daily Success of Payments',
+                                                data: data.entities.sum_of_daily_success_payments_in_last_week.map(item => Number(item.total_sum)),
                                                 fill: true,
                                                 borderColor: 'rgb(73, 118, 243)',
                                                 tension: 0.1,
