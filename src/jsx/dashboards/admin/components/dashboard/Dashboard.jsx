@@ -115,6 +115,21 @@ export default function Dashboard() {
                                         ],
                                     }} />
                                 </div>
+                                <div style={{marginBottom: '30px'}}>
+                                    <h1 style={{margin: '30px 0'}}>Sum of Daily Success of Payments</h1>
+                                    <LineChart data={{
+                                        labels: data.entities.sum_of_daily_success_payments_in_last_week.map(item => item.date),
+                                        datasets: [
+                                            {
+                                                label: 'My First Dataset',
+                                                data: data.entities.sum_of_daily_success_payments_in_last_week.map(item => Number(item.total_count)),
+                                                fill: true,
+                                                borderColor: 'rgb(73, 118, 243)',
+                                                tension: 0.1,
+                                            },
+                                        ],
+                                    }} />
+                                </div>
                             </div>
                         )
             }
