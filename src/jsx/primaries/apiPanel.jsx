@@ -42,7 +42,7 @@ export default function ApiPanel({isPage = false}) {
                 {label: 'service', value: 'Service ID'},
                 {label: 'link', value: 'Link to page'},
                 {label: 'quantity', value: 'Needed quantity'},
-                {label: 'keywords', value: 'Keywords list'},
+                {label: 'keywords', value: 'Keywords list separated by \\r\\n or \\n\\n'},
             ]
         },
         {
@@ -52,7 +52,7 @@ export default function ApiPanel({isPage = false}) {
                 {label: 'action', value: 'add'},
                 {label: 'service', value: 'Service ID'},
                 {label: 'link', value: 'Link to page'},
-                {label: 'comments', value: 'Comments list'},
+                {label: 'comments', value: 'Comments list separated by \\r\\n or \\n\\n'},
             ]
         },
         {
@@ -73,7 +73,7 @@ export default function ApiPanel({isPage = false}) {
                 {label: 'action', value: 'add'},
                 {label: 'service', value: 'Service ID'},
                 {label: 'link', value: 'Link to page'},
-                {label: 'comments', value: 'Comments list'},
+                {label: 'comments', value: 'Comments list separated by \\r\\n or \\n\\n'},
             ]
         },
         {
@@ -97,22 +97,7 @@ export default function ApiPanel({isPage = false}) {
                 {label: 'quantity', value: 'Needed quantity'},
                 {label: 'answer_number', value: 'Answer number of the poll'},
             ]
-        },
-        {
-            name : "subscriptions",
-            items: [
-                {label: 'key', value: 'Your API key'},
-                {label: 'action', value: 'add'},
-                {label: 'service', value: 'Service ID'},
-                {label: 'username', value: 'Username'},
-                {label: 'min', value: 'Quantity min'},
-                {label: 'max', value: 'Quantity max'},
-                {label: 'posts (optional)', value: 'Use this parameter if you want to limit the number of new (future) posts that will be parsed and for which orders will be created. If posts parameter is not set, the subscription will be created for an unlimited number of posts.'},
-                {label: 'old_posts (optional)', value: 'Number of existing posts that will be parsed and for which orders will be created, can be used if this option is available for the service.'},
-                {label: 'delay', value: 'Delay in minutes. Possible values: 0, 5, 10, 15, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 360, 420, 480, 540, 600'},
-                {label: 'expiry (optional)', value: 'Expiry date. Format d/m/Y'},
-            ]
-        },
+        }
     ];
 
     // Returning JSX
@@ -227,35 +212,6 @@ export default function ApiPanel({isPage = false}) {
                         "currency": "USD"
                     }, null, 2)}</Prism>
                     <div className="box">
-                        <div className="title">Create refill</div>
-                        <div className="grid">
-                            <div className={'item'}>key</div>
-                            <div className={'item'}>Your API key</div>
-                            <div className={'item'}>action</div>
-                            <div className={'item'}>status</div>
-                            <div className={'item'}>order</div>
-                            <div className={'item'}>Order ID</div>
-                        </div>
-                    </div>
-                    <h3 className={'title-3'}>Example response</h3>
-                    <Prism language="json" style={dracula}>{JSON.stringify({
-                        "1": {
-                            "charge": "0.27819",
-                            "start_count": "3572",
-                            "status": "Partial",
-                            "remains": "157",
-                            "currency": "USD"
-                        },
-                        "10": {"error": "Incorrect order ID"},
-                        "100": {
-                            "charge": "1.44219",
-                            "start_count": "234",
-                            "status": "In progress",
-                            "remains": "10",
-                            "currency": "USD"
-                        }
-                    }, null, 2)}</Prism>
-                    <div className="box">
                         <div className="title">Multiple orders status</div>
                         <div className="grid">
                             <div className={'item'}>key</div>
@@ -263,7 +219,7 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>action</div>
                             <div className={'item'}>status</div>
                             <div className={'item'}>order</div>
-                            <div className={'item'}>Order ID</div>
+                            <div className={'item'}>Order IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
@@ -275,7 +231,9 @@ export default function ApiPanel({isPage = false}) {
                             "remains": "157",
                             "currency": "USD"
                         },
-                        "10": {"error": "Incorrect order ID"},
+                        "10": {
+                            "error": "Incorrect order ID"
+                        },
                         "100": {
                             "charge": "1.44219",
                             "start_count": "234",
@@ -290,7 +248,7 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>key</div>
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
-                            <div className={'item'}>status</div>
+                            <div className={'item'}>refill</div>
                             <div className={'item'}>order</div>
                             <div className={'item'}>Order ID</div>
                         </div>
@@ -303,22 +261,37 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>key</div>
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
-                            <div className={'item'}>status</div>
+                            <div className={'item'}>refill</div>
                             <div className={'item'}>order</div>
-                            <div className={'item'}>Order ID</div>
+                            <div className={'item'}>Order IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
-                    <Prism language="json" style={dracula}>{JSON.stringify([{"order": 1, "refill": 1}, {"order": 2, "refill": 2}, {"order": 3, "refill": {"error": "Incorrect order ID"}}], null, 2)}</Prism>
+                    <Prism language="json" style={dracula}>{JSON.stringify([
+                        {
+                            "order": 1,
+                            "refill": 1
+                        },
+                        {
+                            "order": 2,
+                            "refill": 2
+                        },
+                        {
+                            "order": 3,
+                            "refill": {
+                                "error": "Incorrect order ID"
+                            }
+                        }
+                    ], null, 2)}</Prism>
                     <div className="box">
                         <div className="title">Get refill status</div>
                         <div className="grid">
                             <div className={'item'}>key</div>
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
-                            <div className={'item'}>status</div>
+                            <div className={'item'}>refill_status</div>
                             <div className={'item'}>refill</div>
-                            <div className={'item'}>refil ID</div>
+                            <div className={'item'}>Refill ID</div>
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
@@ -329,13 +302,28 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>key</div>
                             <div className={'item'}>Your API key</div>
                             <div className={'item'}>action</div>
-                            <div className={'item'}>status</div>
-                            <div className={'item'}>refill</div>
-                            <div className={'item'}>refil ID</div>
+                            <div className={'item'}>refill_status</div>
+                            <div className={'item'}>refills	</div>
+                            <div className={'item'}>Refill IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
-                    <Prism language="json" style={dracula}>{JSON.stringify([{"refill": 1, "status": "Completed"}, {"refill": 2, "status": "Rejected"}, {"refill": 3, "status": {"error": "Refill not found"}}], null, 2)}</Prism>
+                    <Prism language="json" style={dracula}>{JSON.stringify([
+                        {
+                            "refill": 1,
+                            "status": "Completed"
+                        },
+                        {
+                            "refill": 2,
+                            "status": "Rejected"
+                        },
+                        {
+                            "refill": 3,
+                            "status": {
+                                "error": "Refill not found"
+                            }
+                        }
+                    ], null, 2)}</Prism>
                     <div className="box">
                         <div className="title">Create cancel</div>
                         <div className="grid">
@@ -344,11 +332,22 @@ export default function ApiPanel({isPage = false}) {
                             <div className={'item'}>action</div>
                             <div className={'item'}>cancel</div>
                             <div className={'item'}>orders</div>
-                            <div className={'item'}>Orders ID</div>
+                            <div className={'item'}>Order IDs (separated by a comma, up to 100 IDs)</div>
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
-                    <Prism language="json" style={dracula}>{JSON.stringify([{"order": 9, "cancel": {"error": "Incorrect order ID"}}, {"order": 2, "cancel": 1}], null, 2)}</Prism>
+                    <Prism language="json" style={dracula}>{JSON.stringify([
+                        {
+                            "order": 9,
+                            "cancel": {
+                                "error": "Incorrect order ID"
+                            }
+                        },
+                        {
+                            "order": 2,
+                            "cancel": 1
+                        }
+                    ], null, 2)}</Prism>
                     <div className="box">
                         <div className="title">User balance</div>
                         <div className="grid">
@@ -359,7 +358,10 @@ export default function ApiPanel({isPage = false}) {
                         </div>
                     </div>
                     <h3 className={'title-3'}>Example response</h3>
-                    <Prism language="json" style={dracula}>{JSON.stringify({"balance": "100.84292", "currency": "USD"}, null, 2)}</Prism>
+                    <Prism language="json" style={dracula}>{JSON.stringify({
+                        "balance": "100.84292",
+                        "currency": "USD"
+                    }, null, 2)}</Prism>
                 </div>
             </div>
         </div>
