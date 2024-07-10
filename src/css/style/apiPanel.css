@@ -14,7 +14,7 @@
   border-color: white;
 }
 .api-panel .inner[data-page=true] {
-  background: #0e172f;
+  background: #002eb0;
 }
 .api-panel .inner[data-page=true] .top-side .icon-holder {
   color: #4976f3;
