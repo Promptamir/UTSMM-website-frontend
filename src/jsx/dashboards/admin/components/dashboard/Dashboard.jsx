@@ -1,21 +1,14 @@
 import { Icon } from "@iconify/react";
-import OrderStatusChart from "./components/OrderStatusChart";
-import ReviewByCountry from "./components/ReviewByCountry";
-import RecentCustomers from "./components/RecentCustomers";
-import PopularCharts from "./components/PopularCharts";
-import TodoList from "./components/TodoList";
-import EconomySummary from "./components/EconomySummary";
-import MessageAll from "./components/MessageAll";
 import { useFetch } from "../../../../../lib/useFetch"
-import { API } from "../../../../../lib/envAccess";
 import QuickView from "./components/QuickView";
-
 import BE_URL from "../../../../../lib/envAccess";
+import LineChart from "../../../../primaries/lineChart";
 
 export default function Dashboard() {
     // Getting data from database
     const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index`);
 
+    // Returning JSX
     return (
         <div className="admin-dashboard-panel">
             <div className="intro">
@@ -54,8 +47,11 @@ export default function Dashboard() {
             </div>
             {
                 (loading)
-                    ? <Icon icon={'eos-icons:loading'} width={40} href={40} />
-                    : (error)
+                    ? (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '30px 0'}}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                        </div>
+                    ) : (error)
                         ? <h1>Error</h1>
                         : <QuickView
                             orders={data.entities.count_of_daily_not_canceled_orders_in_last_week[0].total_count}
@@ -63,6 +59,64 @@ export default function Dashboard() {
                             income={data.entities.sum_of_daily_success_payments_in_last_week[0].total_sum}
                             customers={data.entities.count_of_daily_success_payments_in_last_week[0].total_count}
                         />
+            }
+            {
+                (loading)
+                    ? (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '30px 0'}}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                        </div>
+                    ) : (error)
+                        ? <h1>Error</h1>
+                        : (
+                            <div className={'gtc-3'}>
+                                <div style={{marginBottom: '30px'}}>
+                                    <h1 style={{margin: '30px 0'}}>Daily Success Payments</h1>
+                                    <LineChart data={{
+                                        labels: data.entities.count_of_daily_success_payments_in_last_week.map(item => item.date),
+                                        datasets: [
+                                            {
+                                                label: 'My First Dataset',
+                                                data: data.entities.count_of_daily_success_payments_in_last_week.map(item => Number(item.total_count)),
+                                                fill: true,
+                                                borderColor: 'rgb(73, 118, 243)',
+                                                tension: 0.1,
+                                            },
+                                        ],
+                                    }} />
+                                </div>
+                                <div style={{marginBottom: '30px'}}>
+                                    <h1 style={{margin: '30px 0'}}>Daily Not canceled Orders</h1>
+                                    <LineChart data={{
+                                        labels: data.entities.count_of_daily_not_canceled_orders_in_last_week.map(item => item.date),
+                                        datasets: [
+                                            {
+                                                label: 'My First Dataset',
+                                                data: data.entities.count_of_daily_not_canceled_orders_in_last_week.map(item => Number(item.total_count)),
+                                                fill: true,
+                                                borderColor: 'rgb(73, 118, 243)',
+                                                tension: 0.1,
+                                            },
+                                        ],
+                                    }} />
+                                </div>
+                                <div style={{marginBottom: '30px'}}>
+                                    <h1 style={{margin: '30px 0'}}>New users</h1>
+                                    <LineChart data={{
+                                        labels: data.entities.count_of_daily_new_and_verified_users_in_last_week.map(item => item.date),
+                                        datasets: [
+                                            {
+                                                label: 'My First Dataset',
+                                                data: data.entities.count_of_daily_new_and_verified_users_in_last_week.map(item => Number(item.total_count)),
+                                                fill: true,
+                                                borderColor: 'rgb(73, 118, 243)',
+                                                tension: 0.1,
+                                            },
+                                        ],
+                                    }} />
+                                </div>
+                            </div>
+                        )
             }
         </div>
     )

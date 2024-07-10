@@ -16,6 +16,14 @@ $panel-color-6: #dc3545;
 
 $gradient-degree: 0deg;
 
+.gtc-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    overflow: auto;
+    width: 100%;
+}
+
 .input-error {
     background-color: rgba(255, 0, 0, .2);
     color: red;
@@ -1320,6 +1328,7 @@ $gradient-degree: 0deg;
 
 
 @media only screen and (max-width: 1100px) {
+    .gtc-3 {grid-template-columns: repeat(1, 1fr);}
     .admin-dashboard {
         .admin-dashboard-panel {
             .row {
