@@ -1,6 +1,7 @@
+// craco.config.js
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -22,6 +23,10 @@ module.exports = {
       webpackConfig.plugins.push(
         new webpack.optimize.LimitChunkCountPlugin({
           maxChunks: 1,
+        }),
+        new CompressionPlugin({
+          test: /\.(js|css)$/,
+          filename: '[path][base].gz',
         })
       );
 
@@ -29,3 +34,4 @@ module.exports = {
     },
   },
 };
+
