@@ -7,7 +7,7 @@ import ReactDropdown from "react-dropdown";
 import {useState} from "react";
 
 // Creating and exporting api panel as default
-export default function ApiPanel() {
+export default function ApiPanel({isPage = false}) {
     // Defining states of component
     const [selectedAddOrder, setSelectedAddOrder] = useState('default');
 
@@ -118,7 +118,7 @@ export default function ApiPanel() {
     // Returning JSX
     return (
         <div className={'api-panel'}>
-            <div className="inner">
+            <div className="inner" data-page={isPage}>
                 <div className={'top-side'}>
                     <div className={'item'}>
                         <div className={'icon-holder'}>

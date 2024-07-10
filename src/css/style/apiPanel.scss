@@ -8,7 +8,23 @@ $ColorPrimary: #4976f3;
   width: 100%;
 
   .inner {
-    background-color: #0e172f;
+    &[data-page="false"] {
+      background: $ColorPrimary;
+
+      .top-side .icon-holder {
+        color: white;
+        border-color: white;
+      }
+    }
+
+    &[data-page="true"] {
+      background: #0e172f;
+      .top-side .icon-holder {
+        color: $ColorPrimary;
+        border-color: $ColorPrimary;
+      }
+    }
+
     border-radius: 2rem;
     overflow: hidden;
     
@@ -31,8 +47,7 @@ $ColorPrimary: #4976f3;
           justify-content: center;
           border-radius: 100%;
           background: rgba(73, 118, 243, .2);
-          color: $ColorPrimary;
-          border: 1px solid $ColorPrimary;
+          border: 1px solid;
         }
       }
     }

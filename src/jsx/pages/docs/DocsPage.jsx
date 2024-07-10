@@ -8,7 +8,7 @@ export default function DocsPage() {
     return (
         <div className={'auth-page'}>
             <main className={'container'}>
-                <ApiPanel />
+                <ApiPanel isPage />
             </main>
         </div>
     )

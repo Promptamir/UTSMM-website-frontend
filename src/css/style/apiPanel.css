@@ -3,9 +3,22 @@
   width: 100%;
 }
 .api-panel .inner {
-  background-color: #0e172f;
   border-radius: 2rem;
   overflow: hidden;
+}
+.api-panel .inner[data-page=false] {
+  background: #4976f3;
+}
+.api-panel .inner[data-page=false] .top-side .icon-holder {
+  color: white;
+  border-color: white;
+}
+.api-panel .inner[data-page=true] {
+  background: #0e172f;
+}
+.api-panel .inner[data-page=true] .top-side .icon-holder {
+  color: #4976f3;
+  border-color: #4976f3;
 }
 .api-panel .inner .top-side {
   padding: 2rem;
@@ -26,8 +39,7 @@
   justify-content: center;
   border-radius: 100%;
   background: rgba(73, 118, 243, 0.2);
-  color: #4976f3;
-  border: 1px solid #4976f3;
+  border: 1px solid;
 }
 .api-panel .inner .bottom-side {
   padding: 2rem;
