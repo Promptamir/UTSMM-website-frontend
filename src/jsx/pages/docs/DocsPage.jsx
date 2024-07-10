@@ -6,7 +6,7 @@ import ApiPanel from "../../primaries/apiPanel";
 export default function DocsPage() {
     // Returning JSX
     return (
-        <div className={'auth-page'}>
+        <div className={'docs-page'}>
             <main className={'container'}>
                 <ApiPanel isPage />
             </main>

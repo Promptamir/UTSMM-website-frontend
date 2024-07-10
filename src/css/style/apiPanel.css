@@ -5,20 +5,7 @@
 .api-panel .inner {
   border-radius: 2rem;
   overflow: hidden;
-}
-.api-panel .inner[data-page=false] {
   background: #4976f3;
-}
-.api-panel .inner[data-page=false] .top-side .icon-holder {
-  color: white;
-  border-color: white;
-}
-.api-panel .inner[data-page=true] {
-  background: #002eb0;
-}
-.api-panel .inner[data-page=true] .top-side .icon-holder {
-  color: #4976f3;
-  border-color: #4976f3;
 }
 .api-panel .inner .top-side {
   padding: 2rem;
@@ -32,6 +19,8 @@
   flex-shrink: 0;
 }
 .api-panel .inner .top-side .item .icon-holder {
+  color: white;
+  border-color: white;
   width: 50px;
   height: 50px;
   display: flex;
