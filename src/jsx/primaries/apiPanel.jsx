@@ -134,7 +134,7 @@ export default function ApiPanel({isPage = false}) {
                             <span className={'info-title'}>HTTP Method</span>
                         </div>
                         <div className={'info'}>
-                            <span className={'info-value'}>https://utsmm.com/api/v2</span>
+                            <span className={'info-value'}>https://back.utsmm.com/api/v2</span>
                             <span className={'info-title'}>API Url</span>
                         </div>
                         <div className={'info'}>
