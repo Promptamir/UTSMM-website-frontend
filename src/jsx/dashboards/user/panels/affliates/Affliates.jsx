@@ -193,24 +193,33 @@ const Affliates = () => {
                             <h2>Your Performance</h2>
                         </div>
                         <div className="body">
-                            <Line
-                                className="chart"
-                                id="myChart"
-                                data={
-                                    createData(
-                                        "$",
-                                        ['l1', 'l2', 'l3'],
-                                        [
-                                            affiliates.entities.total_l1_referrals,
-                                            affiliates.entities.total_l2_referrals,
-                                            affiliates.entities.total_l3_referrals
-                                        ]
-                                    )
-                                }
-                                options={options}
-                                height={250}
-                                width={350}
-                            />
+                            {
+                                (loading)
+                                    ? <h1>Loading</h1>
+                                    : (error) 
+                                        ? <h1>There was an error while fetching the data</h1>
+                                        : (
+                                            <Line
+                                                className="chart"
+                                                id="myChart"
+                                                data={
+                                                    createData(
+                                                        "$",
+                                                        ['l1', 'l2', 'l3'],
+                                                        [
+                                                            Number(affiliates.entities.total_l1_referrals),
+                                                            Number(affiliates.entities.total_l2_referrals),
+                                                            Number(affiliates.entities.total_l3_referrals)
+                                                        ]
+                                                    )
+                                                }
+                                                options={options}
+                                                height={250}
+                                                width={350}
+                                            />
+                                        )
+                            }
+                           
                         </div>
                         {
                             (loading)
