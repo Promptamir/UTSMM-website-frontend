@@ -1,0 +1,18 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.not-found-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+  background-color: $ColorPrimary;
+
+  .title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+  }
+}
