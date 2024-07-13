@@ -5,6 +5,7 @@ import {useFetch} from "../../../lib/useFetch";
 import ResponsivePagination from "react-responsive-pagination";
 import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
 import {Icon} from "@iconify/react";
+import BE_URL from "../../../lib/envAccess";
 
 // Creating and exporting comment page as default
 export default function CommentPage() {
@@ -16,7 +17,7 @@ export default function CommentPage() {
     const [formSuccses, setFormSuccses] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`https://utsmm.liara.run/api/comments?page=${currentPage}`);
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/comments?page=${currentPage}`);
 
     // Returning JSX
     return (
@@ -26,7 +27,7 @@ export default function CommentPage() {
                     event.preventDefault();
 
                     setFormLoading(true);
-                    fetch(`https://utsmm.liara.run/api/comments`, {
+                    fetch(`${BE_URL}/comments`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -107,7 +108,7 @@ export default function CommentPage() {
                                                             total={Math.round(data.entities.count/10)}
                                                             onPageChange={(pageNumber) => {
                                                                 setCurrentPage(pageNumber);
-                                                                setUrl(`https://utsmm.liara.run/api/comments?page=${pageNumber}`)
+                                                                setUrl(`${BE_URL}/comments?page=${pageNumber}`)
                                                                 refresh();
                                                             }}
                                                         />

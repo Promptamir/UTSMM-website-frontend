@@ -38,7 +38,7 @@ const TicketHistory = () => {
         // Using useEffect hook to fetch data of ticket
         useEffect(() => {
             if (modalOpened) {
-                fetch(`https://utsmm.liara.run/api/tickets/${id}`, {
+                fetch(`${BE_URL}/tickets/${id}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

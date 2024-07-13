@@ -1,6 +1,7 @@
 // Importing part
 import '../../../css/pages/question-page/questionPage.css';
 import {useState} from "react";
+import BE_URL from "../../../lib/envAccess";
 
 // Creating and exporting question page as default
 export default function QuestionPage() {
@@ -20,7 +21,7 @@ export default function QuestionPage() {
                     e.preventDefault();
 
                     setLoading(true);
-                    fetch('https://utsmm.liara.run/api/questions', {
+                    fetch(`${BE_URL}/questions`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

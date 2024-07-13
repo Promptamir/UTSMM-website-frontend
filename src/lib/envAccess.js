@@ -1,4 +1,4 @@
-let SERVER_URL = 'https://utsmm.liara.run/';
+let SERVER_URL = 'https://back.utsmm.com/api';
 
 console.log(SERVER_URL);
 export const CLIENT = {

@@ -42,7 +42,6 @@ const FAQsPage = () => {
                     </p>
                 </div>
             </div>
-
             {
                 (isLoading)
                     ? <h1>Loading ....</h1>

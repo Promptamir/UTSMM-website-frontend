@@ -5,6 +5,7 @@ import '../../../css/pages/external-question-page/extenralQuestionStyle.css';
 import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
+import BE_URL from "../../../lib/envAccess";
 
 // Creating and exporting external question page as default
 export default function ExternalQuestionPage() {
@@ -12,7 +13,7 @@ export default function ExternalQuestionPage() {
     const [currentPage, setCurrentPage] = useState(1);
 
     // Retrieving data from database
-    const [data, error, loading, setUrl, refreshData] = useFetch(`https://utsmm.liara.run/api/external-reviews?page=${currentPage}`);
+    const [data, error, loading, setUrl, refreshData] = useFetch(`${BE_URL}/external-reviews?page=${currentPage}`);
 
     // Returning JSX
     return (
@@ -61,7 +62,7 @@ export default function ExternalQuestionPage() {
                                         total={Math.round(data.entities.count/10)}
                                         onPageChange={(pageNumber) => {
                                             setCurrentPage(pageNumber);
-                                            setUrl(`https://utsmm.liara.run/api/blogs?page=${pageNumber}`);
+                                            setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
                                             refreshData();
                                         }}
                                     />
