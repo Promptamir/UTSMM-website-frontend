@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react"
 import MaxLineText from "../../../../../../cutsome-components/Text/MaxLineText"
 import { useFetch } from "../../../../../../../lib/useFetch"
 import { API } from "../../../../../../../lib/envAccess"
+import {Link} from "react-router-dom";
 
 
 
@@ -96,12 +97,14 @@ export default function SavedServices({data}) {
                                 </ul>
                             </div>
                             <div className="item-buttons">
-                                <button className="buy">
-                                    <span>
-                                        Re Order
-                                    </span>
-                                    <Icon icon="el:ok" />
-                                </button>
+                                <Link to={`/user/dashboard/New-Order?service=${item.id}&category=${item.category_id}`}>
+                                    <button className="buy">
+                                        <span>
+                                            Order
+                                        </span>
+                                        <Icon icon="el:ok"/>
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     })

@@ -8,6 +8,7 @@ import 'react-dropdown/style.css';
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
+import {useLocation} from "react-router-dom";
 const NewOrders = () => {
     const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
     const [categoriesData, categoriesError, categoriesLoading] = useFetch(`${BE_URL}/categories`);
@@ -22,6 +23,13 @@ const NewOrders = () => {
     const [runs, setRuns] = useState();
     const [interval, setInterval] = useState();
     const [formLoading, setFormLoading] = useState(false);
+
+    // Defining token
+    const location = useLocation();
+    const search = location.search?.slice(1, location.search.length);
+    const serviceSearch = search?.split('&')[0]?.split('=')[1];
+    const categorySearch = search?.split('&')[1]?.split('=')[1];
+
 
     useEffect(() => {
         if (categroy) {
@@ -152,6 +160,8 @@ const NewOrders = () => {
                                 ) : (categoriesError)
                                     ? <h1>Error</h1>
                                     : <Dropdown
+                                        disabled={!!(categorySearch)}
+                                        value={(categorySearch) ? categorySearch : undefined}
                                         onChange={(e) => setCategory(e.value)}
                                         options={categoriesData.entities.categories.map(item => {return {
                                             label: item.title,
@@ -171,6 +181,8 @@ const NewOrders = () => {
                                     </div>
                                 ) : (
                                     <Dropdown
+                                        disabled={!!(serviceSearch)}
+                                        value={(serviceSearch) ? serviceSearch : undefined}
                                         onChange={(e) => setSelectedService(e.value)}
                                         disabled={(!categroy)}
                                         options={services.map(item => {return { label: item.title, value: item }})}
