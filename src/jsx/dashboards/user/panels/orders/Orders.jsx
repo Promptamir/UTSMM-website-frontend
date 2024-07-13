@@ -17,13 +17,14 @@ const Orders = () => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
     const [cancelLoading, setCancelLoading] = useState(false);
+    const [addFavLoading, setAddFavLoading] = useState(false);
+    const [addedToFav, setAddedToFav] = useState(false);
 
     const dispatcher = useDispatch()
 
     useEffect(() => {
         if (!loading) {
           setSelectedOrder(orders.entities.orders[0])
-          console.log(orders);
         }
     }, [loading]);
 
@@ -265,7 +266,7 @@ const Orders = () => {
                                                                 dispatcher(showPopUp({
                                                                     type: ADMIN_PANEL_CREATE_BLOG,
                                                                     duration: 2000,
-                                                                    component: <RefilHistoryPopUt id={selectedOrder.id} />
+                                                                    component: <RefilHistoryPopUt id={selectedOrder.id}/>
                                                                 }))
                                                             }}
                                                             style={{
@@ -343,6 +344,59 @@ const Orders = () => {
                                                         </button>
                                                     ) : false
                                             }
+                                            <button
+                                                disabled={addFavLoading}
+                                                style={{
+                                                    marginTop: '20px',
+                                                    backgroundColor: 'white',
+                                                    color: 'red',
+                                                    fontSize: '20px',
+                                                    fontWeight: '600',
+                                                    textAlign: 'center',
+                                                    padding: '15px',
+                                                    borderRadius: '50rem',
+                                                    width: '100%',
+                                                    opacity: (addFavLoading) ? '50%' : '100%'
+                                                }}
+                                                onClick={() => {
+                                                    setAddFavLoading(true);
+                                                    fetch(`${BE_URL}/user/favorite-services`, {
+                                                        method: "POST",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                            "Accept": "application/json",
+                                                            "X-Requested-With": "XMLHttpRequest",
+                                                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                                                        },
+                                                        body: JSON.stringify({service_id: selectedOrder?.service?.id})
+                                                    })
+                                                        .then((data) => data.json())
+                                                        .then((data) => {
+                                                            setAddFavLoading(false);
+
+                                                            if (data.message === "Unauthenticated.") {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    text: 'Unauthenticated.'
+                                                                });
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    text: data.message
+                                                                });
+                                                            }
+                                                        })
+                                                        .catch(() => {
+                                                            setAddFavLoading(false);
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'There was an error while fetching the data'
+                                                            })
+                                                        })
+                                                }}
+                                            >
+                                                <Icon icon={'mdi:heart-outline'} width={28} height={28} />
+                                            </button>
                                         </div>
                                     </div>
                                 )
