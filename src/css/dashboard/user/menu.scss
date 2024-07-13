@@ -127,13 +127,13 @@ $ColorPrimary: #4976f3;
 
 .log-out {
   display: block;
-  background-color: red;
+  background-color: #152349;
   padding: 10px 20px;
   text-align: left;
   border-radius: 20px;
   transition: 500ms;
 
-  &:hover {background-color: darkred;}
+  &:hover {background-color: #0a1225;}
 
   &:disabled {
     pointer-events: none;

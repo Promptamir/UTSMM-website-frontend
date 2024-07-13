@@ -111,14 +111,14 @@
 
 .log-out {
   display: block;
-  background-color: red;
+  background-color: #152349;
   padding: 10px 20px;
   text-align: left;
   border-radius: 20px;
   transition: 500ms;
 }
 .log-out:hover {
-  background-color: darkred;
+  background-color: #0a1225;
 }
 .log-out:disabled {
   pointer-events: none;
