@@ -29,7 +29,7 @@ export default function SignUpPage() {
             setError('');
             setloading(true);
 
-            fetch(`${BE_URL}/api/users`, {
+            fetch(`${BE_URL}/users`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

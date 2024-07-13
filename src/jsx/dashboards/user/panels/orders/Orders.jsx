@@ -11,9 +11,13 @@ const Orders = () => {
     const [orders, error, loading] = useFetch(`${BE_URL}/orders`)
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
+    const [cancelLoading, setCancelLoading] = useState(false);
 
     useEffect(() => {
-        if (!loading) {setSelectedOrder(orders.entities.orders[0])}
+        if (!loading) {
+          setSelectedOrder(orders.entities.orders[0])
+          console.log(orders);
+        }
     }, [loading]);
 
     function getDate(string) {
@@ -189,7 +193,7 @@ const Orders = () => {
                                                 </div>
                                             </div>
                                             {
-                                                (selectedOrder.refillable === "1")
+                                                (selectedOrder?.service?.refillable === "1")
                                                     ? (
                                                         <button
                                                             disabled={refileLoading}
@@ -200,7 +204,7 @@ const Orders = () => {
                                                                 fontWeight: '600',
                                                                 textAlign: 'center',
                                                                 color: 'black',
-                                                                padding: '20px',
+                                                                padding: '15px',
                                                                 borderRadius: '50rem',
                                                                 width: '100%',
                                                                 opacity: (refileLoading) ? '50%' : '100%'
@@ -229,7 +233,7 @@ const Orders = () => {
                                                                         } else {
                                                                             Swal.fire({
                                                                                 icon: 'success',
-                                                                                text: 'The item is now refilled'
+                                                                                text: data.message
                                                                             });
                                                                         }
                                                                     })
@@ -243,6 +247,64 @@ const Orders = () => {
                                                             }}
                                                         >
                                                             {(refileLoading) ? "Loading" : 'Refile'}
+                                                        </button>
+                                                    ) : false
+                                            }
+                                            {
+                                                (selectedOrder?.status !== "Canceled")
+                                                    ? (
+                                                        <button
+                                                            disabled={cancelLoading}
+                                                            style={{
+                                                                marginTop: '20px',
+                                                                backgroundColor: 'red',
+                                                                color: 'white',
+                                                                fontSize: '20px',
+                                                                fontWeight: '600',
+                                                                textAlign: 'center',
+                                                                padding: '15px',
+                                                                borderRadius: '50rem',
+                                                                width: '100%',
+                                                                opacity: (cancelLoading) ? '50%' : '100%'
+                                                            }}
+                                                            onClick={() => {
+                                                                setCancelLoading(true);
+                                                                fetch(`${BE_URL}/order-cancels`, {
+                                                                    method: "POST",
+                                                                    headers: {
+                                                                        "Content-Type": "application/json",
+                                                                        "Accept": "application/json",
+                                                                        "X-Requested-With": "XMLHttpRequest",
+                                                                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                                                                    },
+                                                                    body: JSON.stringify({order: selectedOrder.id})
+                                                                })
+                                                                    .then((data) => data.json())
+                                                                    .then((data) => {
+                                                                        setCancelLoading(false);
+
+                                                                        if (data.message === "Unauthenticated.") {
+                                                                            Swal.fire({
+                                                                                icon: 'error',
+                                                                                text: 'Unauthenticated.'
+                                                                            });
+                                                                        } else {
+                                                                            Swal.fire({
+                                                                                icon: 'success',
+                                                                                text: data.message
+                                                                            });
+                                                                        }
+                                                                    })
+                                                                    .catch(() => {
+                                                                        setRefileLoading(false);
+                                                                        Swal.fire({
+                                                                            icon: 'error',
+                                                                            title: 'There was an error while fetching the data'
+                                                                        })
+                                                                    })
+                                                            }}
+                                                        >
+                                                            {(cancelLoading) ? "Loading" : 'Cancel'}
                                                         </button>
                                                     ) : false
                                             }
