@@ -4,6 +4,11 @@ import {useEffect, useState} from 'react';
 import { useFetch } from '../../../../../lib/useFetch';
 import BE_URL, { API } from '../../../../../lib/envAccess';
 import Swal from "sweetalert2";
+import {showPopUp} from "../../../../../features/popUpReducer";
+import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
+import CreateNewBlogPopUp from "../../../../pop-ups/CreateNewBlogPopUp";
+import {useDispatch} from "react-redux";
+import RefilHistoryPopUt from "../../../../pop-ups/RefilHistoryPopUt";
 
 
 const Orders = () => {
@@ -12,6 +17,8 @@ const Orders = () => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
     const [cancelLoading, setCancelLoading] = useState(false);
+
+    const dispatcher = useDispatch()
 
     useEffect(() => {
         if (!loading) {
@@ -199,11 +206,11 @@ const Orders = () => {
                                                             disabled={refileLoading}
                                                             style={{
                                                                 marginTop: '20px',
-                                                                backgroundColor: 'white',
+                                                                backgroundColor: '#21356e',
                                                                 fontSize: '20px',
                                                                 fontWeight: '600',
                                                                 textAlign: 'center',
-                                                                color: 'black',
+                                                                color: 'white',
                                                                 padding: '15px',
                                                                 borderRadius: '50rem',
                                                                 width: '100%',
@@ -247,6 +254,34 @@ const Orders = () => {
                                                             }}
                                                         >
                                                             {(refileLoading) ? "Loading" : 'Refile'}
+                                                        </button>
+                                                    ) : false
+                                            }
+                                            {
+                                                (selectedOrder?.service?.refillable === "1")
+                                                    ? (
+                                                        <button
+                                                            onClick={() => {
+                                                                dispatcher(showPopUp({
+                                                                    type: ADMIN_PANEL_CREATE_BLOG,
+                                                                    duration: 2000,
+                                                                    component: <RefilHistoryPopUt id={selectedOrder.id} />
+                                                                }))
+                                                            }}
+                                                            style={{
+                                                                display: 'block',
+                                                                marginTop: '20px',
+                                                                backgroundColor: '#21356e',
+                                                                fontSize: '20px',
+                                                                fontWeight: '600',
+                                                                textAlign: 'center',
+                                                                color: 'white',
+                                                                paddingBlock: '15px',
+                                                                width: '100%',
+                                                                borderRadius: '50rem',
+                                                            }}
+                                                        >
+                                                            Refile History
                                                         </button>
                                                     ) : false
                                             }
