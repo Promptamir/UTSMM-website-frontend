@@ -83,7 +83,7 @@ ChartJS.defaults.plugins.legend.align = "start"
 
 const Statics = () => {
     const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
-    const [savedServicesData, savedServicesError, savedServicesLoading] = useFetch(`${BE_URL}/user/favorite-services`);
+    const [savedServicesData, savedServicesError, savedServicesLoading, setUrl, refreshData] = useFetch(`${BE_URL}/user/favorite-services`);
 
     return (
         <section className="statics">
@@ -115,7 +115,7 @@ const Statics = () => {
                         </div>
                     ) : (savedServicesError)
                         ? <h1>There was an error while fetching the data</h1>
-                        : <SavedServices data={savedServicesData.entities.services} />
+                        : <SavedServices refresh={refreshData} data={savedServicesData.entities.services} />
             }
 
 
