@@ -52,7 +52,7 @@ const FAQsPage = () => {
                             <div className="faqs-items">
                                 <div className="col">
                                     {
-                                        data.map((item, index) => {
+                                        data?.map((item, index) => {
                                             return <FAQsAccordion
                                                 key={index}
                                                 headerTitle={item.question}
@@ -63,7 +63,7 @@ const FAQsPage = () => {
                                 </div>
                                 <div className="col">
                                     {
-                                        data.map((item, index) => {
+                                        data?.map((item, index) => {
                                             return <FAQsAccordion
                                                 key={index}
                                                 headerTitle={item.question}
