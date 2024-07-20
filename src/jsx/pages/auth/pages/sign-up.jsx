@@ -54,6 +54,7 @@ export default function SignUpPage() {
                 .catch(() => {
                     setloading(false);
                     setError('There was an unexpected error. Please try again.');
+                    setSuccses('');
                 })
         }
     }

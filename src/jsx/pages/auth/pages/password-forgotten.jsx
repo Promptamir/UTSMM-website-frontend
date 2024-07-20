@@ -36,10 +36,12 @@ export default function PasswordResetPage() {
             .then((data) => data.json())
             .then((data) => {
                 setloading(false);
+                setError('');
                 setSuccses('We sent you an email.');
             })
             .catch(() => {
                 setloading(false);
+                setSuccses('');
                 setError('There was an unexpected error. Please try again.');
             })
     }
