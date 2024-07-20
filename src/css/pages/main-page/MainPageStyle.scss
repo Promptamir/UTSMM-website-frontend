@@ -20,6 +20,13 @@ $panel-color-6: #dc3545;
     flex-direction: column;
     position: relative;
 
+    .popular-services-holder {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+    }
+
     section {
     }
 
@@ -1462,6 +1469,7 @@ $panel-color-6: #dc3545;
 
 @media only screen and (max-width: 1100px) {
     .main-page {
+        .popular-services-holder {grid-template-columns: repeat(1, 1fr);}
         section {
             display: none !important;
         }

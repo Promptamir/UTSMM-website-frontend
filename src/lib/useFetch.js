@@ -40,7 +40,7 @@ export function useFetch(defaultUrl, deafultValue) {
                     })
                     setData(response.data)
                 } catch (err) {
-                    if (err.response.data.message === "Unauthenticated") {
+                    if (err?.response?.data?.message === "Unauthenticated") {
                         navigator('/auth/login');
                     }
                     setError(err)

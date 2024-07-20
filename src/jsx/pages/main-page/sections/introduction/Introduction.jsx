@@ -208,20 +208,16 @@ export default function Introduction() {
                             : (error)
                                 ? <h1>There was an error while fetching the data</h1>
                                 : (
-                                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '20px', paddingInline: '20px'}}>
+                                    <div className={'popular-services-holder'}>
                                         {
-                                            data.entities.popular_services.slice(0,3).map((item, index) => (
-                                                <Link key={index} to={'#'} className="item">
+                                            data.entities.popular_services.map((item, index) => (
+                                                <Link key={index} to={`/user/dashboard/New-Order?service=${item.id}&category=${item.category_id}`} className="item">
                                                     <div className="item-header">
                                                         <img src={require("../../../../../images/main-page/intro-2/our-popular-services/1.png")} alt="" />
                                                     </div>
                                                     <div className="item-body">
                                                         <h2>{item.title}</h2>
                                                         <p>{item.description}</p>
-                                                        <h2>
-                                                            <span>${item.min} - ${item.max}</span>
-                                                            <small>M/o</small>
-                                                        </h2>
                                                     </div>
                                                     <div className="item-buttons">
                                                         <button className='arrow-up'>
