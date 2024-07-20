@@ -17,7 +17,6 @@ import parse from 'html-react-parser';
 import Modal from "../../../../pop-ups/modal";
 
 const AddFounds = () => {
-    const [paymentMethods, methodError, methodLoading, setUrl, refreshData] = useFetch(`${BE_URL}/payments?page=1`);
     const [selectedMethod, setSelectedMethod] = useState()
     const [currentStep, setStep] = useState(1)
     const dispatcher = useDispatch()
@@ -26,11 +25,6 @@ const AddFounds = () => {
         fee: 0,
         total: 0
     })
-
-    const [webmoneyModalOpened, setWebmoneyModalOpened] = useState(false);
-    const [webmoneyModalContent, setWebmoneyModalContent] = useState(undefined);
-    const [perfectMoneyOpened, setPerfectMoneyOpened] = useState(false);
-    const [perfectMoneyContent, setPerfectMoneyContent] = useState(undefined);
 
     const openSelectPaymentPopup = () => {
 
@@ -42,12 +36,6 @@ const AddFounds = () => {
             type: SELECT_PAYMENT_METHOD_POP_UP,
             duration: 2000,
             component: <SelectPaymentPopup
-                methods={paymentMethods}
-                loading={methodLoading}
-                error={methodError}
-                count={(!methodLoading) ? paymentMethods.entities.count : 0}
-                refresh={refreshData}
-                setUrl={setUrl}
                 resultFunction={resultFunction}
                 currentSelected={selectedMethod} />
         }))
@@ -111,7 +99,7 @@ const AddFounds = () => {
             confirmButtonText: "Yes, continue"
         }).then((result) => {
             if (result.isConfirmed) {
-                if (selectedMethod.payment_method === "Payeer") {
+                if (selectedMethod === "Payeer") {
                     fetch(`${BE_URL}/payeer-payments`, {
                         method: "POST",
                         headers: {
@@ -130,7 +118,7 @@ const AddFounds = () => {
                                 text: 'There was an error while fetching the data'
                             })
                         })
-                } else if (selectedMethod.payment_method === "Cryptomus") {
+                } else if (selectedMethod === "Cryptomus") {
                     fetch(`${BE_URL}/cryptomus-payments`, {
                         method: "POST",
                         headers: {
@@ -149,7 +137,7 @@ const AddFounds = () => {
                                 text: 'There was an error while fetching the data'
                             })
                         })
-                } else if (selectedMethod.payment_method === "NowPayments") {
+                } else if (selectedMethod === "NowPayments") {
                     fetch(`${BE_URL}/nowpayments-payments`, {
                         method: "POST",
                         headers: {
@@ -168,7 +156,7 @@ const AddFounds = () => {
                                 text: 'There was an error while fetching the data'
                             })
                         })
-                } else if (selectedMethod.payment_method === "PerfectMoney") {
+                } else if (selectedMethod === "PerfectMoney") {
                     fetch(`${BE_URL}/perfectmoney-payments`, {
                         method: "POST",
                         headers: {
@@ -181,8 +169,28 @@ const AddFounds = () => {
                     })
                         .then((data) => data.json())
                         .then((data) => {
-                            setPerfectMoneyContent(data.entities.payment_form);
-                            setPerfectMoneyOpened(true);
+                            const formStr = data.entities.payment_form;
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(formStr, 'text/html');
+                            const form  = doc.querySelector('form');
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: form.method.toUpperCase(),
+                                body: formData,
+                                mode: 'no-cors',
+                                headers: {
+                                    'Accept-Charset': form.getAttribute('accept-charset'),
+                                    'Content-Type': form.getAttribute('content-type')
+                                }
+                            })
+                                .then(() => window.location.reload())
+                                .catch(() => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: 'There was an error while fetching the data'
+                                    })
+                                })
                         })
                         .catch(() => {
                             Swal.fire({
@@ -190,7 +198,7 @@ const AddFounds = () => {
                                 text: 'There was an error while fetching the data'
                             })
                         })
-                } else if (selectedMethod.payment_method === "WebMoney") {
+                } else if (selectedMethod === "WebMoney") {
                     fetch(`${BE_URL}/webmoney-payments`, {
                         method: "POST",
                         headers: {
@@ -203,8 +211,28 @@ const AddFounds = () => {
                     })
                         .then((data) => data.json())
                         .then((data) => {
-                            setWebmoneyModalContent(data.entities.payment_form);
-                            setWebmoneyModalOpened(true);
+                            const formStr = data.entities.payment_form;
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(formStr, 'text/html');
+                            const form  = doc.querySelector('form');
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: form.method.toUpperCase(),
+                                body: formData,
+                                mode: 'no-cors',
+                                headers: {
+                                    'Accept-Charset': form.getAttribute('accept-charset'),
+                                    'Content-Type': form.getAttribute('content-type')
+                                }
+                            })
+                                .then(() => window.location.reload())
+                                .catch(() => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: 'There was an error while fetching the data'
+                                    })
+                                })
                         })
                         .catch(() => {
                             Swal.fire({
@@ -217,42 +245,8 @@ const AddFounds = () => {
         });
     }
 
-    function insertStringAtIndex(original, toInsert, index) {
-        return original.slice(0, index) + toInsert + original.slice(index);
-    }
-
-    function formatPaymentContent(string) {
-        const concatedString = insertStringAtIndex(string, '<button type="Submit">Submit</button>', string.length-7);
-        const removedHiddenString = concatedString.replace(/type="hidden"/gi, '')
-        return parse(removedHiddenString);
-    }
-
     return (
         <section className='panel-add-founds'>
-            {
-                webmoneyModalContent && (
-                    <Modal isOpened={webmoneyModalOpened} title={'Web money'} closeFn={() => {
-                        setWebmoneyModalOpened(false);
-                        setWebmoneyModalContent(undefined);
-                    }}>
-                        <div className={'payment-method-modal-body'}>
-                            {formatPaymentContent(webmoneyModalContent)}
-                        </div>
-                    </Modal>
-                )
-            }
-            {
-                perfectMoneyContent && (
-                    <Modal isOpened={perfectMoneyOpened} title={'Perfect money'} closeFn={() => {
-                        setPerfectMoneyOpened(false);
-                        setPerfectMoneyContent(undefined);
-                    }}>
-                        <div className={'payment-method-modal-body'}>
-                            {formatPaymentContent(perfectMoneyContent)}
-                        </div>
-                    </Modal>
-                )
-            }
             <div className="road-map">
                 <div className={`item ${isCurrentStep(1)}
                  ${isCompleted(1)}`}>
@@ -290,7 +284,7 @@ const AddFounds = () => {
                                 </legend>
                                 <div className="content">
                                     <h1>
-                                        {selectedMethod?.name || "Click Here"}
+                                        {selectedMethod || "Click Here"}
                                     </h1>
                                 </div>
                             </fieldset>
@@ -378,26 +372,6 @@ const AddFounds = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="avaialble-methods-intro">
-                {
-                    (methodLoading)
-                        ? <h1>Loading</h1>
-                        : (methodError)
-                            ? <h1>Error</h1>
-                            : paymentMethods.entities.payments.map((item, index) => {
-                                return <div className="item" key={index}>
-                                    <div className="item-header">
-                                        <span>{item.payment_method}</span>
-                                    </div>
-                                    <div className="item-body">
-                                        <p>
-                                            {item.payment_amount}
-                                        </p>
-                                    </div>
-                                </div>
-                            })
-                }
             </div>
         </section>
     )

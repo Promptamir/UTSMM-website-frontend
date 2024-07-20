@@ -11,7 +11,7 @@ import {useState} from "react";
 
 
 
-const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSelected, count, setUrl, refresh }) => {
+const SelectPaymentPopup = ({resultFunction, currentSelected}) => {
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -29,7 +29,13 @@ const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSe
 
 
 
-
+    const methods = [
+        "Payeer",
+        "Cryptomus",
+        "NowPayments",
+        "PerfectMoney",
+        "WebMoney"
+    ];
 
 
 
@@ -51,43 +57,18 @@ const SelectPaymentPopup = ({ methods, loading, error, resultFunction, currentSe
                 overflow: 'auto'
             }}>
                 {
-                    (loading)
-                        ? <h1>Loading</h1>
-                        : (error)
-                            ? <h1>Error</h1>
-                            : methods.entities.payments.map((item, index) => {
-                                return <div
-                                    className={`item ${item?.name === currentSelected?.name}`}
-                                    key={index}
-                                    onClick={() => handleItemClick(item)}
-                                >
-                                    <span>{index} - </span>
-                                    <p>
-                                        {item.payment_method}
-                                    </p>
-                                </div>
-                            })
-                }
-
-                {
-                    (loading)
-                        ? <h1>Loading...</h1>
-                        : (error)
-                            ? <h1>Error</h1>
-                            : (count > 15)
-                                ? (
-                                    <TablePaginations>
-                                        <ResponsivePagination
-                                            current={currentPage}
-                                            total={Math.round(count/10)}
-                                            onPageChange={(pageNumber) => {
-                                                setCurrentPage(pageNumber);
-                                                setUrl(`${BE_URL}/payments?page=${pageNumber}`);
-                                                refresh();
-                                            }}
-                                        />
-                                    </TablePaginations>
-                                ) : false
+                    methods.map((item, index) => {
+                        return <div
+                            className={`item ${item === currentSelected}`}
+                            key={index}
+                            onClick={() => handleItemClick(item)}
+                        >
+                            <span>{index} - </span>
+                            <p>
+                                {item}
+                            </p>
+                        </div>
+                    })
                 }
             </div>
         </div>
