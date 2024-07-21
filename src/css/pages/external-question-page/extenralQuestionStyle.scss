@@ -7,6 +7,7 @@ $ColorPrimary: #4976f3;
   padding-top: 120px;
   padding-bottom: 100px;
   padding-inline: 20px;
+  background: $ColorPrimary;
 
   .centred-container {
     display: flex;
@@ -15,7 +16,7 @@ $ColorPrimary: #4976f3;
   }
 
   .custom-table {
-    border: 1px solid $ColorPrimary;
+    border: 1px solid white;
     border-radius: 20px;
     overflow: auto;
 
@@ -23,7 +24,7 @@ $ColorPrimary: #4976f3;
     .header {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      background-color: $ColorPrimary;
+      background: $ColorPrimary;
 
       .item {
         background: $ColorPrimary;

@@ -119,7 +119,7 @@ export default function Blogs() {
                         } else {
                             Swal.fire({
                                 icon: 'success',
-                                text: (published) ? 'The Blog is Published' : 'The Blog is not Published now'
+                                text: data.message
                             });
                             refresh();
                         }
@@ -164,7 +164,7 @@ export default function Blogs() {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: 'The Blog is deleted now.'
+                        text: data.message
                     });
                     refresh();
                 }

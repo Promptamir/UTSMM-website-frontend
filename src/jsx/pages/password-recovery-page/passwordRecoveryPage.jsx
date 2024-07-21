@@ -15,7 +15,7 @@ export default function PasswordRecoveryPage() {
 
     // Defining token
     const location = useLocation();
-    const token = location.search.slice(1, location.search.length);
+    const token = location.search.slice(7, location.search.length);
 
     // Returning JSX
     return (
@@ -50,7 +50,7 @@ export default function PasswordRecoveryPage() {
                                         setSuccses('');
                                     } else {
                                         setError('');
-                                        setSuccses('Your password is changed now.');
+                                        setSuccses(data.message);
                                     }
                                 })
                                 .catch(() => {

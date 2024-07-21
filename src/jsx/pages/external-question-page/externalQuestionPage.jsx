@@ -8,11 +8,8 @@ import Pagination from "../../primaries/pagination";
 
 // Creating and exporting external question page as default
 export default function ExternalQuestionPage() {
-    // Defining states of component
-    const [currentPage, setCurrentPage] = useState(1);
-
     // Retrieving data from database
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/external-reviews?page=${currentPage}`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/external-reviews?page=1`);
 
     // Returning JSX
     return (

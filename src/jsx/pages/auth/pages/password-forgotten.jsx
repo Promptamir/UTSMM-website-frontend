@@ -37,7 +37,7 @@ export default function PasswordResetPage() {
             .then((data) => {
                 setloading(false);
                 setError('');
-                setSuccses('We sent you an email.');
+                setSuccses(data.message);
             })
             .catch(() => {
                 setloading(false);

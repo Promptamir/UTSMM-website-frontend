@@ -41,6 +41,7 @@ export default function Question() {
                 })
                 .catch(() => {
                     setLoading(false);
+                    setSuccess('');
                     setError('There was an error while fetching the data');
                 })
         }} action="#" className={'form question'}>

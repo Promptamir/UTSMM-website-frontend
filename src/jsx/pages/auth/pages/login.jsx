@@ -41,7 +41,6 @@ export default function LoginPage() {
             .then((data) => {
                 setloading(false);
                 setError('');
-                setSuccses("You're succesfully logged in now.")
 
                 localStorage.setItem('token', JSON.stringify(data.entities.token));
                 navigate('/');

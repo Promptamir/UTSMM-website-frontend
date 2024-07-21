@@ -59,7 +59,7 @@ export default function CreateFaqsPopUp({ refresh, setLoading }) {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: 'The faq is added'
+                        text: resp.message
                     });
                     refresh();
                 }

@@ -46,7 +46,7 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The Category is edited.'
+                            text: data.message
                         });
                         refresh();
                     }

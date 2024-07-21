@@ -67,7 +67,7 @@ export default function Faqs() {
                         } else {
                             Swal.fire({
                                 icon: 'success',
-                                text: 'The reply is updated.'
+                                text: resp.message
                             });
 
                             refresh();
@@ -106,7 +106,7 @@ export default function Faqs() {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: 'The faq is deleted'
+                        text: resp.message
                     });
                     refresh();
                 }

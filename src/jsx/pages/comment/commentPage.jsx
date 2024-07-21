@@ -6,6 +6,7 @@ import ResponsivePagination from "react-responsive-pagination";
 import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
 import {Icon} from "@iconify/react";
 import BE_URL from "../../../lib/envAccess";
+import Pagination from "../../primaries/pagination";
 
 // Creating and exporting comment page as default
 export default function CommentPage() {
@@ -15,9 +16,7 @@ export default function CommentPage() {
     const [formLoading, setFormLoading] = useState(false);
     const [formError, setFormError] = useState('');
     const [formSuccses, setFormSuccses] = useState('');
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/comments?page=${currentPage}`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/comments?page=1`);
 
     // Returning JSX
     return (
@@ -49,8 +48,8 @@ export default function CommentPage() {
                             } else {
                                 setFormLoading(false);
                                 setFormError('');
-                                setFormSuccses('Your comment has been submitted.');
-                                refresh();
+                                setFormSuccses(data.message);
+                                refreshData();
                             }
                         })
                         .catch(() => {
@@ -60,7 +59,7 @@ export default function CommentPage() {
                         })
                 }}>
                     <h1 className={'form-title'}>Comment</h1>
-                    <input required onChange={(e) => setStars(e.target.value)} className={'form-input'} placeholder={'Stars'} id={'stars'} type={'number'} max={5} min={1} />
+                    <input max={5} min={1} required onChange={(e) => setStars(e.target.value)} className={'form-input'} placeholder={'Stars'} id={'stars'} type={'number'} />
                     <textarea required onChange={(e) => setContent(e.target.value)} name="content" className="form-input" id={'content'} placeholder={'Message'}/>
                     {formError !== '' && <div className={'form-input-error'}>{formError}</div>}
                     {formSuccses !== '' && <div className={'form-input-succses'}>{formSuccses}</div>}
@@ -73,7 +72,7 @@ export default function CommentPage() {
                     : (error)
                         ? <h1>Error</h1>
                         : (
-                            <div className={'comment-table-holder'}>
+                            <div className={'comment-table-holder'} style={{marginBottom: '20px'}}>
                                 <div className={'comment-table'}>
                                     <div className={'comment-table-row'}>
                                         <div className={'comment-table-item'}>Name</div>
@@ -95,29 +94,17 @@ export default function CommentPage() {
                                         ))
                                     }
                                 </div>
-                                {
-                                    (loading)
-                                        ? <h1>Loading...</h1>
-                                        : (error)
-                                            ? <h1>Error</h1>
-                                            : (data.entities.count > 15)
-                                                ? (
-                                                    <TablePaginations>
-                                                        <ResponsivePagination
-                                                            current={currentPage}
-                                                            total={Math.round(data.entities.count/10)}
-                                                            onPageChange={(pageNumber) => {
-                                                                setCurrentPage(pageNumber);
-                                                                setUrl(`${BE_URL}/comments?page=${pageNumber}`)
-                                                                refresh();
-                                                            }}
-                                                        />
-                                                    </TablePaginations>
-                                                ) : false
-                                }
                             </div>
                         )
             }
+            <Pagination
+                error={error}
+                refetch={refetch}
+                setUrl={setUrl}
+                count={data?.entities?.count}
+                loading={loading}
+                apiEndpoint={'comments'}
+            />
         </div>
     );
 }

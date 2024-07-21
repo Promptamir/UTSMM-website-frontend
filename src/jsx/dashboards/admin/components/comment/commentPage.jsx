@@ -80,7 +80,7 @@ export default function CommentPage() {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: `The Status is set to "${published}".`
+                        text: resp.message
                     });
 
                     refresh();
@@ -120,7 +120,7 @@ export default function CommentPage() {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: (published) ? 'the comment is now shown' : 'the comment is not visible now'
+                        text: resp.message
                     });
 
                     refresh();
@@ -263,7 +263,7 @@ export default function CommentPage() {
                                                                 } else {
                                                                     Swal.fire({
                                                                         icon: 'success',
-                                                                        text: 'The comment is removed'
+                                                                        text: resp.message
                                                                     });
 
                                                                     refresh();

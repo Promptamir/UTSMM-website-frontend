@@ -49,7 +49,7 @@ export default function Economy() {
                                     } else {
                                         Swal.fire({
                                             icon: 'success',
-                                            text: 'The configs are changed'
+                                            text: resp.message
                                         });
                                         refresh();
                                     }

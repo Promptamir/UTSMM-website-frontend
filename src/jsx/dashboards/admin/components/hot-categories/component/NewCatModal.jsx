@@ -46,7 +46,7 @@ export default function NewCatModal({setCustomLoading, refresh}) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The Category is added.'
+                            text: data.message
                         });
                         refresh();
                     }

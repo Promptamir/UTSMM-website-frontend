@@ -48,7 +48,7 @@ const AddNewTicket = () => {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The Ticket is Send'
+                            text: 'The Ticket is Sent'
                         });
                     }
                 })

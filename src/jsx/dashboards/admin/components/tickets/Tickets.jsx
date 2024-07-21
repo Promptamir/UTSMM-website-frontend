@@ -146,7 +146,7 @@ export default function Tickets() {
                                                                     } else {
                                                                         Swal.fire({
                                                                             icon: 'success',
-                                                                            text: (state) ? 'The Ticket is open now' : 'The Ticket is closed now'
+                                                                            text: data.message
                                                                         });
                                                                         refresh();
                                                                     }

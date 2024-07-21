@@ -82,7 +82,7 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The blog is added.'
+                            text: result.message
                         });
                         refresh();
                     }

@@ -47,7 +47,7 @@ export default function Setting() {
                         .then((data) => {
                             setLoading(false);
                             setError('');
-                            setSuccses(data.entities.message)
+                            setSuccses(data.message)
                         })
                         .catch(() => {
                             setLoading(false);
