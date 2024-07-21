@@ -59,7 +59,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     } else {
                         Swal.fire({
                             icon: 'success',
-                            text: 'The blogs is edited'
+                            text: data.message
                         });
                         refresh();
                     }

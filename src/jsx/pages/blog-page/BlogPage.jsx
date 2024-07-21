@@ -7,6 +7,7 @@ import TablePaginations from "../../cutsome-components/table/components/TablePag
 import ResponsivePagination from "react-responsive-pagination";
 import {useFetch} from "../../../lib/useFetch";
 import {Link} from "react-router-dom";
+import Pagination from "../../primaries/pagination";
 
 const BlogPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,19 +16,6 @@ const BlogPage = () => {
     return (
         <main className="blog-page">
             <div className="intro">
-                <div className="background">
-                    <Lottie
-                        className="wave"
-                        animationData={blogsBackgroud}
-                        play
-                        loop/>
-                </div>
-                <div className="left">
-                    <img src={
-                        window.location.origin + "/18.svg"
-                    } alt=""/>
-
-                </div>
                 <div className="right">
                     <h1>SMM PANEL BLOGS</h1>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis numquam sapiente harum
@@ -42,35 +30,28 @@ const BlogPage = () => {
                             ? <h1>Loading</h1>
                             : (error)
                                 ? <h1>An Error Has Happened</h1>
-                                : data.entities.blogs.map((item, index) => (
-                                    <Link to={`/blog/${item.slug}`} key={index}>
-                                        <img className={'blog-img'} src={item.image} alt={item.title} />
-                                        <h1 className={'blog-title'}>{item.title}</h1>
-                                        <p className={'blog-p'}>{item.short_description}</p>
-                                    </Link>
+                                : (data.entities.blogs.length === 0)
+                                    ? <h1>There is nothing to show</h1>
+                                    : data.entities.blogs.map((item, index) => (
+                                        <Link className={'blog-card'} to={`/blog/${item.slug}`} key={index}>
+                                            <img className={'blog-img'} src={item.image} alt={item.title} />
+                                            <div className={'blog-content'}>
+                                                <h1 className={'blog-title'}>{item.title}</h1>
+                                                <p className={'blog-p'}>{item.short_description}</p>
+                                                <p className={'blog-date'}>{new Date(item.created_at).toLocaleDateString()}</p>
+                                            </div>
+                                        </Link>
                                 ))
                     }
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.count/10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
-                                                    setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
-                                                    refetch();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
                 </div>
+                <Pagination
+                    error={error}
+                    refetch={refetch}
+                    setUrl={setUrl}
+                    count={data?.entities?.count}
+                    loading={loading}
+                    apiEndpoint={'blogs'}
+                />
             </div>
         </main>
     )

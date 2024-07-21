@@ -11,6 +11,10 @@ $primaryColor: rgb(49, 101, 243);
   margin-inline: auto;
 }
 
+.blog-content {
+  padding: 1rem;
+}
+
 .blog-img {
   width: 100%;
   display: block;
@@ -18,25 +22,48 @@ $primaryColor: rgb(49, 101, 243);
   object-fit: cover;
 }
 
+.blog-card {
+  background-color: $primaryColor;
+  border-radius: 1rem;
+  transition: .5s;
+  overflow: hidden;
+  box-shadow: 0 0 30px transparent;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+  }
+}
+
 .blog-title {
   font-weight: 700;
-  margin: 10px 0;
-  color: black;
+  margin-bottom: 10px;
+  color: white;
   display: block;
-  width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .blog-p {
   font-weight: 300;
-  margin-bottom: 30px;
-  color: black;
+  margin-bottom: 20px;
+  color: white;
+  font-size: 16px;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blog-date {
+  font-weight: 400;
+  color: white;
   font-size: 14px;
   display: block;
-  width: 100px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -45,8 +72,7 @@ $primaryColor: rgb(49, 101, 243);
 .blog-holder {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);
-  overflow: hidden;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -56,7 +82,6 @@ $primaryColor: rgb(49, 101, 243);
 
 .pagination {
   border-radius: 10px;
-  border: 1px solid black;
   margin-top: 20px;
   overflow: hidden;
   display: flex;
@@ -80,4 +105,17 @@ $primaryColor: rgb(49, 101, 243);
     background-color: $primaryColor;
     color: whitesmoke;
   }
+}
+
+.pagination-error {
+  display: block;
+  font-weight: 300;
+  font-size: 20px;
+  color: red;
+}
+
+// Media query
+@media (max-width: 1024px) {
+  .blog-holder {grid-template-columns: repeat(1, 1fr);}
+  .blog-card:hover {transform: scale(1);}
 }
