@@ -6,6 +6,7 @@ import BE_URL from "../../../../../lib/envAccess";
 import {Icon} from "@iconify/react";
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from "react-responsive-pagination";
+import Pagination from "../../../../primaries/pagination";
 
 // Creating and exporting updates panel of user dashboard as default
 export default function Updates() {
@@ -16,7 +17,7 @@ export default function Updates() {
     const [sortedByInput, setSortedByInput] = useState([]);
 
     // Fetching the api
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/service-updates?page=${currentPage}&type=${sort}`);
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/service-updates?page=${currentPage}&type=${sort}`);
 
     // Using useEffect to sort items
     useEffect(() => {
@@ -85,30 +86,14 @@ export default function Updates() {
                             </ul>
                         )
             }
-            {
-                (loading)
-                    ? (
-                        <div className={'centred-div'}>
-                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
-                        </div>
-                    )
-                    : (error)
-                        ? <h1>There was an error while fetching the data</h1>
-                        : (data.entities.count > 100 && searchStr === '')
-                            ? (
-                                <TablePaginations>
-                                    <ResponsivePagination
-                                        current={currentPage}
-                                        total={Math.round(data.entities.count/100)}
-                                        onPageChange={(pageNumber) => {
-                                            setCurrentPage(pageNumber);
-                                            setUrl(`${BE_URL}/service-updates?page=${pageNumber}`);
-                                            refetch();
-                                        }}
-                                    />
-                                </TablePaginations>
-                            ) : false
-            }
+            <Pagination
+                error={error}
+                refetch={refetch}
+                setUrl={setUrl}
+                count={data?.entities?.count}
+                loading={loading}
+                apiEndpoint={'blogs'}
+            />
         </main>
     );
 }

@@ -16,6 +16,7 @@ import {useDispatch} from "react-redux";
 import InfoModal from "./component/infoModal";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
+import Pagination from "../../../../primaries/pagination";
 
 // Creating and exporting question section of admin panel as default
 export default function Question() {
@@ -24,7 +25,7 @@ export default function Question() {
     const [customLoading, setCustomLoading] = useState(false);
 
     // Fetching data
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/questions?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/questions?page=${currentPage}`)
 
     // Defining dispatcher of modals
     const dispatcher = useDispatch()
@@ -214,26 +215,14 @@ export default function Question() {
                         }
 
                     </TableBody>
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.count/10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
-                                                    setUrl(`${BE_URL}/admin/questions?page=${pageNumber}`);
-                                                    refresh();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'blogs'}
+                    />
                 </Table>
             </div>
         </div>

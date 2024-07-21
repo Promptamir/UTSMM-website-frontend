@@ -9,6 +9,7 @@ import { useFetch } from "../../../../../lib/useFetch"
 import BE_URL, { API } from "../../../../../lib/envAccess";
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from 'react-responsive-pagination';
+import Pagination from "../../../../primaries/pagination";
 
 
 
@@ -36,7 +37,7 @@ export default function Orders() {
 
     const [ordersStatus, setOrdersStatus] = useState(orderListButtons[0])
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
 
     return (
         <div className="admin-panel-orders">
@@ -51,7 +52,7 @@ export default function Orders() {
                                 onClick={() => {
                                     setOrdersStatus(record);
                                     setUrl(`${BE_URL}/orders?page=${currentPage}&statuses=${(record === 'All') ? '' : record.toLowerCase()}`);
-                                    refreshData();
+                                    refresh();
                                 }}
                             >
                                 {record}
@@ -143,20 +144,17 @@ export default function Orders() {
                                         }
 
                                     </TableBody>
-                                    <TablePaginations>
-                                        <ResponsivePagination
-                                            current={currentPage}
-                                            total={Math.round(data.entities.count/10)}
-                                            onPageChange={(pageNumber) => {
-                                                setCurrentPage(pageNumber);
-                                                setUrl(`${BE_URL}/orders?page=${pageNumber}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`);
-                                                refreshData();
-                                            }}
-                                        />
-                                    </TablePaginations>
                                 </>
                             )
                 }
+                <Pagination
+                    error={error}
+                    refetch={refetch}
+                    setUrl={setUrl}
+                    count={data?.entities?.count}
+                    loading={loading}
+                    apiEndpoint={'blogs'}
+                />
             </Table>
         </div>
     )

@@ -13,11 +13,12 @@ import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
 import {useFetch} from "../../../../../lib/useFetch";
 import BE_URL from "../../../../../lib/envAccess";
+import Pagination from "../../../../primaries/pagination";
 
 export default function RefileOrders() {
     // Defining states of component
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/refills?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/refills?page=${currentPage}`)
 
     // Defining header list
     const headerList = [
@@ -81,26 +82,14 @@ export default function RefileOrders() {
                         }
 
                     </TableBody>
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.refills.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.refills.count/ 10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
-                                                    setUrl(`${BE_URL}/admin/refills?page=${pageNumber}`);
-                                                    refresh();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'blogs'}
+                    />
                 </Table>
             </div>
         </div>

@@ -21,6 +21,7 @@ import TablePaginations from "../../../../cutsome-components/table/components/Ta
 import ResponsivePagination from 'react-responsive-pagination';
 import { showError, showSuccess } from '../../../../../lib/alertHandler'
 import Swal from "sweetalert2";
+import Pagination from "../../../../primaries/pagination";
 
 
 export default function Blogs() {
@@ -30,7 +31,7 @@ export default function Blogs() {
     const [customLoading, setCustomLoading] = useState(false);
 
 
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/blogs?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/blogs?page=${currentPage}`)
 
     const dispatcher = useDispatch()
 
@@ -314,26 +315,14 @@ export default function Blogs() {
                         }
 
                     </TableBody>
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.count/10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
-                                                    setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
-                                                    refresh();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'blogs'}
+                    />
                 </Table>
             </div>
         </div>

@@ -17,11 +17,12 @@ import EditCatModal from "./component/EditCatModal";
 import Swal from "sweetalert2";
 import InfoCatModal from "./component/infoCatModal";
 import BE_URL from "../../../../../lib/envAccess";
+import Pagination from "../../../../primaries/pagination";
 
 export default function Categories() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/categories?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/categories?page=${currentPage}`)
     const dispatcher = useDispatch()
     const headerList = [
         "ID",
@@ -213,25 +214,14 @@ export default function Categories() {
                                     })
                         }
                     </TableBody>
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.count/10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setUrl(`${BE_URL}/admin/categories?page=${pageNumber}`);
-                                                    refresh();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'blogs'}
+                    />
                 </Table>
             </div>
         </div>

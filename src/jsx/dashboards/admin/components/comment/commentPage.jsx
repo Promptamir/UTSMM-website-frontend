@@ -12,11 +12,12 @@ import {Icon} from "@iconify/react";
 import Switch from "react-switch";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
+import Pagination from "../../../../primaries/pagination";
 
 
 export default function CommentPage() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/comments?page=${currentPage}`);
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/comments?page=${currentPage}`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headersList = [
@@ -290,26 +291,14 @@ export default function CommentPage() {
                             }
                         </TableBody>
                     }
-                    {
-                        (loading)
-                            ? <h1>Loading...</h1>
-                            : (error)
-                                ? <h1>Error</h1>
-                                : (data.entities.count > 15)
-                                    ? (
-                                        <TablePaginations>
-                                            <ResponsivePagination
-                                                current={currentPage}
-                                                total={Math.round(data.entities.count / 10)}
-                                                onPageChange={(pageNumber) => {
-                                                    setCurrentPage(pageNumber);
-                                                    setUrl(`${BE_URL}/admin/comments?page=${pageNumber}`)
-                                                    refresh();
-                                                }}
-                                            />
-                                        </TablePaginations>
-                                    ) : false
-                    }
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'blogs'}
+                    />
                 </Table>
             </div>
         </div>

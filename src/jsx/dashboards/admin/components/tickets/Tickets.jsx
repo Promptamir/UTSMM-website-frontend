@@ -17,12 +17,13 @@ import {showPopUp} from "../../../../../features/popUpReducer";
 import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import {useDispatch} from "react-redux";
 import MessageTicketsPopUp from "../../../../pop-ups/messageTicketsPopUp";
+import Pagination from "../../../../primaries/pagination";
 
 
 export default function Tickets() {
     const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/tickets?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/tickets?page=${currentPage}`)
 
     const headers = [
         "ID",
@@ -165,26 +166,14 @@ export default function Tickets() {
                                         </Row>))
                     }
                 </TableBody>
-                {
-                    (loading)
-                        ? <h1>Loading...</h1>
-                        : (error)
-                            ? <h1>Error</h1>
-                            : (data.entities.count > 15)
-                                ? (
-                                    <TablePaginations>
-                                        <ResponsivePagination
-                                            current={currentPage}
-                                            total={Math.round(data.entities.count / 10)}
-                                            onPageChange={(pageNumber) => {
-                                                setCurrentPage(pageNumber);
-                                                setUrl(`${BE_URL}/admin/tickets?page=${pageNumber}`);
-                                                refresh();
-                                            }}
-                                        />
-                                    </TablePaginations>
-                                ) : false
-                }
+                <Pagination
+                    error={error}
+                    refetch={refetch}
+                    setUrl={setUrl}
+                    count={data?.entities?.count}
+                    loading={loading}
+                    apiEndpoint={'blogs'}
+                />
             </Table>
         </div>
     )
