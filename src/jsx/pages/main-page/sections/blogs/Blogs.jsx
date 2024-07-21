@@ -10,12 +10,9 @@ import {
 } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import MaxLineText from '../../../../cutsome-components/Text/MaxLineText';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { API, SERVER } from '../../../../../lib/envAccess';
 import { useFetch } from '../../../../../lib/useFetch';
 import BE_URL from "../../../../../lib/envAccess";
+import {Link} from "react-router-dom";
 
 
 
@@ -92,8 +89,7 @@ export default function Blogs() {
                                 data.entities.blogs.map((item, index) => {
                                     return <SwiperSlide
                                         key={index}>
-                                        <div
-                                            className="item">
+                                        <Link className="item" to={`/blog/${item.slug}`}>
                                             <div className="item-header">
                                                 <img
                                                     className='image'
@@ -126,7 +122,7 @@ export default function Blogs() {
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </SwiperSlide>
                                 })
                             }

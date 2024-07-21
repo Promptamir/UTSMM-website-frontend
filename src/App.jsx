@@ -1,7 +1,6 @@
 import React, {lazy, useEffect, useState} from "react"
 import {Suspense} from "react"
 import CommentPage from './jsx/pages/comment/commentPage';
-import QuestionPage from './jsx/pages/question/Question';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 
 // Application styles
@@ -76,9 +75,6 @@ import PasswordResetPage from "./jsx/pages/auth/pages/password-forgotten";
 import LoginPage from "./jsx/pages/auth/pages/login";
 import SignUpPage from "./jsx/pages/auth/pages/sign-up";
 import DocsPage from "./jsx/pages/docs/DocsPage";
-import {useFetch} from "./lib/useFetch";
-import BE_URL from "./lib/envAccess";
-import {Helmet} from "react-helmet";
 
 // Pages
 // import other dependencies...
@@ -97,12 +93,6 @@ const queryClient = new QueryClient();
 function App() {
     const [mainMenuState, setMainMenuState] = useState(false);
     const [userPanelMenuState, setUserPanelMenuState] = useState(false);
-
-    const token = localStorage.getItem('token');
-
-    useEffect(() => {
-        console.log(token)
-    }, [token]);
 
     return (
         <div className="App">
@@ -230,12 +220,6 @@ function App() {
                             path="/comment"
                             element={<Suspense fallback={<PagesLoaders/>}>
                                 <CommentPage />
-                            </Suspense>}
-                        />
-                        <Route
-                            path="/question"
-                            element={<Suspense fallback={<PagesLoaders/>}>
-                                <QuestionPage />
                             </Suspense>}
                         />
                         <Route

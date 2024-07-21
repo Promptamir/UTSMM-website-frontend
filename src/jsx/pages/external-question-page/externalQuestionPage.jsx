@@ -2,10 +2,9 @@
 import {useFetch} from "../../../lib/useFetch";
 import {Icon} from "@iconify/react";
 import '../../../css/pages/external-question-page/extenralQuestionStyle.css';
-import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
 import BE_URL from "../../../lib/envAccess";
+import Pagination from "../../primaries/pagination";
 
 // Creating and exporting external question page as default
 export default function ExternalQuestionPage() {
@@ -13,11 +12,12 @@ export default function ExternalQuestionPage() {
     const [currentPage, setCurrentPage] = useState(1);
 
     // Retrieving data from database
-    const [data, error, loading, setUrl, refreshData] = useFetch(`${BE_URL}/external-reviews?page=${currentPage}`);
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/external-reviews?page=${currentPage}`);
 
     // Returning JSX
     return (
         <div className={'external-question-page'}>
+            <h1 style={{marginBottom: '20px'}}>External Questions</h1>
             {
                 (loading)
                     ? (
@@ -49,26 +49,14 @@ export default function ExternalQuestionPage() {
                             </div>
                         </div>
             }
-            {
-                (loading)
-                    ? <h1>Loading...</h1>
-                    : (error)
-                        ? <h1>Error</h1>
-                        : (data.entities.count > 15)
-                            ? (
-                                <TablePaginations>
-                                    <ResponsivePagination
-                                        current={currentPage}
-                                        total={Math.round(data.entities.count/10)}
-                                        onPageChange={(pageNumber) => {
-                                            setCurrentPage(pageNumber);
-                                            setUrl(`${BE_URL}/blogs?page=${pageNumber}`);
-                                            refreshData();
-                                        }}
-                                    />
-                                </TablePaginations>
-                            ) : false
-            }
+            <Pagination
+                error={error}
+                refetch={refetch}
+                setUrl={setUrl}
+                count={data?.entities?.count}
+                loading={loading}
+                apiEndpoint={'blogs'}
+            />
         </div>
     );
 }

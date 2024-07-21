@@ -172,14 +172,10 @@ export default function Introduction() {
                                                         <div className="item-header"><img src={item.image} alt="" />
                                                         </div>
                                                         <div className="item-body">
-                                                            <h1>{item.title}</h1>
-                                                            <small>
-                                                                {item.description}
-                                                            </small>
-                                                            <button>
-                                                                <span>View Offers</span>
-                                                                <Icon icon="ooui:next-ltr" />
-                                                            </button>
+                                                            <div>
+                                                                <h1>{item.title}</h1>
+                                                                <small>{item.description}</small>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </SwiperSlide>
@@ -210,14 +206,13 @@ export default function Introduction() {
                                 : (
                                     <div className={'popular-services-holder'}>
                                         {
-                                            data.entities.popular_services.map((item, index) => (
+                                            data.entities.popular_services.slice(0,3).map((item, index) => (
                                                 <Link key={index} to={`/user/dashboard/New-Order?service=${item.id}&category=${item.category_id}`} className="item">
                                                     <div className="item-header">
                                                         <img src={require("../../../../../images/main-page/intro-2/our-popular-services/1.png")} alt="" />
                                                     </div>
                                                     <div className="item-body">
                                                         <h2>{item.title}</h2>
-                                                        <p>{item.description}</p>
                                                     </div>
                                                     <div className="item-buttons">
                                                         <button className='arrow-up'>

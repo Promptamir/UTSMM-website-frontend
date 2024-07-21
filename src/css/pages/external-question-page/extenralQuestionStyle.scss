@@ -15,18 +15,19 @@ $ColorPrimary: #4976f3;
   }
 
   .custom-table {
-    background: $ColorPrimary;
     border: 1px solid $ColorPrimary;
     border-radius: 20px;
     overflow: auto;
 
+
     .header {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
       background-color: $ColorPrimary;
 
       .item {
+        background: $ColorPrimary;
+        white-space: nowrap;
         font-size: 18px;
         font-weight: bold;
         color: white;
@@ -37,14 +38,15 @@ $ColorPrimary: #4976f3;
     .body .row {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      background-color: white;
 
       .item {
+        background-color: white;
+        white-space: nowrap;
         font-size: 16px;
         font-weight: normal;
         color: black;
         padding: 15px;
+        align-content: center;
 
         .id {
           color: white;
@@ -64,5 +66,13 @@ $ColorPrimary: #4976f3;
         }
       }
     }
+  }
+}
+
+// Media querys
+@media (max-width: 1024px) {
+  .external-question-page .custom-table .body .row,
+  .external-question-page .custom-table .header {
+    grid-template-columns: repeat(5, 200px);
   }
 }

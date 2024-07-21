@@ -14,6 +14,7 @@ import { useFetch, usePost } from "../../../../../lib/useFetch"
 import {Link} from "react-router-dom";
 
 import BE_URL from "../../../../../lib/envAccess";
+import Question from "./question";
 
 
 export default function Faqs() {
@@ -69,12 +70,6 @@ export default function Faqs() {
                         animationData={faqs}
                         play
                         loop/>
-                    <Link to={'/faqs'}>
-                        <span>
-                            Find More Q&A
-                        </span>
-                        <Icon icon="fluent:next-20-filled"/>
-                    </Link>
                 </div>
                 <div className="faqs-background">
                     <Lottie
@@ -102,14 +97,7 @@ export default function Faqs() {
                         <p> We've got answers! Please take a moment to browse through our frequently asked questions. If you can't find what you're looking for, feel free to submit your question using the form below.</p>
                     </div>
 
-                    <form action='#'>
-                        <Link to={'/question'}>
-                            <button>
-                                <span>Submit a question</span>
-                                <Icon icon="formkit:submit"/>
-                            </button>
-                        </Link>
-                    </form>
+                    <Question />
 
                 </div>
                 <div className="add-question-background">

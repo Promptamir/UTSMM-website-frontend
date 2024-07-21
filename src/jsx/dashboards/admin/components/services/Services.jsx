@@ -15,11 +15,12 @@ import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import {useDispatch} from "react-redux";
 import InfoModal from "./components/infoModal";
 import EditModal from "./components/editModal";
+import Pagination from "../../../../primaries/pagination";
 
 export default function Services() {
 
   const [customLoading, setCustomLoading] = useState(false);
-  const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/services?page=1`)
+  const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/services?page=1`)
 
   const dispatcher = useDispatch()
 
@@ -47,7 +48,7 @@ export default function Services() {
     dispatcher(showPopUp({
       type: ADMIN_PANEL_CREATE_BLOG,
       duration: 2000,
-      component: <EditModal setCustomLoading={setCustomLoading} refresh={refresh} id={id} />
+      component: <EditModal setCustomLoading={setCustomLoading} refresh={refreshData} id={id} />
     }))
   }
 
@@ -167,25 +168,14 @@ export default function Services() {
             }
           </TableBody>
         }
-        {
-          (loading)
-              ? <h1>Loading...</h1>
-              : (error)
-                  ? <h1>Error</h1>
-                  : (data.entities.count > 15)
-                      ? (
-                          <TablePaginations>
-                            <ResponsivePagination
-                                current={1}
-                                total={Math.round(data.entities.count / 10)}
-                                onPageChange={(pageNumber) => {
-                                  setUrl(`${BE_URL}/admin/services?page=${pageNumber}`);
-                                  refresh();
-                                }}
-                            />
-                          </TablePaginations>
-                      ) : false
-        }
+        <Pagination
+            error={error}
+            refetch={refetch}
+            setUrl={setUrl}
+            count={data?.entities?.count}
+            loading={loading}
+            apiEndpoint={'services'}
+        />
       </Table>
     </div>
   )

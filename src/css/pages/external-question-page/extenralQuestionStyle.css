@@ -9,7 +9,6 @@
   justify-content: center;
 }
 .external-question-page .custom-table {
-  background: #4976f3;
   border: 1px solid #4976f3;
   border-radius: 20px;
   overflow: auto;
@@ -17,10 +16,11 @@
 .external-question-page .custom-table .header {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
   background-color: #4976f3;
 }
 .external-question-page .custom-table .header .item {
+  background: #4976f3;
+  white-space: nowrap;
   font-size: 18px;
   font-weight: bold;
   color: white;
@@ -29,14 +29,15 @@
 .external-question-page .custom-table .body .row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  background-color: white;
 }
 .external-question-page .custom-table .body .row .item {
+  background-color: white;
+  white-space: nowrap;
   font-size: 16px;
   font-weight: normal;
   color: black;
   padding: 15px;
+  align-content: center;
 }
 .external-question-page .custom-table .body .row .item .id {
   color: white;
@@ -52,6 +53,13 @@
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 100%;
+}
+
+@media (max-width: 1024px) {
+  .external-question-page .custom-table .body .row,
+  .external-question-page .custom-table .header {
+    grid-template-columns: repeat(5, 200px);
+  }
 }
 
 /*# sourceMappingURL=extenralQuestionStyle.css.map */
