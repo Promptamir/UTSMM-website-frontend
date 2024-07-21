@@ -1,10 +1,6 @@
-import Lottie from "react-lottie-player"
-import blogsBackgroud from "../../../animations/main-page/blogs-wave.json"
 import '../../../css/pages/blog-page/BlogPageStyle.css';
 import {useState} from "react";
 import BE_URL from '../../../lib/envAccess';
-import TablePaginations from "../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from "react-responsive-pagination";
 import {useFetch} from "../../../lib/useFetch";
 import {Link} from "react-router-dom";
 import Pagination from "../../primaries/pagination";
