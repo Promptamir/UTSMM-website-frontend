@@ -1,7 +1,10 @@
 import { Icon } from '@iconify/react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import {Link, useFetcher, useLocation, useNavigate} from 'react-router-dom';
+import {useFetch} from "../../../lib/useFetch";
+import BE_URL from "../../../lib/envAccess";
+import {Helmet} from "react-helmet";
 const Header = (
     {
         userPanelMenuState,
@@ -14,6 +17,7 @@ const Header = (
 
     const tokenExists = localStorage.getItem('token');
 
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/general-configs`);
 
     const menuList = [
         {
@@ -115,6 +119,15 @@ const Header = (
 
     return (
         <header style={headerStyle}>
+            {
+                (!loading && !error)
+                    ? (
+                        <Helmet>
+                            <meta name={'keywords'} content={Object.values(data.entities)[0].keywords.join(',')} />
+                            <meta name={'description'} content={Object.values(data.entities)[0].seo_description} />
+                        </Helmet>
+                    ) : false
+            }
             <div className="left">
                 <Link to={'/'}>
                     <img src={require("../../../images/header/logo.png")} className="logo"/>

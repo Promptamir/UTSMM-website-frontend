@@ -1,4 +1,4 @@
-import {lazy, useEffect, useState} from "react"
+import React, {lazy, useEffect, useState} from "react"
 import {Suspense} from "react"
 import CommentPage from './jsx/pages/comment/commentPage';
 import QuestionPage from './jsx/pages/question/Question';
@@ -76,6 +76,9 @@ import PasswordResetPage from "./jsx/pages/auth/pages/password-forgotten";
 import LoginPage from "./jsx/pages/auth/pages/login";
 import SignUpPage from "./jsx/pages/auth/pages/sign-up";
 import DocsPage from "./jsx/pages/docs/DocsPage";
+import {useFetch} from "./lib/useFetch";
+import BE_URL from "./lib/envAccess";
+import {Helmet} from "react-helmet";
 
 // Pages
 // import other dependencies...

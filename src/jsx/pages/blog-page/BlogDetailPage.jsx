@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import '../../../css/pages/blogs-page/BlogsPageStyle.css';
 import parse from 'html-react-parser';
 import BE_URL from "../../../lib/envAccess";
-import { Helmet } from 'react-helmet';
 
 export default function BlogDetailPage() {
   const location = useLocation();
@@ -34,14 +33,6 @@ export default function BlogDetailPage() {
                     : (
                         <>
                           <div className={'info-holder'}>
-                            {
-                              (data.keywords.length !== 0)
-                                  ? (
-                                      <Helmet>
-                                        <meta name={'keywords'} content={data.keywords} />
-                                      </Helmet>
-                                  ) : false
-                            }
                             {
                                 data.keywords?.length !== 0 && <div className={'keywords-holder'}>
                                   {
