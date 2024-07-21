@@ -17,15 +17,13 @@ import BE_URL from "../../../../../lib/envAccess";
 import Question from "./question";
 
 
-export default function Faqs() {
+export default function Faqs({data, error, loading}) {
 
 
     faqs.fr = 10
     faqsQuestion.fr = 5
     faqsBackground.fr = 5
     faqsFormQuestion.fr = 30
-
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
 
     return (
 

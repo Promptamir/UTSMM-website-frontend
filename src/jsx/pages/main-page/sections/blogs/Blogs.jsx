@@ -19,10 +19,7 @@ import {Link} from "react-router-dom";
 
 
 
-export default function Blogs() {
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
-
-
+export default function Blogs({data, error, loading}) {
     return (
         <div className="blogs">
             <h1>

@@ -47,11 +47,9 @@ function getRandomHexColor() {
 
 
 
-export default function Reviews() {
+export default function Reviews({data, error, loading}) {
 
     const [rightSwiper, setRightSwiper] = useState(null)
-    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
-
     return (
         <section className="customers-reviews">
             <img src={cBackground} className="background" />

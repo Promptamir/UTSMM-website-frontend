@@ -37,8 +37,7 @@ import {Link} from "react-router-dom";
 import BE_URL from "../../../../../lib/envAccess";
 
 
-export default function Introduction() {
-    const [data, error, loadingAPI, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/index`);
+export default function Introduction({data, error, loadingAPI}) {
     const [currentSelected, setCurrentSelected] = useState({
         svg: itemOne,
         title: "Users",
