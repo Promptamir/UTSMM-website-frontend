@@ -174,7 +174,7 @@ export default function Services() {
             setUrl={setUrl}
             count={data?.entities?.count}
             loading={loading}
-            apiEndpoint={'services'}
+            apiEndpoint={'admin/services'}
         />
       </Table>
     </div>

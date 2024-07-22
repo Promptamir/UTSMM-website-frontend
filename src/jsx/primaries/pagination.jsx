@@ -35,7 +35,6 @@ export default function Pagination({loading, error, count, apiEndpoint, refetch,
                 onPageChange={(pageNumber) => {
                     setCurrentPage(pageNumber);
                     setUrl(`${BE_URL}/${apiEndpoint}?page=${pageNumber}${(apiAppend) ? apiAppend : ''}`);
-                    console.log(`${BE_URL}/${apiEndpoint}?page=${pageNumber}${(apiAppend) ? apiAppend : ''}`)
                     refetch();
                 }}
             />

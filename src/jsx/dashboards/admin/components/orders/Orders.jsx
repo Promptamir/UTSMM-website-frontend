@@ -54,11 +54,13 @@ export default function Orders() {
                 .then((data) => data.json())
                 .then((data) => {
                     setInfoLoading(false);
-                    setInfoData(data.entities.order);
+
+                    if (data.message === 'Unauthenticated') {setInfoError('Please login first');}
+                    else {setInfoData(data.entities.order);}
                 })
-                .catch((data) => {
-                    setInfoData(data.entities.order);
-                    setInfoError(data.message);
+                .catch(() => {
+                    setInfoLoading(false);
+                    setInfoError('There was an error while fetching the data');
                 })
         }
     }, [selectedInfoId]);
@@ -67,7 +69,7 @@ export default function Orders() {
     return (
         <div className={'admin-orders-page'}>
             {
-                (selectedInfoId)
+                (infoData)
                     ? (
                         <Modal isOpened={infoModalOpened} closeFn={() => setInfoModalOpened(false)} title={'Info of order'}>
                             {
@@ -79,7 +81,7 @@ export default function Orders() {
                                             <div className={'info-holder'}>
                                                 <div className={'row'}>
                                                     <span>ID</span>
-                                                    <span>{infoData.id}</span>
+                                                    <span>{selectedInfoId}</span>
                                                 </div>
                                                 <div className={'row'}>
                                                     <span>Fake ID</span>
