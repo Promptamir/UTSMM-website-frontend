@@ -1,0 +1,97 @@
+.drawer .bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  transition: 0.5s;
+}
+.drawer .bg[data-opened=true] {
+  opacity: 100%;
+  pointer-events: visible;
+  visibility: visible;
+}
+.drawer .bg[data-opened=false] {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+.drawer .content {
+  transition: 0.5s;
+  animation-delay: 1s;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  overflow: auto;
+  background: white;
+  border-radius: 5rem 5rem 0 0;
+  padding: 50px;
+  z-index: 1002;
+}
+.drawer .content[data-opened=true] {
+  top: 30%;
+  pointer-events: visible;
+  visibility: visible;
+}
+.drawer .content[data-opened=false] {
+  top: 100%;
+  pointer-events: none;
+  visibility: hidden;
+}
+.drawer .content .close-btn {
+  width: 20%;
+  cursor: pointer;
+  height: 10px;
+  background: grey;
+  border-radius: 50rem;
+  margin: 0 auto 20px auto;
+}
+.drawer .content .label {
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: black;
+  font-size: 20px;
+}
+.drawer .content .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.drawer .content .row .Dropdown-root, .drawer .content .row .react-daterange-picker {
+  width: 400px;
+}
+.drawer .content .row .label {
+  margin-bottom: 0;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.drawer .content .btn-sub {
+  padding: 15px;
+  width: calc(100% - 20px);
+  border-radius: 50rem;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+  background-color: rgb(49, 101, 243);
+}
+
+@media (max-width: 1024px) {
+  .drawer .content {
+    border-radius: 2rem 2rem 0 0;
+    padding: 20px;
+  }
+  .drawer .content .close-btn {
+    width: 90%;
+  }
+}
+
+/*# sourceMappingURL=DrawerStyles.css.map */

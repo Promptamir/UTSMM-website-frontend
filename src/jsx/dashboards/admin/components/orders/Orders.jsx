@@ -1,161 +1,250 @@
-import Table from "../../../../cutsome-components/table/Table";
-import ItemHeader from "../../../../cutsome-components/table/components/ItemHeader";
-import Property from "../../../../cutsome-components/table/components/Property";
-import Row from "../../../../cutsome-components/table/components/Row";
-import TableBody from "../../../../cutsome-components/table/components/TableBody";
-import TableHeader from "../../../../cutsome-components/table/components/TableHeader";
-import { useEffect, useState } from "react";
-import { useFetch } from "../../../../../lib/useFetch"
-import BE_URL, { API } from "../../../../../lib/envAccess";
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from 'react-responsive-pagination';
+// Importing part
+import {Icon} from "@iconify/react";
+import {useEffect, useState} from "react";
+import Drawer from "../../../../primaries/drawer";
+import Dropdown from "react-dropdown";
+import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
+import 'react-calendar/dist/Calendar.css';
 import Pagination from "../../../../primaries/pagination";
+import {useFetch} from "../../../../../lib/useFetch";
+import BE_URL from "../../../../../lib/envAccess";
+import Modal from "../../../../pop-ups/modal";
 
+// Defining a function to format date
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
+    return `${year}-${month}-${day}`;
+}
 
-
-
-
+// Creating and exporting orders panel in admin dashboard
 export default function Orders() {
-    const headersList = [
-        "Id",
-        "Link",
-        "Service",
-        "Charge",
-        "Created at",
-        "Status",
-        "Quantity"
-    ]
+    // Defining states of component
+    const [isFilteringOpened, setIsFilteringOpened] = useState(false);
+    const [date, setDate] = useState([new Date(), new Date()]);
+    const [status, setStatus] = useState("");
+    const [orderBy, setOrderBy] = useState("created_at");
+    const [infoModalOpened, setInfoModalOpened] = useState(false);
+    const [selectedInfoId, setSelectedInfoId] = useState(null);
 
-    const orderListButtons = [
-        "All",
-        "Success",
-        "Processing",
-        "Errored",
-        "Paused"
-    ]
+    const [infoLoading, setInfoLoading] = useState(false);
+    const [infoError, setInfoError] = useState(undefined);
+    const [infoData, setInfoData] = useState(undefined);
 
-    const [ordersStatus, setOrdersStatus] = useState(orderListButtons[0])
-    const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/orders?page=${currentPage}&statuses=${(ordersStatus === 'All') ? '' : ordersStatus.toLowerCase()}`)
+    // Fetching the data
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/orders?page=1`);
 
-    return (
-        <div className="admin-panel-orders">
-            <div className="intro">
-                <h1>Recent Orders</h1>
-                <div className="order-list">
-                    {
-                        orderListButtons.map((record, index) => {
-                            return <button
-                                key={index}
-                                className={`status-${record === ordersStatus}`}
-                                onClick={() => {
-                                    setOrdersStatus(record);
-                                    setUrl(`${BE_URL}/orders?page=${currentPage}&statuses=${(record === 'All') ? '' : record.toLowerCase()}`);
-                                    refresh();
-                                }}
-                            >
-                                {record}
-                            </button>
-                        })
-                    }
-                </div>
-            </div>
-            <Table columnsStyle={"6rem 6rem 1.8fr 6rem 1fr 6rem 5rem 8rem"}>
-                {
-                    (loading)
-                        ? <h1>Loading</h1>
-                        : (error)
-                            ? <h1>Error</h1>
-                            : (
-                                <>
-                                    <TableHeader>
-                                        {
-                                            headersList.map((record, index) => {
-                                                return <ItemHeader key={index}>
-                                                    {record}
-                                                </ItemHeader>
-                                            })
-                                        }
-                                    </TableHeader>
-                                    <TableBody>
-                                        {
-                                            !loading ? data.entities.orders?.map((record, index) => {
-                                                return <Row key={record.orderId} key={index}>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[0]}
-                                                        </div>
-                                                        <div className="property-body">
-                                                            {record.id}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[1]}
-                                                        </div>
-                                                        <div className="property-body">
-                                                            {record.link}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[2]}
-                                                        </div>
-                                                        <div className="property-body ">
-                                                            {record.service.title}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[3]}
-                                                        </div>
-                                                        <div className="property-body">
-                                                            ${record.charge}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[4]}
-                                                        </div>
-                                                        <div className="property-body">
-                                                            {new Date(record.created_at).toLocaleDateString()}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[5]}
-                                                        </div>
-                                                        <div className="property-body status-property">
-                                                            {record.status}
-                                                        </div>
-                                                    </Property>
-                                                    <Property>
-                                                        <div className="property-header">
-                                                            {headersList[6]}
-                                                        </div>
-                                                        <div className="property-body">
-                                                            <p>${record.quantity}</p>
-                                                        </div>
-                                                    </Property>
+    // Using useEffect to fetch data of selected info with its id
+    useEffect(() => {
+        if (selectedInfoId) {
+            setInfoLoading(true);
 
-                                                </Row>
-                                            }) : <h1>Loading...</h1>
-                                        }
-
-                                    </TableBody>
-                                </>
-                            )
+            fetch(`${BE_URL}/admin/orders/${selectedInfoId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept" : "application/json",
+                    "X-Requested-With" : "XMLHttpRequest",
+                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                 }
-                <Pagination
-                    error={error}
-                    refetch={refetch}
-                    setUrl={setUrl}
-                    count={data?.entities?.count}
-                    loading={loading}
-                    apiEndpoint={'blogs'}
-                />
-            </Table>
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    setInfoLoading(false);
+                    setInfoData(data.entities.order);
+                })
+                .catch((data) => {
+                    setInfoData(data.entities.order);
+                    setInfoError(data.message);
+                })
+        }
+    }, [selectedInfoId]);
+
+    // Returning JSX
+    return (
+        <div className={'admin-orders-page'}>
+            {
+                (selectedInfoId)
+                    ? (
+                        <Modal isOpened={infoModalOpened} closeFn={() => setInfoModalOpened(false)} title={'Info of order'}>
+                            {
+                                (infoLoading)
+                                    ? <h1>Loading</h1>
+                                    : (infoError)
+                                        ? <h1>{infoError}</h1>
+                                        : (
+                                            <div className={'info-holder'}>
+                                                <div className={'row'}>
+                                                    <span>ID</span>
+                                                    <span>{infoData.id}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Fake ID</span>
+                                                    <span>{infoData.fake_id}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Link</span>
+                                                    <span>{infoData.link}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Quantity</span>
+                                                    <span>{infoData.quantity}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Charge</span>
+                                                    <span>{infoData.charge}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Start Count</span>
+                                                    <span>{(infoData.start_count) ? infoData.start_count : '-'}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Remains</span>
+                                                    <span>{infoData.remains}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Created At</span>
+                                                    <span>{new Date(infoData.created_at).toLocaleDateString()}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Status</span>
+                                                    <span>{infoData.status}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Refunded</span>
+                                                    <span>{infoData.refunded}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>In affiliate</span>
+                                                    <span>{infoData.considered_in_affiliate_program}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Service Id</span>
+                                                    <span>{infoData.service_id}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>User ID</span>
+                                                    <span>{infoData.user_id}</span>
+                                                </div>
+                                                <div className={'row'}>
+                                                    <span>Service</span>
+                                                    <span>{infoData.service.title}</span>
+                                                </div>
+                                            </div>
+                                        )
+                            }
+                        </Modal>
+                    ) : false
+            }
+            <div className={'header'}>
+                <h1 className={'title'}>Orders</h1>
+                <button
+                    className={'filtering-btn'}
+                    onClick={() => setIsFilteringOpened(prevState => !prevState)}
+                >
+                    <Icon icon="mi:filter" width={25} height={25}/>
+                </button>
+                <Drawer
+                    isOpened={isFilteringOpened}
+                    closeFn={() => setIsFilteringOpened(false)}
+                >
+                    <div className={'row'}>
+                        <h1 className={'label'}>Date</h1>
+                        <DateRangePicker onChange={setDate} value={date} />
+                    </div>
+                    <div className={'row'}>
+                        <h1 className={'label'}>Status</h1>
+                        <Dropdown
+                            value={status}
+                            onChange={(e) => setStatus(e.value)}
+                            options={[
+                                {value: "-1", label: 'Canceled'},
+                                {value: "0", label: 'Pending'},
+                                {value: "1", label: 'Processing'},
+                                {value: "2", label: 'In Progress'},
+                                {value: "3", label: 'Partial'},
+                                {value: "4", label: 'Completed'},
+                                {value: "", label: 'All'},
+                            ]}
+                        />
+                    </div>
+                    <div className={'row'}>
+                        <h1 className={'label'}>Order by</h1>
+                        <Dropdown
+                            value={orderBy}
+                            onChange={(e) => setOrderBy(e.value)}
+                            options={[
+                                {value: "created_at", label: 'Time created'},
+                                {value: "order_bys", label: 'Order BYS'},
+                                {value: "charge", label: 'Charge'},
+                            ]}
+                        />
+                    </div>
+                    <button onClick={() => {
+                        setIsFilteringOpened(false);
+                        setUrl(`${BE_URL}/admin/orders?page=1&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}`);
+                        refetch();
+                    }} className={'btn-sub'}>
+                        Filter
+                    </button>
+                </Drawer>
+            </div>
+            {
+                (loading)
+                    ? <h1>Loading</h1>
+                    : (error)
+                        ? <h1>There was an error while fetching the data</h1>
+                        : (data.entities.orders.length === 0)
+                            ? <h1>There is nothing to show</h1>
+                            : (
+                                <div className={'table'}>
+                                    <div className={'head'}>
+                                        <div className={'item'}>Id</div>
+                                        <div className={'item'}>Charge</div>
+                                        <div className={'item'}>Created At</div>
+                                        <div className={'item'}>Status</div>
+                                        <div className={'item'}>Refunded</div>
+                                        <div className={'item'}>Actions</div>
+                                    </div>
+                                    <div className={'body'}>
+                                        {
+                                            data.entities.orders.map((item, index) => (
+                                                <div className={'row'} key={index}>
+                                                    <div className="item id">{item.id}</div>
+                                                    <div className="item">${item.charge}</div>
+                                                    <div className="item">{new Date(item.created_at).toLocaleDateString()}</div>
+                                                    <div className="item">{item.status}</div>
+                                                    <div className="item">
+                                                        <input disabled type="checkbox" checked={(item.refunded === '1')} />
+                                                    </div>
+                                                    <div className="item">
+                                                        <button onClick={() => {
+                                                            setSelectedInfoId(item.id);
+                                                            setInfoModalOpened(true);
+                                                        }} className={'info'}>
+                                                            <Icon icon={'material-symbols:info'} width={25} height={25}/>
+                                                            Info
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            )
+            }
+            <Pagination
+                error={error}
+                refetch={refetch}
+                setUrl={setUrl}
+                count={data?.entities?.count}
+                loading={loading}
+                apiEndpoint={'admin/orders'}
+                apiAppend={`&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}`}
+            />
         </div>
     )
 }

@@ -16,6 +16,137 @@ $panel-color-6: #dc3545;
 
 $gradient-degree: 0deg;
 
+.admin-orders-page {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+
+        .title {
+            font-weight: 700;
+            text-align: left;
+            color: black;
+            font-size: 24px;
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .filtering-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: $ThemeColor;
+            border-radius: .5rem;
+            color: white;
+            flex-shrink: 0;
+            aspect-ratio: 1/1;
+        }
+    }
+
+    .table {
+        background-color: white;
+        overflow: auto;
+        border-radius: 20px;
+        margin-bottom: 20px;
+
+        .head {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+
+            .item {
+                background-color: $ThemeColor;
+                padding: 20px;
+                text-align: left;
+                font-weight: normal;
+                font-size: 20px;
+                color: white;
+            }
+        }
+
+        .body .row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+
+            .item {
+                padding: 20px;
+                text-align: left;
+                font-weight: normal;
+                font-size: 20px;
+
+                input[type='checkbox'] {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                button.info {
+                    background: cornflowerblue;
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    gap: 20px;
+                    color: white;
+                    padding: 10px;
+                    width: calc(100% - 20px);
+                    border-radius: 1rem;
+                }
+
+                &:not(.id) {
+                    background-color: white;
+                    color: black;
+                }
+
+                &.id {
+                    background: darkolivegreen;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .modal .bg {z-index: 1002 !important;}
+    .modal .content {z-index: 1003 !important;}
+
+    .info-holder {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
+
+            & > *:first-of-type {
+                color: black;
+                font-weight: bold;
+                font-size: 26px;
+                flex-shrink: 0;
+                white-space: nowrap;
+                display: block;
+            }
+
+            & > *:nth-of-type(2) {
+                color: black;
+                font-weight: normal;
+                font-size: 20px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: block;
+            }
+        }
+    }
+}
+
 .gtc-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1334,6 +1465,11 @@ $gradient-degree: 0deg;
             .row {
                 display: flex !important;
                 flex-direction: column !important;
+            }
+        }
+        .admin-orders-page .table {
+            :is(.body .row, .head) {
+                grid-template-columns: repeat(6, 200px);
             }
         }
     }

@@ -5,7 +5,7 @@ import ResponsivePagination from "react-responsive-pagination";
 import {useEffect, useRef, useState} from "react";
 
 // Creating and exporting pagination component as default
-export default function Pagination({loading, error, count, apiEndpoint, refetch, setUrl}) {
+export default function Pagination({loading, error, count, apiEndpoint, refetch, setUrl, apiAppend}) {
     // Defining states of component
     const [currentPage, setCurrentPage] = useState(1);
     const [initialCount , setInitialCount] = useState(count);
@@ -34,7 +34,8 @@ export default function Pagination({loading, error, count, apiEndpoint, refetch,
                 total={Math.round(initialCount/15)}
                 onPageChange={(pageNumber) => {
                     setCurrentPage(pageNumber);
-                    setUrl(`${BE_URL}/${apiEndpoint}?page=${pageNumber}`);
+                    setUrl(`${BE_URL}/${apiEndpoint}?page=${pageNumber}${(apiAppend) ? apiAppend : ''}`);
+                    console.log(`${BE_URL}/${apiEndpoint}?page=${pageNumber}${(apiAppend) ? apiAppend : ''}`)
                     refetch();
                 }}
             />
