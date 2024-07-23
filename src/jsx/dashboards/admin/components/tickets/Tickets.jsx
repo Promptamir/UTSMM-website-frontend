@@ -9,8 +9,6 @@ import { useState } from 'react'
 import Switch from "react-switch"
 import { Icon } from '@iconify/react'
 import { useFetch } from '../../../../../lib/useFetch'
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from 'react-responsive-pagination';
 import Swal from "sweetalert2"
 import BE_URL, { API } from '../../../../../lib/envAccess'
 import {showPopUp} from "../../../../../features/popUpReducer";
@@ -21,9 +19,8 @@ import Pagination from "../../../../primaries/pagination";
 
 
 export default function Tickets() {
-    const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/tickets?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/tickets?page=1`)
 
     const headers = [
         "ID",
@@ -96,7 +93,17 @@ export default function Tickets() {
                                                     {headers[5]}
                                                 </div>
                                                 <div className="property-body">
-                                                    <input style={{display: 'block', margintBotton: '20px'}} type="checkbox" disabled checked={(item.is_answered === "1")}/>
+                                                    <input
+                                                        style={{
+                                                            display: 'block',
+                                                            marginBottom: '20px',
+                                                            width: '20px',
+                                                            height: '20px'
+                                                        }}
+                                                        type="checkbox"
+                                                        disabled
+                                                        checked={(item.is_answered === "1")}
+                                                    />
                                                     <button
                                                         style={{
                                                             display: 'block',
@@ -172,7 +179,7 @@ export default function Tickets() {
                     setUrl={setUrl}
                     count={data?.entities?.count}
                     loading={loading}
-                    apiEndpoint={'blogs'}
+                    apiEndpoint={'admin/tickets'}
                 />
             </Table>
         </div>
