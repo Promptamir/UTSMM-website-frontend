@@ -214,7 +214,8 @@ const Orders = () => {
                                                                 color: 'white',
                                                                 padding: '15px',
                                                                 borderRadius: '50rem',
-                                                                width: '100%',
+                                                                display: 'block',
+                                                                width: 'calc(100% - 20px)',
                                                                 opacity: (refileLoading) ? '50%' : '100%'
                                                             }}
                                                             onClick={() => {
@@ -270,7 +271,6 @@ const Orders = () => {
                                                                 }))
                                                             }}
                                                             style={{
-                                                                display: 'block',
                                                                 marginTop: '20px',
                                                                 backgroundColor: '#21356e',
                                                                 fontSize: '20px',
@@ -278,8 +278,9 @@ const Orders = () => {
                                                                 textAlign: 'center',
                                                                 color: 'white',
                                                                 paddingBlock: '15px',
-                                                                width: '100%',
                                                                 borderRadius: '50rem',
+                                                                display: 'block',
+                                                                width: 'calc(100% + 10px)',
                                                             }}
                                                         >
                                                             Refile History
@@ -287,7 +288,7 @@ const Orders = () => {
                                                     ) : false
                                             }
                                             {
-                                                (selectedOrder?.status !== "Canceled")
+                                                (selectedOrder?.status === "Pending" || selectedOrder?.status === "Processing")
                                                     ? (
                                                         <button
                                                             disabled={cancelLoading}
@@ -300,7 +301,8 @@ const Orders = () => {
                                                                 textAlign: 'center',
                                                                 padding: '15px',
                                                                 borderRadius: '50rem',
-                                                                width: '100%',
+                                                                width: 'calc(100% - 20px)',
+                                                                display: 'block',
                                                                 opacity: (cancelLoading) ? '50%' : '100%'
                                                             }}
                                                             onClick={() => {
@@ -355,7 +357,8 @@ const Orders = () => {
                                                     textAlign: 'center',
                                                     padding: '15px',
                                                     borderRadius: '50rem',
-                                                    width: '100%',
+                                                    width: 'calc(100% - 20px)',
+                                                    display: 'block',
                                                     opacity: (addFavLoading) ? '50%' : '100%'
                                                 }}
                                                 onClick={() => {
