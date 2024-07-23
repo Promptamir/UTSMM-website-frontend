@@ -19,7 +19,7 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
 
     const [image, setImage] = useState(require("../../images/place-holder/1.png"));
     const [imageFile, setImageFile] = useState();
-    const [name, setName] = useState('');
+    const [name, setName] = useState(platform.title);
     const [description, setDescription] = useState('');
     const [order, setOrder] = useState('');
     const dispatcher = useDispatch()
@@ -68,7 +68,6 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
         fetch(`${BE_URL}/admin/platforms/${platform.id}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result)
                 customLoading(false);
                 if (result.message === "Unauthenticated.") {
                     Swal.fire({
@@ -126,7 +125,7 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
                         <span>name</span>
                     </Legend>
                     <FieldBody>
-                        <input onChange={(e) => setName(e.target.value)} required minLength={5} maxLength={255} type="text" name="title" placeholder={'Title'}/>
+                        <input defaultValue={name} onChange={(e) => setName(e.target.value)} required minLength={5} maxLength={255} type="text" name="title" placeholder={'Title'}/>
                     </FieldBody>
                 </AdminPanelFiledset>
 
