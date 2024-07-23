@@ -10,10 +10,10 @@ import Swal from "sweetalert2";
 import BE_URL from "../../../../../../lib/envAccess";
 
 // Creating and exporting edit category modal as default
-export default function EditCatModal({setCustomLoading, refresh, id}) {
+export default function EditCatModal({setCustomLoading, refresh, cat}) {
     // Defining states of component
-    const [title, setTitle] = useState('');
-    const [idState, setID] = useState();
+    const [title, setTitle] = useState(cat.remote_category_title);
+    const [idState, setID] = useState(cat.local_category_id);
     const dispatcher = useDispatch();
 
     // Returning JSX
@@ -22,7 +22,7 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
             e.preventDefault();
 
             setCustomLoading(true);
-            fetch(`${BE_URL}/admin/hot-categories/${id}`, {
+            fetch(`${BE_URL}/admin/hot-categories/${cat.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,7 +37,6 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
             })
                 .then((data) => data.json())
                 .then((data) => {
-                    console.log(data);
                     setCustomLoading(false);
                     if (data.message === "Unauthenticated.") {
                         Swal.fire({
@@ -78,6 +77,7 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
                     </Legend>
                     <FieldBody>
                         <input
+                            defaultValue={title}
                             minLength={5}
                             maxLength={255}
                             required
@@ -94,6 +94,7 @@ export default function EditCatModal({setCustomLoading, refresh, id}) {
                     </Legend>
                     <FieldBody>
                         <input
+                            defaultValue={idState}
                             min={1}
                             required
                             onChange={(event) => setID(event.target.value)}

@@ -42,11 +42,11 @@ export default function Categories() {
         }))
     }
 
-    const handleEditNewCatClick = (id) => {
+    const handleEditNewCatClick = (cat) => {
         dispatcher(showPopUp({
             type: ADMIN_PANEL_CREATE_BLOG,
             duration: 2000,
-            component: <EditCatModal id={id} setCustomLoading={setCustomLoading} refresh={refresh} />
+            component: <EditCatModal cat={cat} setCustomLoading={setCustomLoading} refresh={refresh} />
         }))
     }
 
@@ -195,7 +195,7 @@ export default function Categories() {
                                                         Delete
                                                     </button>
                                                     <button
-                                                        onClick={() => handleEditNewCatClick(category.id)}
+                                                        onClick={() => handleEditNewCatClick(category)}
                                                         style={{
                                                             display: 'block',
                                                             borderRadius: '45rem',
@@ -220,7 +220,7 @@ export default function Categories() {
                         setUrl={setUrl}
                         count={data?.entities?.count}
                         loading={loading}
-                        apiEndpoint={'blogs'}
+                        apiEndpoint={'admin/categories'}
                     />
                 </Table>
             </div>

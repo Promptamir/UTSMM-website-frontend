@@ -42,11 +42,11 @@ export default function HotCategories() {
         }))
     }
 
-    const handleEditNewCatClick = (id) => {
+    const handleEditNewCatClick = (cat) => {
         dispatcher(showPopUp({
             type: ADMIN_PANEL_CREATE_BLOG,
             duration: 2000,
-            component: <EditHotCatModal id={id} setCustomLoading={setCustomLoading} refresh={refresh} />
+            component: <EditHotCatModal cat={cat} setCustomLoading={setCustomLoading} refresh={refresh} />
         }))
     }
 
@@ -191,7 +191,7 @@ export default function HotCategories() {
                                                     Delete
                                                 </button>
                                                 <button
-                                                    onClick={() => handleEditNewCatClick(category.id)}
+                                                    onClick={() => handleEditNewCatClick(category)}
                                                     style={{
                                                         display: 'block',
                                                         borderRadius: '45rem',
@@ -222,7 +222,7 @@ export default function HotCategories() {
                         setUrl={setUrl}
                         count={data?.entities?.count}
                         loading={loading}
-                        apiEndpoint={'blogs'}
+                        apiEndpoint={'admin/hot-categories'}
                     />
                 </Table>
             </div>
