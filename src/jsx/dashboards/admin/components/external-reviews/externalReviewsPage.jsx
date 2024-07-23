@@ -20,9 +20,8 @@ import Pagination from "../../../../primaries/pagination";
 
 
 export default function ExternalReviews() {
-    const [currentPage, setCurrentPage] = useState(1);
     const [customLoading, setCustomLoading] = useState(false);
-    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/external-reviews?page=${currentPage}`)
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/external-reviews?page=1`)
 
     const headers = [
         "ID",
@@ -182,7 +181,7 @@ export default function ExternalReviews() {
                     setUrl={setUrl}
                     count={data?.entities?.count}
                     loading={loading}
-                    apiEndpoint={'blogs'}
+                    apiEndpoint={'admin/external-reviews'}
                 />
             </Table>
         </div>

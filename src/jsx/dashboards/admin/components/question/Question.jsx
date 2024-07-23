@@ -221,7 +221,7 @@ export default function Question() {
                         setUrl={setUrl}
                         count={data?.entities?.count}
                         loading={loading}
-                        apiEndpoint={'blogs'}
+                        apiEndpoint={'admin/questions'}
                     />
                 </Table>
             </div>
