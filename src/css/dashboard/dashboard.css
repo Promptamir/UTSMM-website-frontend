@@ -10,6 +10,33 @@
   max-width: 1400px;
   margin: 0 auto;
 }
+.user-dashboard .loading-full-screen {
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../images/auth-page/background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.user-dashboard .error-full-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../images/auth-page/background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.user-dashboard .error-full-screen p {
+  text-align: center;
+  font-weight: bold;
+  font-size: 36px;
+  color: red;
+}
 .user-dashboard .user-quick-view {
   display: flex;
   color: white;

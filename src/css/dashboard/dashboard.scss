@@ -12,6 +12,7 @@ $panel-color-3: #0fac6d;
 $panel-color-4: #ffa938;
 $panel-color-5: #17a2b8;
 $panel-color-6: #dc3545;
+$ThemeColor: rgb(49, 101, 243);
 
 $gradient-degree: 0deg;
 
@@ -28,6 +29,36 @@ $gradient-degree: 0deg;
     padding-top: 6em;
     max-width: 1400px;
     margin: 0 auto;
+
+    .loading-full-screen {
+        width: 100vw;
+        height: 100vh;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url("../../images/auth-page/background.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .error-full-screen {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url("../../images/auth-page/background.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        p {
+            text-align: center;
+            font-weight: bold;
+            font-size: 36px;
+            color: red;
+        }
+    }
 
     .user-quick-view {
         display: flex;

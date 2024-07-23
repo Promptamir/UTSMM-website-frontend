@@ -22,6 +22,7 @@ import '../../../css/dashboard/user/menu.css';
 import Setting from './panels/setting/Setting';
 import Updates from "./panels/updates/updates";
 import ApiPanel from "../../primaries/apiPanel";
+import {useFetch} from "../../../lib/useFetch";
 
 const UserDashboard = (
     {
@@ -29,17 +30,8 @@ const UserDashboard = (
         setUserDashboardMenuState
     }
 ) => {
-
-
     const navigator = useNavigate()
     const params = useParams()
-
-
-
-
-
-
-
     const panelMenuOptions = [
         {
             type: "normal",
@@ -131,13 +123,7 @@ const UserDashboard = (
             icon: <Icon icon="material-symbols:home" />
         },
     ]
-
-
-
-
-
     const [selectedPanel, selectPanel] = useState(panelMenuOptions[0])
-
 
     useEffect(() => {
         window.scrollTo({
@@ -150,8 +136,6 @@ const UserDashboard = (
 
 
     }, [selectedPanel])
-
-
 
     useEffect(() => {
         const page = params?.page?.toLocaleLowerCase()?.trim()
@@ -174,86 +158,104 @@ const UserDashboard = (
     }, [params])
 
     const navigate = useNavigate();
-
     const [error, setError] = useState('');
     const [loading, setloading] = useState(false);
 
+    const [data, fetchError, fetchLoading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/user-index`);
+
     return (
         <main className="user-dashboard">
-            <ul className={`panel-menu panel-menu-${userDashboardMenuState}`}>
-                <div className="menu-items">
-                    {
-                        panelMenuOptions.map((panel, index) => {
-                            {
-                                if (panel.type === "nested") {
-                                    return <PanelNestedItem
-                                        key={index}
-                                        data={panel}
-                                        selectPanel={selectPanel}
-                                        selectedPanel={selectedPanel}
-                                    />
-                                }
-                            }
+            {
+                (fetchLoading)
+                    ? (
+                        <div className={'loading-full-screen'}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                        </div>
+                    ) : (fetchError)
+                        ? (
+                            <div className={'error-full-screen'}>
+                                <p>There was an error while fetching the data</p>
+                            </div>
+                        ) : (
+                            <>
+                                <ul className={`panel-menu panel-menu-${userDashboardMenuState}`}>
+                                    <div className="menu-items">
+                                        {
+                                            panelMenuOptions.map((panel, index) => {
+                                                {
+                                                    if (panel.type === "nested") {
+                                                        return <PanelNestedItem
+                                                            key={index}
+                                                            data={panel}
+                                                            selectPanel={selectPanel}
+                                                            selectedPanel={selectedPanel}
+                                                        />
+                                                    }
+                                                }
 
-                            {
-                                if (panel.type === "click") {
-                                    return <PanelsItem
-                                        key={index}
-                                        title={panel.title}
-                                        icon={panel.icon}
-                                        currentActivePanel={selectedPanel.title}
-                                        clickEvent={() => navigator("/")}
-                                    />
-                                }
-                            }
+                                                {
+                                                    if (panel.type === "click") {
+                                                        return <PanelsItem
+                                                            key={index}
+                                                            title={panel.title}
+                                                            icon={panel.icon}
+                                                            currentActivePanel={selectedPanel.title}
+                                                            clickEvent={() => navigator("/")}
+                                                        />
+                                                    }
+                                                }
 
-                            {
-                                if (panel.type === "normal") {
-                                    return <PanelsItem
-                                        key={index}
-                                        title={panel.title}
-                                        icon={panel.icon}
-                                        currentActivePanel={selectedPanel.title}
-                                        clickEvent={() => selectPanel(panel)}
-                                    />
-                                }
-                            }
+                                                {
+                                                    if (panel.type === "normal") {
+                                                        return <PanelsItem
+                                                            key={index}
+                                                            title={panel.title}
+                                                            icon={panel.icon}
+                                                            currentActivePanel={selectedPanel.title}
+                                                            clickEvent={() => selectPanel(panel)}
+                                                        />
+                                                    }
+                                                }
 
-                        })
-                    }
-                    <button disabled={loading} className={'log-out'} onClick={() => {
-                        setError('');
-                        setloading(true);
+                                            })
+                                        }
+                                        <button disabled={loading} className={'log-out'} onClick={() => {
+                                            setError('');
+                                            setloading(true);
 
-                        fetch(`${BE_URL}/current-auth-token`, {
-                            method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Accept" : "application/json",
-                                "X-Requested-With" : "XMLHttpRequest",
-                                "Authorization" : `Bearer ${localStorage.getItem('token')}`
-                            }
-                        })
-                            .then(() => {
-                                setloading(false);
-                                setError('');
+                                            fetch(`${BE_URL}/current-auth-token`, {
+                                                method: "DELETE",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json",
+                                                    "X-Requested-With": "XMLHttpRequest",
+                                                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                                                }
+                                            })
+                                                .then(() => {
+                                                    setloading(false);
+                                                    setError('');
 
-                                localStorage.removeItem('token');
-                                navigate('/');
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                                setloading(false);
-                                setError('There was an unexpected error. Please try again.');
-                            })
+                                                    localStorage.removeItem('token');
+                                                    navigate('/');
+                                                })
+                                                .catch((err) => {
+                                                    console.log(err);
+                                                    setloading(false);
+                                                    setError('There was an unexpected error. Please try again.');
+                                                })
 
-                    }}>Log out</button>
-                    {error !== '' && <div className={'error'}>{error}</div>}
-                </div>
-            </ul>
-            <div className="panel">
-                {selectedPanel?.component}
-            </div>
+                                        }}>Log out
+                                        </button>
+                                        {error !== '' && <div className={'error'}>{error}</div>}
+                                    </div>
+                                </ul>
+                                <div className="panel">
+                                    {selectedPanel?.component}
+                                </div>
+                            </>
+                        )
+            }
         </main>
     )
 }
