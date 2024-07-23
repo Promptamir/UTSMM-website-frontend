@@ -16,8 +16,7 @@ import Pagination from "../../../../primaries/pagination";
 
 
 export default function CommentPage() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/comments?page=${currentPage}`);
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/comments?page=1`);
     const [customLoading, setCustomLoading] = useState(false);
 
     const headersList = [
@@ -30,31 +29,6 @@ export default function CommentPage() {
         "Delete"
     ]
 
-    const orderListButtons = [
-        "All",
-        "success",
-        "on progress",
-        "on error",
-        "on pause"
-    ]
-
-    const [ordersStatus, setOrdersStatus] = useState(orderListButtons[0])
-
-    const [sortedList, setSortedList] = useState([])
-
-    useEffect(() => {
-
-        if (ordersStatus === orderListButtons[0]) {
-            setSortedList(data.orders)
-            return
-        }
-
-        const temp = data?.orders?.filter(item => {
-            return item.status === ordersStatus
-        })
-
-        setSortedList(temp)
-    }, [ordersStatus, data])
 
     const onPublishedClick = (record, published) => {
         setCustomLoading(true);
@@ -140,20 +114,6 @@ export default function CommentPage() {
         <div className="admin-panel-orders">
             <div className="intro">
                 <h1>Recent Orders</h1>
-                <div className="order-list">
-                    {
-                        orderListButtons.map((record, index) => {
-                            return <button
-                                key={index}
-                                className={`status-${record ===
-                                ordersStatus}`}
-                                onClick={() => setOrdersStatus(record)}
-                            >
-                                {record}
-                            </button>
-                        })
-                    }
-                </div>
             </div>
             <div style={{position: 'relative'}}>
                 <div className={'loading'} data-loading={customLoading}>
@@ -297,7 +257,7 @@ export default function CommentPage() {
                         setUrl={setUrl}
                         count={data?.entities?.count}
                         loading={loading}
-                        apiEndpoint={'blogs'}
+                        apiEndpoint={'admin/comments'}
                     />
                 </Table>
             </div>
