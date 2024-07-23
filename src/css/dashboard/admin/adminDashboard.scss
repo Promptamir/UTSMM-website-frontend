@@ -19,6 +19,32 @@ $gradient-degree: 0deg;
     margin-top: 20px !important;
 }
 
+.loading-full-screen {
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    color: $ThemeColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-full-screen {
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        text-align: center;
+        font-weight: bold;
+        font-size: 36px;
+        color: red;
+    }
+}
+
 .admin-orders-page {
     .header {
         display: flex;

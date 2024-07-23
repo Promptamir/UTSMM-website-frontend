@@ -15,10 +15,10 @@ import HotCategories from "./components/hot-categories/HotCategories";
 import Question from "./components/question/Question";
 import ExternalReviews from "./components/external-reviews/externalReviewsPage";
 import RefileOrders from "./components/refile-orders/RefileOrders";
+import {useFetch} from "../../../lib/useFetch";
+import BE_URL from "../../../lib/envAccess";
 
 const AdminDashboard = () => {
-
-
     const menu = [
         {
             title: "Dashboard",
@@ -95,32 +95,49 @@ const AdminDashboard = () => {
             component: <ExternalReviews />
         }
     ]
-
     const [selectedMenu, setSelectedMenu] = useState(menu[0])
 
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index`);
 
     return (
         <main className="admin-dashboard">
-            <nav>
-                {
-                    menu.map((item, index) => {
-                        return <div
-                            onClick={() => { setSelectedMenu(item) }}
-                            key={index}
-                            className={`item selected-${item.title === selectedMenu.title}`}
-                        >
-                            {item.svg}
-                            <span>
+            {
+                (loading)
+                    ? (
+                        <div className={'loading-full-screen'}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                        </div>
+                    ) : (error)
+                        ? (
+                            <div className={'error-full-screen'}>
+                                <p>There was an error while fetching the data</p>
+                            </div>
+                        ) : (
+                            <>
+                                <nav>
+                                    {
+                                        menu.map((item, index) => {
+                                            return <div
+                                                onClick={() => {
+                                                    setSelectedMenu(item)
+                                                }}
+                                                key={index}
+                                                className={`item selected-${item.title === selectedMenu.title}`}
+                                            >
+                                                {item.svg}
+                                                <span>
                                 {item.title}
                             </span>
-                        </div>
-                    })
-                }
-            </nav>
-
-            <section className="content">
-                {selectedMenu.component}
-            </section>
+                                            </div>
+                                        })
+                                    }
+                                </nav>
+                                <section className="content">
+                                    {selectedMenu.component}
+                                </section>
+                            </>
+                        )
+            }
         </main>
     )
 }
