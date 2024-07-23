@@ -139,6 +139,7 @@ $panel-color-6: #dc3545;
         .table-body {
             overflow: auto;
             grid-template-columns: 1fr;
+            width: 100%;
             .row {
                 gap: 0;
                 .property {
