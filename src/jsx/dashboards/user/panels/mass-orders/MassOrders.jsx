@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import UserQuickView from '../../Components/UserQuickView'
 import Lottie from 'react-lottie-player'
 import Swal from 'sweetalert2';
@@ -16,47 +16,73 @@ const MassOrders = () => {
     massOrderAnimation.fr = 10
     massOrderBackground.fr = 5
 
-    const [data, error, loading] = useFetch(`${BE_URL}/user-index-page-data`);
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
     const [val, setVal] = useState('');
     const [formLoading, setFormLoading] = useState(false);
+    const [customError, setCustomError] = useState('');
 
+    // Validating value
+    useEffect(() => {
+        const splittedVal = val.split(' | ');
+        const intRegex = /^\d+$/;
+        const urlRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
+        if (splittedVal.length === 3) {
+            setCustomError('There should be 3 items for separated with | (Id of Service, Link, Quantity)')
+
+            if (!intRegex.test(splittedVal[0])) {
+                setCustomError('The Id should be an integer')
+            } else if (!urlRegex.test(splittedVal[1])) {
+                setCustomError('The Link should be an URL')
+            } else if (!intRegex.test(splittedVal[2])) {
+                setCustomError('The Quantity should be an integer')
+            } else if (
+                intRegex.test(splittedVal[0]) &&
+                urlRegex.test(splittedVal[1]) &&
+                intRegex.test(splittedVal[2])
+            ) {
+                setCustomError('');
+            }
+        }
+    }, [val]);
 
     const handleSubmitClick = (e) => {
         e.preventDefault();
-        setFormLoading(true);
-        fetch(`${BE_URL}/mass-orders`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept" : "application/json",
-                "X-Requested-With" : "XMLHttpRequest",
-                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
-            },
-            body: JSON.stringify({"orders": val})
-        })
-            .then((data) => data.json())
-            .then((data) => {
-                setFormLoading(false);
-                if (data.message === "Unauthenticated.") {
+        if (customError === '') {
+            setFormLoading(true);
+            fetch(`${BE_URL}/mass-orders`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept" : "application/json",
+                    "X-Requested-With" : "XMLHttpRequest",
+                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                },
+                body: JSON.stringify({"orders": val})
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    setFormLoading(false);
+                    if (data.message === "Unauthenticated.") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Unauthenticated.'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(() => {
+                    setFormLoading(false);
                     Swal.fire({
                         icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: data.message
-                    });
-                }
-            })
-            .catch(() => {
-                setFormLoading(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'There was an error while fetching the data'
+                        title: 'There was an error while fetching the data'
+                    })
                 })
-            })
+        }
     }
 
 
@@ -98,7 +124,6 @@ const MassOrders = () => {
                     </p>
                 </div>
             </div>
-
             <div className="how-it-work row">
 
                 <h1>How it Work ?</h1>
@@ -141,7 +166,6 @@ const MassOrders = () => {
 
 
             </div>
-
             <div className="examples row">
                 <h1>Examples : </h1>
                 <div className="items">
@@ -229,7 +253,6 @@ const MassOrders = () => {
                 </div>
 
             </div>
-
             <form className="order-box row"
                 action='#'
                 onSubmit={handleSubmitClick}>
@@ -244,6 +267,22 @@ const MassOrders = () => {
                         onChange={(e) => setVal(e.target.value)}
                     />
                 </div>
+                {customError !== '' && (
+                    <div style={{
+                        background: 'rgba(238, 75, 43, .2)',
+                        width: '100%',
+                        padding: '10px',
+                        borderRadius: '10px',
+                        marginTop: '20px',
+                        border: '1px solid rgb(238, 75, 43)',
+                    }}>
+                        <p style={{
+                            color: 'rgb(238, 75, 43)',
+                            fontSize: '24px',
+                            fontWeight: 'normal'
+                        }}>{customError}</p>
+                    </div>
+                )}
                 <div className="form-buttons">
                     <button disabled={formLoading}>
                         {
@@ -262,8 +301,6 @@ const MassOrders = () => {
                         }
                     </button>
                 </div>
-
-
             </form>
 
         </section>
