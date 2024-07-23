@@ -198,7 +198,7 @@ export default function Faqs() {
                                             <span>
                                                 Delete
                                             </span>
-                                                    <Icon icon="iconamoon:send-fill"/>
+                                                    <Icon icon="material-symbols:delete"/>
                                                 </button>
                                             </div>
                                         </Property>

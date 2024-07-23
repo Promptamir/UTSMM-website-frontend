@@ -962,7 +962,7 @@
   border-radius: 100rem;
 }
 .admin-dashboard .content .admin-panel-faqs .table .buttons .reply-phone {
-  background-color: #0fac6d;
+  background-color: red;
   color: white;
 }
 .admin-dashboard .content .admin-panel-faqs .table .buttons .reply-email {
