@@ -22,8 +22,8 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
     }
 
     const [content, setContent] = useState('');
-    const [description, setDescription] = useState('');
-    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState(blog.short_description);
+    const [title, setTitle] = useState(blog.title);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -44,7 +44,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     "short_description": description,
                     "content": content,
                     "keywords": keywords.split(','),
-                    "status": 1
+                    "status": "1"
                 })
             })
                 .then((data) => data.json())
@@ -97,6 +97,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            value={title}
                             minLength={3}
                             maxLength={255}
                             required
@@ -113,6 +114,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            value={description}
                             required
                             minLength={3}
                             maxLength={300}
@@ -148,7 +150,18 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                         />
                     </FieldBody>
                 </AdminPanelFiledset>
-
+                <ReactQuill
+                    style={{width: '100%', marginTop: '20px'}}
+                    theme="snow"
+                    onChange={(val) => {
+                        if (val.length <= 100) {
+                            setError('The content should at least be 100 character.');
+                        } else {
+                            setError('');
+                            setContent(val)
+                        }
+                    }}
+                />
 
                 {error !== '' && <div className={'input-error'}>{error}</div>}
 

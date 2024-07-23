@@ -69,77 +69,7 @@ export default function Blogs() {
     }
 
     const onPublishedClick = (blog, published) => {
-        setCustomLoading(true);
-
-        let title = '';
-        let short_description = '';
-        let content = '';
-        let keywords = '';
-
-        fetch(`${BE_URL}/blogs/${blog.slug}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
-            },
-        })
-            .then((data) => data.json())
-            .then((data) => {
-                title = data.entities.blog.title;
-                short_description = data.entities.blog.content;
-                content = data.entities.blog.content;
-                keywords = data.entities.blog.keywords;
-
-                fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept" : "application/json",
-                        "X-Requested-With" : "XMLHttpRequest",
-                        "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
-                    },
-                    body: JSON.stringify({
-                        "_method" : "put",
-                        "title": title,
-                        "short_description": short_description,
-                        "content": content,
-                        "keywords": keywords,
-                        "status": (published) ? 1 : 0
-                    })
-                })
-                    .then((data) => data.json())
-                    .then((data) => {
-                        setCustomLoading(false);
-                        if (data.message === "Unauthenticated.") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Unauthenticated.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                text: data.message
-                            });
-                            refresh();
-                        }
-                    })
-                    .catch(() => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'There was an error while fetching the data'
-                        })
-                        setCustomLoading(false);
-                    })
-            })
-            .catch(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'There was an error while fetching the data'
-                })
-                setCustomLoading(false);
-            })
+        alert('To be fixed');
     }
 
 
@@ -321,7 +251,7 @@ export default function Blogs() {
                         setUrl={setUrl}
                         count={data?.entities?.count}
                         loading={loading}
-                        apiEndpoint={'blogs'}
+                        apiEndpoint={'admin/blogs'}
                     />
                 </Table>
             </div>
