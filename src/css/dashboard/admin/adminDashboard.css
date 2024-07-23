@@ -1283,6 +1283,11 @@
   color: rgb(49, 101, 243);
   transition: 500ms;
 }
+.form .input:is(textarea) {
+  resize: none;
+  height: 150px;
+  width: 100%;
+}
 .form .input:focus {
   background-color: rgb(49, 101, 243);
   color: white;

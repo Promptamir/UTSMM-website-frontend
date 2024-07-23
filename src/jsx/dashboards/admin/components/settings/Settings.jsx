@@ -1,6 +1,6 @@
 // Importing part
 import {useFetch} from "../../../../../lib/useFetch";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
@@ -18,6 +18,22 @@ export default function Settings() {
     const [seoTitle, setSeoTitle] = useState('');
     const [seoDescription, setSeoDescription] = useState('');
     const [keywords, setKeywords] = useState('');
+    const [mainTitle, setMainTitle] = useState('');
+    const [mainDescription, setMainDescription] = useState('');
+    const [aboutUs, setAboutUs] = useState('');
+
+    // Using useEffect to set values with fetch
+    useEffect(() => {
+        if (!loading && !error) {
+            setEmail(data.entities['general-configs'].email);
+            setSeoTitle(data.entities['general-configs'].seo_title);
+            setSeoDescription(data.entities['general-configs'].seo_description);
+            setMainTitle(data.entities['general-configs'].main_title);
+            setMainDescription(data.entities['general-configs'].main_description);
+            setAboutUs(data.entities['general-configs'].about_us);
+            setKeywords(data.entities['general-configs'].keywords.join(','));
+        }
+    }, [loading]);
 
     // Returning JSX
     return (
@@ -43,7 +59,10 @@ export default function Settings() {
                                     "email": email,
                                     "seo_title": seoTitle,
                                     "seo_description": seoDescription,
-                                    "keywords": keywords.split(',')
+                                    "main_title": mainTitle,
+                                    "main_description": mainDescription,
+                                    "keywords": keywords.split(','),
+                                    "about_us": aboutUs
                                 })
                             })
                                 .then((resp) => resp.json())
@@ -72,39 +91,108 @@ export default function Settings() {
                                 <Icon icon={'eos-icons:loading'} width={40} href={40}/>
                             </div>
                             <div>
+                                <label className={'label'} htmlFor="main-title">Main title</label>
+                                <input
+                                    defaultValue={mainTitle}
+                                    onChange={(e) => setMainTitle(e.target.value)}
+                                    required
+                                    id={'main-title'}
+                                    name={'main-title'}
+                                    className={'input'}
+                                    type="text"
+                                    placeholder={'Main Title'}
+                                    minLength={3}
+                                    maxLength={255}
+                                />
+                            </div>
+                            <div>
+                                <label className={'label'} htmlFor="main-desc">Main Description</label>
+                                <textarea
+                                    defaultValue={mainDescription}
+                                    onChange={(e) => setMainDescription(e.target.value)}
+                                    required
+                                    id={'main-desc'}
+                                    name={'main-desc'}
+                                    className={'input'}
+                                    placeholder={'Main Description'}
+                                    minLength={3}
+                                />
+                            </div>
+                            <div>
                                 <label className={'label'} htmlFor="email">Email</label>
-                                <input defaultValue={data.entities['general-configs'].email}
-                                       onChange={(e) => setEmail(e.target.value)} required id={'email'} name={'email'}
-                                       className={'input'} type="email" placeholder={'Email'}/>
+                                <input
+                                    defaultValue={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    id={'email'}
+                                    name={'email'}
+                                    className={'input'}
+                                    type="email"
+                                    placeholder={'Email'}/>
                             </div>
                             <div>
                                 <label className={'label'} htmlFor="seo-title">Seo Title</label>
-                                <input defaultValue={data.entities['general-configs'].seo_title}
-                                       onChange={(e) => setSeoTitle(e.target.value)} required id={'seo-title'}
-                                       name={'seo-title'} className={'input'} type="text" placeholder={'Seo Title'}
-                                       minLength={3} maxLength={255}/>
+                                <input
+                                    defaultValue={seoTitle}
+                                    onChange={(e) => setSeoTitle(e.target.value)}
+                                    required
+                                    id={'seo-title'}
+                                    name={'seo-title'}
+                                    className={'input'}
+                                    type="text"
+                                    placeholder={'Seo Title'}
+                                    minLength={3}
+                                    maxLength={255}
+                                />
                             </div>
                             <div>
                                 <label className={'label'} htmlFor="seo-description">Seo Description</label>
-                                <input defaultValue={data.entities['general-configs'].seo_description}
-                                       onChange={(e) => setSeoDescription(e.target.value)} required id={'seo-description'}
-                                       name={'seo-description'} className={'input'} type="text"
-                                       placeholder={'Seo Description'} minLength={3}/>
+                                <textarea
+                                    defaultValue={seoDescription}
+                                    onChange={(e) => setSeoDescription(e.target.value)}
+                                    required
+                                    id={'seo-description'}
+                                    name={'seo-description'}
+                                    className={'input'}
+                                    placeholder={'Seo Description'}
+                                    minLength={3}
+                                />
                             </div>
                             <div>
                                 <label className={'label'} htmlFor="keywords">Keywords</label>
-                                <input onInput={(e) => {
-                                    const value = e.target.value;
-                                    const arrayOfKeywords = value.split(',');
+                                <input
+                                    onInput={(e) => {
+                                        const value = e.target.value;
+                                        const arrayOfKeywords = value.split(',');
 
-                                    if (arrayOfKeywords.length < 3) {
-                                        setCustomError('There should be at least 3 keywords')
-                                    } else {
-                                        setCustomError('');
-                                        setKeywords(value)
-                                    }
-                                }} required id={'keywords'} name={'keywords'} className={'input'} type="text"
-                                       placeholder={'separated with comma ","'} min={3}  defaultValue={data.entities['general-configs'].keywords.join(',')}/>
+                                        if (arrayOfKeywords.length < 3) {
+                                            setCustomError('There should be at least 3 keywords')
+                                        } else {
+                                            setCustomError('');
+                                            setKeywords(value)
+                                        }
+                                    }}
+                                    required
+                                    id={'keywords'}
+                                    name={'keywords'}
+                                    className={'input'}
+                                    type="text"
+                                    placeholder={'separated with comma ","'}
+                                    min={3}
+                                    defaultValue={keywords}/>
+                            </div>
+                            <div>
+                                <label className={'label'} htmlFor="about-us">About Us</label>
+                                <textarea
+                                    defaultValue={aboutUs}
+                                    onChange={(e) => setAboutUs(e.target.value)}
+                                    required
+                                    id={'about-us'}
+                                    name={'about-us'}
+                                    className={'input'}
+                                    placeholder={'About Us'}
+                                    minLength={3}
+                                />
                             </div>
                             {customError !== '' && <div className={'form-input-error'}>{customError}</div>}
                             <button className={'submit-btn'}>Submit</button>

@@ -1414,6 +1414,12 @@ $gradient-degree: 0deg;
         color: $ThemeColor;
         transition: 500ms;
 
+        &:is(textarea) {
+            resize: none;
+            height: 150px;
+            width: 100%;
+        }
+
 
         &:focus {
             background-color: $ThemeColor;
