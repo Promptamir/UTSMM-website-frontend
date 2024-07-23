@@ -1,6 +1,6 @@
 // Importing part
 import {useFetch} from "../../../../../lib/useFetch";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
@@ -14,6 +14,14 @@ export default function Economy() {
     // Defining states
     const [customLoading, setCustomLoading] = useState(false);
     const [rate, setRate] = useState('');
+
+    // Using useEffect to set Rate state when data fetches
+    useEffect(() => {
+        if (!loading && !error) {
+            setRate(data.entities['economy-configs'].rate_increase_percent);
+        }
+    }, [loading]);
+
 
     // Returning JSX
     return (
@@ -66,7 +74,18 @@ export default function Economy() {
                             </div>
                             <div>
                                 <label className={'label'} htmlFor="email">Rate</label>
-                                <input defaultValue={data.entities['economy-configs'].rate_increase_percent} onChange={(e) => setRate(e.target.value)} required id={'rate'} name={'rate'} className={'input'} type="number" placeholder={'Email'} min={0} max={100} />
+                                <input
+                                    defaultValue={data.entities['economy-configs'].rate_increase_percent}
+                                    onChange={(e) => setRate(e.target.value)}
+                                    required
+                                    id={'rate'}
+                                    name={'rate'}
+                                    className={'input'}
+                                    type="number"
+                                    placeholder={'Email'}
+                                    min={0}
+                                    max={100}
+                                />
                             </div>
                             <button className={'submit-btn'}>Submit</button>
                         </form>
