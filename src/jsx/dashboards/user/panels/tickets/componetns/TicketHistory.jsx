@@ -72,30 +72,53 @@ const TicketHistory = () => {
                                 ? <h1>{fetchError}</h1>
                                 : (
                                     <div className={'table_2'}>
+                                        <div className={'col'}>ID</div>
+                                        <div className={'col'}>{data.id}</div>
                                         <div className={'col'}>Subject</div>
                                         <div className={'col'}>{data.subject}</div>
-                                        <div className={'col'}>Seen</div>
-                                        <div className={'col'}>
-                                            {
-                                                (seen === 1)
-                                                    ? <Icon icon="quill:checkmark-double"/>
-                                                    : <Icon icon="uil:clock"/>
-                                            }
-                                        </div>
-                                        <div className={'col'}>Answer</div>
-                                        <div className={'col'}>{data.answer}</div>
-                                        <div className={'col'}>Answered At</div>
-                                        <div className={'col'}>{new Date(data.answered_at).toLocaleDateString()}</div>
-                                        <div className={'col'}>Anything id</div>
+                                        <div className={'col'}>Anything ID</div>
                                         <div className={'col'}>{data.anything_id}</div>
-                                        <div className={'col'}>Content</div>
-                                        <div className={'col'}>{data.content}</div>
+                                        <div className={'col'}>Created At</div>
+                                        <div className={'col'}>{new Date(data.created_at).toLocaleDateString()}</div>
+                                        {
+                                            (data.messages.length === 0)
+                                                ? <h1>There is no message to show</h1>
+                                                : (
+                                                    <div className={'ticket-messages-all-holder'}>
+                                                        <h1 className={'tickets-messages-lable'}>Messages:</h1>
+                                                        <div className={'ticket-messages-holder'}>
+                                                            {
+                                                                data.messages.map((item, index) => (
+                                                                    <div key={index} className={'message'}>
+                                                                        <div className={'message-content-holder'}>
+                                                                            <div className={`message-content ${(item.is_answer) ? 'admin' : 'user'}`}>
+                                                                                <p className={'message-text'}>{item.content}</p>
+                                                                                <span className={'message-date'}>{new Date(item.created_at).toLocaleDateString()}</span>
+                                                                            </div>
+                                                                            {
+                                                                                (item.attachment)
+                                                                                    ? (
+                                                                                        <div className={`attachment-holder ${(item.is_answer) ? 'admin' : 'user'}`}>
+                                                                                            <div className={'attachment'} style={{background: `url(${item.attachment.attachment_url})`}}>
+                                                                                                <div className={'attachment-name'}>{item.attachment.attachment_name}</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    ) : false
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                )
+                                        }
                                     </div>
                                 )
                     }
                 </Modal>
                 <div className="item-header">
-                <div className="status">
+                    <div className="status">
                         {
                             (seen === 1)
                                 ? <Icon icon="quill:checkmark-double"/>

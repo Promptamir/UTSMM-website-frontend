@@ -30,6 +30,98 @@ $gradient-degree: 0deg;
     max-width: 1400px;
     margin: 0 auto;
 
+
+    .ticket-messages-all-holder {
+        grid-column: span 2;
+
+        .tickets-messages-lable {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .ticket-messages-holder {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .message {
+                display: flex;
+
+                .message-content-holder {
+                    display: flex;
+                    flex-direction: column;
+
+                    .message-content {
+                        padding: 15px;
+                        border-radius: 15px;
+                        width: 50%;
+
+                        &.admin {
+                            background-color: $ThemeColor;
+                            color: white;
+                            align-self: start;
+                        }
+
+                        &.user {
+                            background-color: darkviolet;
+                            color: white;
+                            align-self: end;
+                        }
+
+                        .message-text {
+                            font-weight: normal;
+                            font-size: 20px;
+                            margin-bottom: 20px;
+                            color: currentColor;
+                        }
+
+                        .message-date {
+                            text-align: right;
+                            font-weight: normal;
+                            font-size: 16px;
+                            color: currentColor;
+                            display: block;
+                        }
+                    }
+
+                    .attachment-holder {
+                        width: 50%;
+                        margin-top: 20px;
+
+                        &.admin {align-self: start;}
+                        &.user {align-self: end;}
+                        .attachment {
+                            height: 200px;
+                            width: 100%;
+                            padding: 15px;
+                            border-right: 15px;
+                            background-size: cover;
+                            display: flex;
+                            align-items: end;
+                            justify-content: start;
+                            border-radius: 15px;
+
+                            .attachment-name {
+                                border-radius: 10px;
+                                background-color: darkmagenta;
+                                color: white;
+                                font-size: 16px;
+                                font-weight: normal;
+                                padding: 10px;
+                                width: 100%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     .loading-full-screen {
         width: 100vw;
         height: 100vh;
