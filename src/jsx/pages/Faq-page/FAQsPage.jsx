@@ -48,29 +48,59 @@ const FAQsPage = () => {
                     : (isError)
                         ? <h1>Error</h1>
                         : (
-                            <div className="faqs-items">
-                                <div className="col">
-                                    {
-                                        data?.map((item, index) => {
-                                            return <FAQsAccordion
-                                                key={index}
-                                                headerTitle={item.question}
-                                                bodyTitle={item.answer}
-                                                isExpanded={false}/>
-                                        })
-                                    }
-                                </div>
-                                <div className="col">
-                                    {
-                                        data?.map((item, index) => {
-                                            return <FAQsAccordion
-                                                key={index}
-                                                headerTitle={item.question}
-                                                bodyTitle={item.answer}
-                                                isExpanded={false}/>
-                                        })
-                                    }
-                                </div>
+                            <div>
+                                {
+                                        (data.ticket.length !== 0)
+                                            ? (
+                                                <div style={{display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '50px'}}>
+                                                    <h1 style={{color: 'white'}}>Ticket Related:</h1>
+                                                    {
+                                                        data.ticket.map((item, index) => (
+                                                            <FAQsAccordion key={index} bodyTitle={item.answer} headerTitle={item.question} isExpanded={false} />
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : false
+                                }
+                                {
+                                        (data.order.length !== 0)
+                                            ? (
+                                                <div style={{display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '50px'}}>
+                                                    <h1 style={{color: 'white'}}>Order Related:</h1>
+                                                    {
+                                                        data.order.map((item, index) => (
+                                                            <FAQsAccordion key={index} bodyTitle={item.answer} headerTitle={item.question} isExpanded={false} />
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : false
+                                }
+                                {
+                                        (data.payment.length !== 0)
+                                            ? (
+                                                <div style={{display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '50px'}}>
+                                                    <h1 style={{color: 'white'}}>Payment Related:</h1>
+                                                    {
+                                                        data.payment.map((item, index) => (
+                                                            <FAQsAccordion key={index} bodyTitle={item.answer} headerTitle={item.question} isExpanded={false} />
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : false
+                                }
+                                {
+                                        (data.general.length !== 0)
+                                            ? (
+                                                <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                                                    <h1 style={{color: 'white'}}>General Related:</h1>
+                                                    {
+                                                        data.general.map((item, index) => (
+                                                            <FAQsAccordion key={index} bodyTitle={item.answer} headerTitle={item.question} isExpanded={false} />
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : false
+                                }
                             </div>
                         )
             }
