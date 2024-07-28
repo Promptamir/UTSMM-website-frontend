@@ -34,6 +34,7 @@ import {ADMIN_PANEL_CREATE_BLOG} from "../../pop-ups/Constaints";
 import EditBlogPopUp from "../../pop-ups/EditBlogPopUp";
 import {useDispatch} from "react-redux";
 import ServicesDetailsView from "../../pop-ups/ServicesDetailsView";
+import {Link, useNavigation} from "react-router-dom";
 
 
 
@@ -246,11 +247,23 @@ const ServicesPage = () => {
                                                                         dispatcher(showPopUp({
                                                                             type: "SERVICES_DETAILS_VIEW",
                                                                             duration: 2000,
-                                                                            component: <ServicesDetailsView service={serviceFetch.filter(item => item.id === cat.id)[0]} />
+                                                                            component: <ServicesDetailsView
+                                                                                service={serviceFetch.filter(item => item.id === cat.id)[0]}/>
                                                                         }))
                                                                     }}>
-                                                                        <Icon icon={'mdi:eye'} />
+                                                                        <Icon icon={'mdi:eye'}/>
                                                                     </button>
+                                                                    <Link to={`/user/dashboard/New-Order?service=${cat.id}&category=${category}`} style={{
+                                                                        display: 'block',
+                                                                        marginTop: '20px',
+                                                                        background: 'blueviolet',
+                                                                        color: "white",
+                                                                        padding: '.5rem 1rem',
+                                                                        borderRadius: '.5rem'
+                                                                    }}>
+                                                                        <Icon
+                                                                            icon={"fluent:select-all-off-16-regular"}/>
+                                                                    </Link>
                                                                 </div>
                                                             </Property>
                                                         </Row>
