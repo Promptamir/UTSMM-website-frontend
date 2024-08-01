@@ -215,10 +215,10 @@ export default function Orders() {
                                         {
                                             data.entities.orders.map((item, index) => (
                                                 <div className={'row'} key={index}>
-                                                    <div className="item id">{item.id}</div>
-                                                    <div className="item">${item.charge}</div>
-                                                    <div className="item">{new Date(item.created_at).toLocaleDateString()}</div>
-                                                    <div className="item">{item.status}</div>
+                                                    <div className="item text id">{item.id}</div>
+                                                    <div className="item text">${item.charge}</div>
+                                                    <div className="item text">{new Date(item.created_at).toLocaleDateString()}</div>
+                                                    <div className="item text">{item.status}</div>
                                                     <div className="item">
                                                         <input disabled type="checkbox" checked={(item.refunded === '1')} />
                                                     </div>

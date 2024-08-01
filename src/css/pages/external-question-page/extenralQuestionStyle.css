@@ -40,6 +40,11 @@
   padding: 15px;
   align-content: center;
 }
+.external-question-page .custom-table .body .row .item.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .external-question-page .custom-table .body .row .item .id {
   color: white;
   background-color: orange;

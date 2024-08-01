@@ -49,6 +49,12 @@ $ColorPrimary: #4976f3;
         padding: 15px;
         align-content: center;
 
+        &.text {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .id {
           color: white;
           background-color: orange;

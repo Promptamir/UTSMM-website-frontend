@@ -35,11 +35,11 @@ export default function ExternalQuestionPage() {
                                 {
                                     data.entities.reviews.map((item, index) => (
                                         <div className={'row'} key={index}>
-                                            <div className={'item'}><div className={'id'}>{item.id}</div></div>
+                                            <div className={'item text'}><div className={'id'}>{item.id}</div></div>
                                             <div className={'item'}><img src={item.image} width={50} height={50} className={'img'} /></div>
-                                            <div className={'item'}>{item.type}</div>
-                                            <div className={'item'}>{item.free_credit}</div>
-                                            <div className={'item'}>{new Date(item.created_at).toLocaleDateString()}</div>
+                                            <div className={'item text'}>{item.type}</div>
+                                            <div className={'item text'}>{item.free_credit}</div>
+                                            <div className={'item text'}>{new Date(item.created_at).toLocaleDateString()}</div>
                                         </div>
                                     ))
                                 }
