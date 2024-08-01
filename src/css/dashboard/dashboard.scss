@@ -123,7 +123,7 @@ $gradient-degree: 0deg;
     }
 
     .loading-full-screen {
-        width: 100vw;
+        max-width: 1400px;
         height: 100vh;
         color: white;
         display: flex;
@@ -135,7 +135,7 @@ $gradient-degree: 0deg;
     }
 
     .error-full-screen {
-        width: 100vw;
+        max-width: 1400px;
         height: 100vh;
         display: flex;
         align-items: center;
