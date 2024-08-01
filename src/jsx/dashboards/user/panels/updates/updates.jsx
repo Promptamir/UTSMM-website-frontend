@@ -62,9 +62,11 @@ export default function Updates() {
                             <Icon icon={'eos-icons:loading'} width={40} href={40} />
                         </div>
                     ) : (error)
-                        ? <h1>There was an error while fetching the data</h1>
-                        : (
-                            <ul className={'list'}>
+                        ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white'}}>There was an error while fetching the data</h1>
+                        : (data.entities.updates.length === 0)
+                            ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white'}}>There is nothing to show</h1>
+                            : (
+                                <ul className={'list'}>
                                 {
                                     (searchStr === '')
                                         ? data.entities.updates.map((item , index) => (
@@ -84,7 +86,7 @@ export default function Updates() {
                                         ))
                                 }
                             </ul>
-                        )
+                            )
             }
             <Pagination
                 error={error}
@@ -92,7 +94,8 @@ export default function Updates() {
                 setUrl={setUrl}
                 count={data?.entities?.count}
                 loading={loading}
-                apiEndpoint={'blogs'}
+                apiEndpoint={'service-updates'}
+                apiAppend={`?page=${currentPage}&type=${sort}`}
             />
         </main>
     );
