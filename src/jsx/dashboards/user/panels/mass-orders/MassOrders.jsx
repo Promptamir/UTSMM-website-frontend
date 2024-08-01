@@ -68,6 +68,8 @@ const MassOrders = () => {
                             icon: 'error',
                             text: 'Unauthenticated.'
                         });
+                    } else if (data.message === "There is some errors, see details for more info") {
+                        setCustomError(data.entities.results.map(item => item.split(' - ')[1]).join(' & '))
                     } else {
                         Swal.fire({
                             icon: 'success',
