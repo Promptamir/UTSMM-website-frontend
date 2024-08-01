@@ -66,10 +66,9 @@ export default function CreatePlatformPopUp({refresh, customLoading }) {
             redirect: "follow"
         };
 
-        fetch(`${BE_URL}/admin/platforms/`, requestOptions)
+        fetch(`${BE_URL}/admin/platforms`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result)
                 customLoading(false);
                 if (result.message === "Unauthenticated.") {
                     Swal.fire({

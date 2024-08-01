@@ -20,8 +20,8 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
     const [image, setImage] = useState(require("../../images/place-holder/1.png"));
     const [imageFile, setImageFile] = useState();
     const [name, setName] = useState(platform.title);
-    const [description, setDescription] = useState('');
-    const [order, setOrder] = useState('');
+    const [description, setDescription] = useState(platform.description);
+    const [order, setOrder] = useState(platform.order);
     const dispatcher = useDispatch()
     const handleCloseButtonClick = () => {
         dispatcher(closePopUp())
@@ -57,9 +57,10 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
         formdata.append("description", description);
         formdata.append("order", order);
         formdata.append("image", imageFile, "[PROXY]");
+        formdata.append("_method", "PUT");
 
         const requestOptions = {
-            method: "PUT",
+            method: "POST",
             headers: myHeaders,
             body: formdata,
             redirect: "follow"
@@ -136,6 +137,7 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
                     </Legend>
                     <FieldBody>
                         <textarea
+                            defaultValue={description}
                             cols={10}
                             rows={10}
                             required
@@ -154,6 +156,7 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading }) 
                     </Legend>
                     <FieldBody>
                         <input
+                            defaultValue={order}
                             type="number"
                             min={1}
                             name="order"
