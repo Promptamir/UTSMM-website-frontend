@@ -95,7 +95,7 @@ export default function Updates() {
                 count={data?.entities?.count}
                 loading={loading}
                 apiEndpoint={'service-updates'}
-                apiAppend={`?page=${currentPage}&type=${sort}`}
+                apiAppend={`&type=${sort}`}
             />
         </main>
     );
