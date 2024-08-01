@@ -32,7 +32,7 @@ export default function Setting() {
                     setLoading(true);
 
                     fetch(`${BE_URL}/user/password`, {
-                        method: "PATCH",
+                        method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             "Accept" : "application/json",
@@ -40,6 +40,7 @@ export default function Setting() {
                             "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                         },
                         body: JSON.stringify({
+                            "_method" : 'PATCH',
                             "password": password
                         })
                     })
@@ -58,7 +59,15 @@ export default function Setting() {
                     <h1 className={'dashboard-title'}>Reset password</h1>
                     <div>
                         <label className={'dashboard-form-label'} htmlFor="password">New password</label>
-                        <input minLength={8} maxLength={30} onChange={(event) => setPassword(event.target.value)} required type="password" placeholder={'Example: xxxxxxxx'} className={'dashboard-form-input'}/>
+                        <input
+                            minLength={8}
+                            maxLength={30}
+                            onChange={(event) => setPassword(event.target.value)}
+                            required
+                            type="password"
+                            placeholder={'Example: xxxxxxxx'}
+                            className={'dashboard-form-input'}
+                        />
                     </div>
                     {error !== '' && <div className={'dashboard-error'}>{error}</div>}
                     {succses !== '' && <div className={'dashboard-succses'}>{succses}</div>}
@@ -110,9 +119,10 @@ export default function Setting() {
 
                         const formdata = new FormData();
                         formdata.append("image", profileImageFile);
+                        formdata.append("_method", "PATCH");
 
                         const requestOptions = {
-                            method: "PATCH",
+                            method: "POST",
                             headers: myHeaders,
                             body: formdata,
                             redirect: "follow"
@@ -123,7 +133,7 @@ export default function Setting() {
                             .then((data) => {
                                 setProfileImageLoading(false);
                                 setProfileImageError('');
-                                setProfileImageSuccess(data.message);
+                                setProfileImageSuccess('The avatar has been Changed');
                             })
                             .catch(() => {
                                 setProfileImageError('There was an error while fetching the data');
