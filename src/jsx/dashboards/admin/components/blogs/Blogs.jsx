@@ -43,8 +43,6 @@ export default function Blogs() {
         "Image",
         "Title",
         "Description",
-        "Likes",
-        "Published",
         "Controlls"
     ]
 
@@ -67,11 +65,6 @@ export default function Blogs() {
             component: <EditBlogPopUp setLoading={setCustomLoading} blog={blog} refresh={refresh} />
         }))
     }
-
-    const onPublishedClick = (blog, published) => {
-        alert('To be fixed');
-    }
-
 
     const handleOnDelete = (blog) => {
         setCustomLoading(true);
@@ -196,28 +189,6 @@ export default function Blogs() {
                                         <Property>
                                             <div className="property-header">
                                                 {headerList[4]}
-                                            </div>
-                                            <div className="property-body">
-                                                <MaxLineText
-                                                    maxLine={4}
-                                                    content={blog.likes}/>
-                                            </div>
-                                        </Property>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[5]}
-                                            </div>
-                                            <div className="property-body">
-                                                <Switch
-                                                    checked={blog.status === "1"}
-                                                    onChange={() => {
-                                                        onPublishedClick(blog, (blog.status !== 1))
-                                                    }}/>
-                                            </div>
-                                        </Property>
-                                        <Property>
-                                            <div className="property-header">
-                                                {headerList[6]}
                                             </div>
                                             <div className="property-body controlls-property">
                                                 <button

@@ -10,6 +10,7 @@ import { put } from "../../lib/useFetch"
 import { showError, showSuccess } from "../../lib/alertHandler"
 import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
+import Switch from "react-switch";
 
 export default function EditBlogPopUp({ blog, refresh, setLoading }) {
     const [keywords, setKeywords] = useState('');
@@ -24,6 +25,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
     const [content, setContent] = useState('');
     const [description, setDescription] = useState(blog.short_description);
     const [title, setTitle] = useState(blog.title);
+    const [published, setPublished] = useState((blog.status === '1'))
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -44,7 +46,7 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                     "short_description": description,
                     "content": content,
                     "keywords": keywords.split(','),
-                    "status": "1"
+                    "status": (published) ? '1' : '0'
                 })
             })
                 .then((data) => data.json())
@@ -105,6 +107,15 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                             type="text"
                             name="title"
                         />
+                    </FieldBody>
+                </AdminPanelFiledset>
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="pajamas:title" />
+                        <span>Published</span>
+                    </Legend>
+                    <FieldBody>
+                        <Switch checked={published} onChange={(e) => {setPublished(e)}} />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
