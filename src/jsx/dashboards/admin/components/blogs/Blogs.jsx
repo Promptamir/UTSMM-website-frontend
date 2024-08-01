@@ -95,7 +95,7 @@ export default function Blogs() {
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        text: data.message
+                        text: 'The item is deleted now'
                     });
                     refresh();
                 }
