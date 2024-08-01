@@ -178,24 +178,30 @@ const AddFounds = () => {
                             fetch(form.action, {
                                 method: form.method.toUpperCase(),
                                 body: formData,
-                                mode: 'no-cors',
                                 headers: {
-                                    'Accept-Charset': form.getAttribute('accept-charset'),
-                                    'Content-Type': form.getAttribute('content-type')
+                                    "Accept-Charset": form.getAttribute('accept-charset'),
+                                    "Content-Type": form.getAttribute('content-type'),
+                                    "X-Requested-With" : "XMLHttpRequest",
+                                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                                 }
                             })
                                 .then(data => data.json())
-                                .then(data => console.log(data))
-                                .catch((data) => {
-                                    console.log(data);
+                                .then(data => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: 'The add founds was successful !'
+                                    })
+
+                                    window.location.reload();
+                                })
+                                .catch(() => {
                                     Swal.fire({
                                         icon: 'error',
                                         text: 'There was an error while fetching the data'
                                     })
                                 })
                         })
-                        .catch((data) => {
-                            console.log(data);
+                        .catch(() => {
                             Swal.fire({
                                 icon: 'error',
                                 text: 'There was an error while fetching the data'
@@ -214,6 +220,7 @@ const AddFounds = () => {
                     })
                         .then((data) => data.json())
                         .then((data) => {
+                            console.log(data);
                             const formStr = data.entities.payment_form;
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(formStr, 'text/html');
@@ -230,9 +237,15 @@ const AddFounds = () => {
                                 }
                             })
                                 .then(data => data.json())
-                                .then(data => console.log(data))
+                                .then(data => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: 'The add founds was successful !'
+                                    })
+
+                                    window.location.reload();
+                                })
                                 .catch((data) => {
-                                    console.log(data);
                                     Swal.fire({
                                         icon: 'error',
                                         text: 'There was an error while fetching the data'
@@ -240,7 +253,6 @@ const AddFounds = () => {
                                 })
                         })
                         .catch((data) => {
-                            console.log(data);
                             Swal.fire({
                                 icon: 'error',
                                 text: 'There was an error while fetching the data'
