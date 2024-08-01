@@ -4,7 +4,7 @@
   position: relative;
 }
 .main-page .form.question {
-  width: 100%;
+  width: 80%;
   background-color: white;
   margin-inline: auto;
   border-radius: 20px;
@@ -1523,10 +1523,10 @@
   .main-page .faqs .add-question .right {
     display: flex;
     flex-direction: column;
-    max-width: 20rem;
+    width: 100% !important;
   }
   .main-page .faqs .add-question .right .info {
-    max-width: 100%;
+    width: 100% !important;
   }
   .main-page .faqs .add-question .right form {
     display: flex;

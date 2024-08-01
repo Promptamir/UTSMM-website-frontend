@@ -21,7 +21,7 @@ $panel-color-6: #dc3545;
     position: relative;
 
     .form.question {
-        width: 100%;
+        width: 80%;
         background-color: white;
         margin-inline: auto;
         border-radius: 20px;
@@ -1659,10 +1659,8 @@ $panel-color-6: #dc3545;
                 .right {
                     display: flex;
                     flex-direction: column;
-                    max-width: 20rem;
-                    .info {
-                        max-width: 100%;
-                    }
+                    width: 100% !important;
+                    .info {width: 100% !important;}
                     form {
                         display: flex;
                         flex-direction: column;
