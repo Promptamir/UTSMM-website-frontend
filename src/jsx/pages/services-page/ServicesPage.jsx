@@ -232,11 +232,11 @@ const ServicesPage = () => {
                                                                     {cat.max}
                                                                 </div>
                                                             </Property>
-                                                            <Property >
+                                                            <Property>
                                                                 <div className="property-header">
                                                                     {headerList[5]}
                                                                 </div>
-                                                                <div className="property-body">
+                                                                <div className="property-body" style={{display: 'flex', flexDirection: 'column'}}>
                                                                     <button style={{
                                                                         display: 'block',
                                                                         background: '#4976f3',
@@ -255,7 +255,7 @@ const ServicesPage = () => {
                                                                     </button>
                                                                     <Link to={`/user/dashboard/New-Order?service=${cat.id}&category=${category}`} style={{
                                                                         display: 'block',
-                                                                        marginTop: '20px',
+                                                                        marginTop: '10px',
                                                                         background: 'blueviolet',
                                                                         color: "white",
                                                                         padding: '.5rem 1rem',
