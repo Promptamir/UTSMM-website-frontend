@@ -184,15 +184,18 @@ const AddFounds = () => {
                                     'Content-Type': form.getAttribute('content-type')
                                 }
                             })
-                                .then(() => window.location.reload())
-                                .catch(() => {
+                                .then(data => data.json())
+                                .then(data => console.log(data))
+                                .catch((data) => {
+                                    console.log(data);
                                     Swal.fire({
                                         icon: 'error',
                                         text: 'There was an error while fetching the data'
                                     })
                                 })
                         })
-                        .catch(() => {
+                        .catch((data) => {
+                            console.log(data);
                             Swal.fire({
                                 icon: 'error',
                                 text: 'There was an error while fetching the data'
@@ -226,15 +229,18 @@ const AddFounds = () => {
                                     'Content-Type': form.getAttribute('content-type')
                                 }
                             })
-                                .then(() => window.location.reload())
-                                .catch(() => {
+                                .then(data => data.json())
+                                .then(data => console.log(data))
+                                .catch((data) => {
+                                    console.log(data);
                                     Swal.fire({
                                         icon: 'error',
                                         text: 'There was an error while fetching the data'
                                     })
                                 })
                         })
-                        .catch(() => {
+                        .catch((data) => {
+                            console.log(data);
                             Swal.fire({
                                 icon: 'error',
                                 text: 'There was an error while fetching the data'
