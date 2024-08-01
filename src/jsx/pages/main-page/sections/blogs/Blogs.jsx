@@ -93,10 +93,8 @@ export default function Blogs({data, error, loading}) {
                                                     src={item.image}/>
                                             </div>
                                             <div className="item-body">
-                                                <MaxLineText content={item.title} maxLine={1} isMarquee={false}
-                                                             targetClass={"title"}/>
-                                                <MaxLineText content={item.short_description} maxLine={4}
-                                                             targetClass={"excerpt"}/>
+                                                <span className={'title'}>{item.title}</span>
+                                                <p className={'short-description'}>{item.short_description}</p>
                                             </div>
                                             <div className="item-buttons">
                                                 <div className="left">

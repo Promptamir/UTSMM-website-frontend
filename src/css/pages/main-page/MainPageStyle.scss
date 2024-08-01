@@ -1047,20 +1047,30 @@ $panel-color-6: #dc3545;
                     }
                 }
                 .item-body {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
+                    padding: 1rem;
+
                     .title {
+                        color: black;
                         font-weight: bold;
-                        font-size: 1.1rem;
-                        padding-bottom: 0.5em;
-                        padding-bottom: 0;
+                        font-size: 24px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        margin-bottom: 10px;
+                        display: block;
+                        text-align: center;
                     }
-                    .excerpt {
-                        line-height: 1.5 !important;
-                        font-size: 0.9rem;
+
+                    .short-description {
+                        color: #424242;
+                        font-weight: normal;
+                        font-size: 16px;
+                        text-align: center;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                     }
-                    padding: 1.5em;
+
                 }
                 .item-buttons {
                     display: flex;
