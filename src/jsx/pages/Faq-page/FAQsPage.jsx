@@ -48,7 +48,7 @@ const FAQsPage = () => {
                     : (isError)
                         ? <h1>Error</h1>
                         : (
-                            <div>
+                            <div style={{padding: '20px', zIndex: '500'}}>
                                 {
                                         (data.ticket.length !== 0)
                                             ? (
