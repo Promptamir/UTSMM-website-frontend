@@ -1669,6 +1669,10 @@
   font-size: 0.9rem;
   line-height: 1.25;
 }
+.user-dashboard .panel-new-order .new-order {
+  padding: 2rem;
+  margin-top: 20px;
+}
 .user-dashboard .panel-add-founds {
   font-size: 2rem;
   display: grid;
