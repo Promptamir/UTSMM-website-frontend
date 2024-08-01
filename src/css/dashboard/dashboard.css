@@ -2838,6 +2838,8 @@
   .user-dashboard .panel-orders .recent-orders .right .order-detail {
     backdrop-filter: none;
     padding: 0;
+    width: 100%;
+    max-width: 100%;
   }
   .user-dashboard .panel-orders .recent-orders .right .body {
     display: flex !important;

@@ -24,17 +24,21 @@ export default function RefilHistoryPopUt({id}) {
                     ? <h1>Loading</h1>
                     : (error)
                         ? <h1>There was an error while fetching the data</h1>
-                        : <div style={{marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                            {
-                                data.entities.refills.map((item, index) => (
-                                    <span style={{
-                                        fontSize: '16px',
-                                        fontWeight: 'normal',
-                                        color: 'black'
-                                    }} key={index}>{item}</span>
-                                ))
-                            }
-                        </div>
+                        : (
+                            <div style={{marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                                {
+                                    (data.entities.refills.length === 0)
+                                        ? <h1 style={{textAlign: 'center', marginTop: '20px', color: 'black'}}>There is nothing to show</h1>
+                                        : data.entities.refills.map((item, index) => (
+                                            <span style={{
+                                                fontSize: '16px',
+                                                fontWeight: 'normal',
+                                                color: 'black'
+                                            }} key={index}>{item}</span>
+                                        ))
+                                }
+                            </div>
+                        )
             }
         </form>
     );

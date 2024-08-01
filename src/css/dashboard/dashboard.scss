@@ -3012,9 +3012,11 @@ $gradient-degree: 0deg;
         .panel-orders {
             display: flex !important;
             padding: 0;
+
             .recent-orders {
                 display: flex !important;
                 flex-direction: column !important;
+
                 .left {
                     .orders {
                         display: flex !important;
@@ -3069,6 +3071,8 @@ $gradient-degree: 0deg;
                     .order-detail {
                         backdrop-filter: none;
                         padding: 0;
+                        width: 100%;
+                        max-width: 100%;
                     }
                     .body {
                         display: flex !important;
