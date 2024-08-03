@@ -13,7 +13,9 @@ export default function Setting() {
     const [error, setError] = useState('');
     const [succses, setSuccses] = useState('');
     const [loading, setLoading] = useState('');
-    const [password, setPassword] = useState('');
+    const [currentPassword, setCurrentPassowrd] = useState('');
+    const [newPassword, setNewPassowrd] = useState('');
+    const [newConfirmationPassword, setNewConfirmationPassowrd] = useState('');
 
     const [profileImage, setProfileImage] = useState();
     const [profileImageFile, setProfileImageFile] = useState();
@@ -41,7 +43,9 @@ export default function Setting() {
                         },
                         body: JSON.stringify({
                             "_method" : 'PATCH',
-                            "password": password
+                            "current_password" : currentPassword,
+                            "new_password" : newPassword,
+                            "new_password_confirmation" : newConfirmationPassword
                         })
                     })
                         .then((data) => data.json())
@@ -58,11 +62,41 @@ export default function Setting() {
                 }} action="#" className={'dashboard-form'}>
                     <h1 className={'dashboard-title'}>Reset password</h1>
                     <div>
-                        <label className={'dashboard-form-label'} htmlFor="password">New password</label>
+                        <label className={'dashboard-form-label'} htmlFor="current-password">Current Password</label>
                         <input
                             minLength={8}
                             maxLength={30}
-                            onChange={(event) => setPassword(event.target.value)}
+                            name={'current-password'}
+                            id={'current-password'}
+                            onChange={(event) => setCurrentPassowrd(event.target.value)}
+                            required
+                            type="password"
+                            placeholder={'Example: xxxxxxxx'}
+                            className={'dashboard-form-input'}
+                        />
+                    </div>
+                    <div>
+                        <label className={'dashboard-form-label'} htmlFor="new-password">New Password</label>
+                        <input
+                            minLength={8}
+                            id={'new-password'}
+                            name={'new-password'}
+                            maxLength={30}
+                            onChange={(event) => setNewPassowrd(event.target.value)}
+                            required
+                            type="password"
+                            placeholder={'Example: xxxxxxxx'}
+                            className={'dashboard-form-input'}
+                        />
+                    </div>
+                    <div>
+                        <label className={'dashboard-form-label'} htmlFor="new-password-confirmation">New Password Confirmation</label>
+                        <input
+                            minLength={8}
+                            id={'new-password-confirmation'}
+                            name={'new-password-confirmation'}
+                            maxLength={30}
+                            onChange={(event) => setNewConfirmationPassowrd(event.target.value)}
                             required
                             type="password"
                             placeholder={'Example: xxxxxxxx'}
