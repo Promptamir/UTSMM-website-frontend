@@ -23,27 +23,31 @@ const MassOrders = () => {
 
     // Validating value
     useEffect(() => {
-        const splittedVal = val.split(' | ');
-        const intRegex = /^\d+$/;
-        const urlRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
+        const splitLines = val.split(/\r?\n/);
 
-        if (splittedVal.length === 3) {
-            setCustomError('There should be 3 items for separated with | (Id of Service, Link, Quantity)')
+        splitLines.forEach((item, index) => {
+            const splittedVal = item.split(' | ');
+            const intRegex = /^\d+$/;
+            const urlRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
-            if (!intRegex.test(splittedVal[0])) {
-                setCustomError('The Id should be an integer')
-            } else if (!urlRegex.test(splittedVal[1])) {
-                setCustomError('The Link should be an URL')
-            } else if (!intRegex.test(splittedVal[2])) {
-                setCustomError('The Quantity should be an integer')
-            } else if (
-                intRegex.test(splittedVal[0]) &&
-                urlRegex.test(splittedVal[1]) &&
-                intRegex.test(splittedVal[2])
-            ) {
-                setCustomError('');
+            if (splittedVal.length === 3) {
+                if (!intRegex.test(splittedVal[0])) {
+                    setCustomError(`Line ${index + 1} : The Id should be an integer`)
+                } else if (!urlRegex.test(splittedVal[1])) {
+                    setCustomError(`Line ${index + 1} : The Link should be an URL`)
+                } else if (!intRegex.test(splittedVal[2])) {
+                    setCustomError(`Line ${index + 1} : The Quantity should be an integer`)
+                } else if (
+                    intRegex.test(splittedVal[0]) &&
+                    urlRegex.test(splittedVal[1]) &&
+                    intRegex.test(splittedVal[2])
+                ) {
+                    setCustomError('');
+                }
+            } else {
+                setCustomError('There should be 3 items for separated with | (Id of Service, Link, Quantity)')
             }
-        }
+        })
     }, [val]);
 
     const handleSubmitClick = (e) => {
