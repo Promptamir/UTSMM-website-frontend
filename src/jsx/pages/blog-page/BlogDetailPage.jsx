@@ -46,7 +46,9 @@ export default function BlogDetailPage() {
                             <h1 className={'title'}>{data.title}</h1>
                             <p className={'content'}>{data.short_description}</p>
                           </div>
-                          {parse(data.content)}
+                          <div className={'parsed-content'}>
+                              {parse(data.content)}
+                          </div>
                         </>
                     )
           }
