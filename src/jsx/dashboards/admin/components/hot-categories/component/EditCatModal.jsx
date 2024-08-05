@@ -9,9 +9,14 @@ import {useDispatch} from "react-redux";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../../lib/envAccess";
 import Modal from "../../../../../pop-ups/modal";
+import Dropdown from "react-dropdown";
+import {useFetch} from "../../../../../../lib/useFetch";
 
 // Creating and exporting edit category modal as default
 export default function EditCatModal({setCustomLoading, refresh, cat, closeFn, isOpened}) {
+    // Getting data of platforms
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/platforms`);
+
     // Defining states of component
     const [title, setTitle] = useState(cat.remote_category_title);
     const [idState, setID] = useState(cat.local_category_id);
@@ -76,15 +81,31 @@ export default function EditCatModal({setCustomLoading, refresh, cat, closeFn, i
                     className={'input'}
                 />
                 <label htmlFor="platform_id">Platform ID</label>
-                <input
-                    min={1}
-                    defaultValue={idState}
-                    required
-                    onChange={(event) => setID(event.target.value)}
-                    type="number"
-                    name="id"
-                    className={'input'}
-                />
+                {
+                    (loading)
+                        ? (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginTop: '20px'
+                            }}>
+                                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                            </div>
+                        ) : (error)
+                            ? <h1>There was an error while fetching the data</h1>
+                            : (
+                                <Dropdown
+                                    onChange={(item) => setID(item.value)}
+                                    options={data.entities.platforms.map(item => {
+                                        return {
+                                            value: item.id,
+                                            label : item.title
+                                        }
+                                    })}
+                                />
+                            )
+                }
                 <button className="submit-btn">submit</button>
             </form>
         </Modal>
