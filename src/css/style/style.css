@@ -308,6 +308,7 @@ footer .avatar {
 }
 @media only screen and (max-width: 1250px) {
   header {
+    overflow: visible;
     padding: 0em 4em;
     padding-right: 4em;
     padding-left: 4em;
