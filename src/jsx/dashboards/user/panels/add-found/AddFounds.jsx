@@ -64,7 +64,7 @@ const AddFounds = () => {
             return counter
         }
 
-    
+
     }
     const isCompleted = (stepIndex) => {
         if (stepIndex < currentStep) {

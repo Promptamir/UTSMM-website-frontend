@@ -54,7 +54,9 @@ export default function CreateNewBlogPopUp({ refresh, setLoading, closeFn, isOpe
             formdata.append("content", content);
             formdata.append("image", imageFile, "[PROXY]");
             formdata.append("status", 1);
-            formdata.append("keywords", keywords.split(','));
+            keywordsArray.forEach((item, index) => {
+                formdata.append(`keywords[${index}]`, item);
+            })
 
             const requestOptions = {
                 method: "POST",
