@@ -4,9 +4,6 @@ import { useFetch } from '../../../../lib/useFetch'
 import { API } from '../../../../lib/envAccess'
 
 const UserQuickView = ({orders, spend, balance, activeOrders}) => {
-    const [data , error , loading ] = useFetch(API.DASHBOARD.QUICK_VIEW.GET)
-
-    
     return (
         <div className="user-quick-view">
             <div className="item">
