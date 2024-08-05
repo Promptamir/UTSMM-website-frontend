@@ -50,7 +50,6 @@ export default function ExternalReviews() {
             .then((data) => data.json())
             .then(resp => {
                 setCustomLoading(false);
-                console.log(resp)
                 if (resp.message === "Unauthenticated.") {
                     Swal.fire({
                         icon: 'error',

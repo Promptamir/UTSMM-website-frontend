@@ -126,7 +126,6 @@ export default function Introduction({data, error, loadingAPI}) {
                                             el: ".bullet-container"
                                         }}
                                         onSwiper={(swiper) => swiper.slideTo(2)}
-                                        onSlideChange={() => console.log('slide change')}
                                         effect={'coverflow'}
                                         grabCursor={true}
                                         centeredSlides

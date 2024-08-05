@@ -291,7 +291,6 @@ const NewOrders = () => {
                             })
                                 .then((data) => data.json())
                                 .then((data) => {
-                                    console.log(data);
                                     setFormLoading(false);
                                     if (data.message === "Unauthenticated.") {
                                         Swal.fire({

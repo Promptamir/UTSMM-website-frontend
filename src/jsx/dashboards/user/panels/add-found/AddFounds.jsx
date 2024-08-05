@@ -220,7 +220,6 @@ const AddFounds = () => {
                     })
                         .then((data) => data.json())
                         .then((data) => {
-                            console.log(data);
                             const formStr = data.entities.payment_form;
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(formStr, 'text/html');

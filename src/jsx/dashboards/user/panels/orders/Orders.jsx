@@ -23,12 +23,6 @@ const Orders = () => {
     const dispatcher = useDispatch()
 
     useEffect(() => {
-        if (!loading && !error) {
-            console.log(orders)
-        }
-    }, [loading]);
-
-    useEffect(() => {
         if (!loading) {
           setSelectedOrder(orders.entities.orders[0])
         }

@@ -9,11 +9,6 @@ export default function InfoModal({id, isOpened, closeFn}) {
     // Defining states of component
     const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/questions/${id}`)
 
-    // Using useEffect to refetch the data
-    useFetch(() => {
-        console.log(id);
-    }, [id])
-
     // Returning JSX
     return (
         <Modal isOpened={isOpened} closeFn={closeFn} title={'Info'}>

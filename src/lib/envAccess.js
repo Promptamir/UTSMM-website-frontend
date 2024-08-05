@@ -1,6 +1,5 @@
 let SERVER_URL = 'https://back.utsmm.com/api';
 
-console.log(SERVER_URL);
 export const CLIENT = {
   BASE_URL: window.location.origin,
 };

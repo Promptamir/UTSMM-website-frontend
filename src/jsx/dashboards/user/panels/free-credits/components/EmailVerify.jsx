@@ -64,7 +64,6 @@ export default function EmailVerify() {
                     }).then(() => {
                         setSocialGiftSteps(1)
                     })
-                console.log(response)
             })
             .catch(err => {
                 const errros = err?.response?.data
@@ -90,7 +89,6 @@ export default function EmailVerify() {
                 }
             })
             .catch(err => {
-                console.log(err)
                 const errors = err?.response?.data
                 showError(errors)
             })

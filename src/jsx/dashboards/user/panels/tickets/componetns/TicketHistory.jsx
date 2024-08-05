@@ -9,14 +9,6 @@ const TicketHistory = () => {
 
 
     const [tickets, error, loading] = useFetch(`${BE_URL}/tickets`)
-
-    useEffect(() => {
-        if (!loading) {
-            console.log(tickets)
-        }
-    }, [loading]);
-
-
     const getTime = (time) => {
         const timeData = new Date(time)
         return `${timeData.getHours()} : ${timeData.getMinutes()} `

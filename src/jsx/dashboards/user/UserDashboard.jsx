@@ -240,7 +240,6 @@ const UserDashboard = (
                                                     navigate('/');
                                                 })
                                                 .catch((err) => {
-                                                    console.log(err);
                                                     setloading(false);
                                                     setError('There was an unexpected error. Please try again.');
                                                 })

@@ -121,7 +121,6 @@ export async function post(url, postData) {
     }).then(response => {
         return response
     }).catch(err => {
-        console.log(err)
         throw err
     })
 
@@ -183,7 +182,6 @@ export async function get(url, postData) {
     }).then(response => {
         return response
     }).catch(err => {
-        console.log(err)
         throw err
     })
 

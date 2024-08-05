@@ -43,9 +43,6 @@ export default function ShareTweet() {
         e.preventDefault()
         const formData = new FormData(e.target)
         post(API.DASHBOARD.GIFTS.RETWEET.CLAIM.POST, formData)
-            .then(response => {
-                console.log(response)
-            })
             .catch(err => {
                 const errors = err?.response?.data
                 if (errors) {
