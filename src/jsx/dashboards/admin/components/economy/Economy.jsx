@@ -73,7 +73,7 @@ export default function Economy() {
                                 <Icon icon={'eos-icons:loading'} width={40} href={40}/>
                             </div>
                             <div>
-                                <label className={'label'} htmlFor="email">Rate</label>
+                                <label className={'label'} htmlFor="email">Rate Increase Percentage</label>
                                 <input
                                     defaultValue={data.entities['economy-configs'].rate_increase_percent}
                                     onChange={(e) => setRate(e.target.value)}
