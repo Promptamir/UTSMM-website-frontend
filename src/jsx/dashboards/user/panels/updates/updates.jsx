@@ -4,8 +4,6 @@ import ReactDropdown from "react-dropdown";
 import {useFetch} from "../../../../../lib/useFetch";
 import BE_URL from "../../../../../lib/envAccess";
 import {Icon} from "@iconify/react";
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from "react-responsive-pagination";
 import Pagination from "../../../../primaries/pagination";
 
 // Creating and exporting updates panel of user dashboard as default

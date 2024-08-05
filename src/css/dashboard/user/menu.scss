@@ -45,11 +45,15 @@ $ColorPrimary: #4976f3;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background-color: white;
+    height: 50vh;
+    overflow: auto;
+    border-radius: 1rem;
   }
 
   .service-update-col {
+    color: $ColorPrimary;
     font-weight: normal;
-    color: white;
     font-size: 16px;
     padding: 2em;
     white-space: nowrap;
