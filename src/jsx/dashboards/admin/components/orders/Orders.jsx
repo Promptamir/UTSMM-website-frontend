@@ -34,8 +34,16 @@ export default function Orders() {
     const [infoError, setInfoError] = useState(undefined);
     const [infoData, setInfoData] = useState(undefined);
 
+    const [drawerError, setDrawerError] = useState('');
+
     // Fetching the data
     const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/orders?page=1`);
+
+    // Defining a script for dates validation
+    useEffect(() => {
+        if (formatDate(date[0]) === formatDate(date[1])) {setDrawerError('The dates cannot be same')}
+        else {setDrawerError('');}
+    }, [date])
 
     // Using useEffect to fetch data of selected info with its id
     useEffect(() => {
@@ -155,7 +163,7 @@ export default function Orders() {
                 >
                     <div className={'row'}>
                         <h1 className={'label'}>Date</h1>
-                        <DateRangePicker onChange={setDate} value={date} />
+                        <DateRangePicker required clearIcon={null} onChange={setDate} value={date} />
                     </div>
                     <div className={'row'}>
                         <h1 className={'label'}>Status</h1>
@@ -185,10 +193,27 @@ export default function Orders() {
                             ]}
                         />
                     </div>
+                    {
+                        (drawerError !== '')
+                            ? (
+                                <div style={{
+                                    border: '1px solid red',
+                                    marginBottom: '20px',
+                                    color: 'red',
+                                    background: 'rgba(255,0,0,0.2)',
+                                    padding: '1rem',
+                                    borderRadius: '.5rem',
+                                    fontSize: '1rem',
+                                    fontWeight: 'bold'
+                                }}>{drawerError}</div>
+                            ) : false
+                    }
                     <button onClick={() => {
-                        setIsFilteringOpened(false);
-                        setUrl(`${BE_URL}/admin/orders?page=1&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}`);
-                        refetch();
+                        if (drawerError === '') {
+                            setIsFilteringOpened(false);
+                            setUrl(`${BE_URL}/admin/orders?page=1&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}`);
+                            refetch();
+                        }
                     }} className={'btn-sub'}>
                         Filter
                     </button>
