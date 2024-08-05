@@ -52,7 +52,7 @@ const AddFounds = () => {
             duration: 2000,
             component: <SelectAmountOfMoney
                 resultFunction={resultFunction}
-                feePercentage={0.02}
+                feePercentage={0}
             />
         }))
     }
@@ -64,7 +64,7 @@ const AddFounds = () => {
             return counter
         }
 
-
+    
     }
     const isCompleted = (stepIndex) => {
         if (stepIndex < currentStep) {
