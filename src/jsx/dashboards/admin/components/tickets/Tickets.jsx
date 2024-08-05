@@ -10,10 +10,7 @@ import Switch from "react-switch"
 import { Icon } from '@iconify/react'
 import { useFetch } from '../../../../../lib/useFetch'
 import Swal from "sweetalert2"
-import BE_URL, { API } from '../../../../../lib/envAccess'
-import {showPopUp} from "../../../../../features/popUpReducer";
-import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
-import {useDispatch} from "react-redux";
+import BE_URL from '../../../../../lib/envAccess'
 import MessageTicketsPopUp from "../../../../pop-ups/messageTicketsPopUp";
 import Pagination from "../../../../primaries/pagination";
 
@@ -21,6 +18,9 @@ import Pagination from "../../../../primaries/pagination";
 export default function Tickets() {
     const [customLoading, setCustomLoading] = useState(false);
     const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/admin/tickets?page=1`)
+
+    const [answerModalOpened, setAnswerModalOpened] = useState(false);
+    const [answerModalID, setAnswerModalID] = useState(undefined);
 
     const headers = [
         "ID",
@@ -31,10 +31,15 @@ export default function Tickets() {
         "Open"
     ]
 
-    const dispatcher = useDispatch();
-
     return (
         <div className='admin-panel-tickets relative'>
+            <MessageTicketsPopUp
+                setCustomLoading={setCustomLoading}
+                refresh={refresh}
+                id={answerModalID}
+                isOpened={answerModalOpened}
+                closeFn={() => setAnswerModalOpened(false)}
+            />
             <div className={'loading'} data-loading={customLoading}>
                 <Icon icon={'eos-icons:loading'} width={40} href={40}/>
             </div>
@@ -114,11 +119,8 @@ export default function Tickets() {
                                                             paddingInline: '15px',
                                                         }}
                                                         onClick={() => {
-                                                            dispatcher(showPopUp({
-                                                                type: ADMIN_PANEL_CREATE_BLOG,
-                                                                duration: 2000,
-                                                                component: <MessageTicketsPopUp setCustomLoading={setCustomLoading} refresh={refresh} id={item.id} />
-                                                            }))
+                                                            setAnswerModalOpened(true);
+                                                            setAnswerModalID(item.id);
                                                         }}>
                                                         Answer
                                                     </button>

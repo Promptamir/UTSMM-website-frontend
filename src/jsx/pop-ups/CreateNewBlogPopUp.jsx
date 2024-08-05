@@ -9,20 +9,14 @@ import 'react-quill/dist/quill.snow.css';
 import Swal from "sweetalert2";
 import BE_URL, {SERVER} from "../../lib/envAccess";
 import ReactQuill from "react-quill";
+import Modal from "./modal";
 
 
-export default function CreateNewBlogPopUp({ refresh, setLoading }) {
+export default function CreateNewBlogPopUp({ refresh, setLoading, closeFn, isOpened }) {
     const [image, setImage] = useState(require("../../images/place-holder/1.png"));
     const [imageFile, setImageFile] = useState();
     const [keywords, setKeywords] = useState('');
     const [error, setError] = useState('');
-
-    const dispatcher = useDispatch()
-
-    const handleCloseButtonClick = () => {
-        dispatcher(closePopUp())
-    }
-
 
     const handleOnImageChange = (e) => {
         const file = e.target.files[0]
@@ -46,6 +40,7 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
 
         if (error === '') {
             setLoading(true);
+            closeFn();
 
             const keywordsArray = keywords.split(',');
             const myHeaders = new Headers();
@@ -59,7 +54,7 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
             formdata.append("content", content);
             formdata.append("image", imageFile, "[PROXY]");
             formdata.append("status", 1);
-            formdata.append("keywords", keywordsArray);
+            formdata.append("keywords", keywords.split(','));
 
             const requestOptions = {
                 method: "POST",
@@ -72,6 +67,7 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
                 .then((response) => response.json())
                 .then((result) => {
                     setLoading(false);
+
                     if (result.message === "Unauthenticated.") {
                         Swal.fire({
                             icon: 'error',
@@ -96,90 +92,67 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
     }
 
     return (
-        <form className="admin-panel-create-blog-pop-up"
-              onSubmit={handleOnSubmit}
-        >
-            <button className="close-button"
-                    onClick={handleCloseButtonClick}>
-                <Icon icon="mingcute:close-fill" />
-            </button>
+        <Modal title={'Create'} closeFn={closeFn} isOpened={isOpened}>
+            <form className="form w-full" onSubmit={handleOnSubmit}>
+                <img
+                    src={image}
+                    alt={'Image'}
+                    style={{
+                        width: '100%',
+                        height: '200px',
+                        borderRadius: '20px',
+                        objectFit: 'cover'
+                    }}
+                />
+                <input
+                    className={'input'}
+                    required
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleOnImageChange}/>
 
-            <div className="pop-up-header">
-                <h1>
-                    Edit Blog
-                </h1>
-            </div>
-            <div className="pop-up-body">
+                <label htmlFor="title">Title</label>
+                <input
+                    className={'input'}
+                    minLength={3}
+                    maxLength={255}
+                    required
+                    onChange={(event) => setTitle(event.target.value)}
+                    type="text"
+                    name="title"
+                />
 
+                <label htmlFor="description">Description</label>
+                <textarea
+                    className={'input'}
+                    minLength={3}
+                    maxLength={255}
+                    required
+                    onChange={(event) => setDescription(event.target.value)}
+                    name="description"
+                />
+                <label htmlFor="keywords">Keywords</label>
+                <input
+                    className={'input'}
+                    type="text"
+                    name="title"
+                    required
+                    minLength={3}
+                    placeholder={'Separated by Comma ","'}
+                    onInput={(e) => {
+                        const value = e.target.value;
+                        const arrayOfKeywords = value.split(',');
 
-                <div className="image-input">
-                    <img src={image} />
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        onChange={handleOnImageChange} />
-                </div>
-
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Title</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            minLength={3}
-                            maxLength={255}
-                            required
-                            onChange={(event) => setTitle(event.target.value)}
-                            type="text"
-                            name="title"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Description</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            required
-                            minLength={3}
-                            maxLength={300}
-                            onChange={(event) => setDescription(event.target.value)}
-                            type="text"
-                            name="title"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Keywords</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            type="text"
-                            name="title"
-                            required
-                            minLength={3}
-                            placeholder={'Separated by Comma ","'}
-                            onInput={(e) => {
-                                const value = e.target.value;
-                                const arrayOfKeywords = value.split(',');
-
-                                if (arrayOfKeywords.length < 3) {
-                                    setError('There should be at least 3 keywords')
-                                } else {
-                                    setError('');
-                                    setKeywords(value)
-                                }
-                            }}
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-
+                        if (arrayOfKeywords.length < 3) {
+                            setError('There should be at least 3 keywords')
+                        } else {
+                            setError('');
+                            setKeywords(value)
+                        }
+                    }}
+                />
+                <label htmlFor="content">Content</label>
                 <ReactQuill
                     style={{width: '100%', marginTop: '20px'}}
                     theme="snow"
@@ -193,13 +166,8 @@ export default function CreateNewBlogPopUp({ refresh, setLoading }) {
                     }}
                 />
                 {error !== '' && <div className={'input-error'}>{error}</div>}
-
-                <button className="submit">
-                    <span>Submit </span>
-                    <Icon icon="iconamoon:send-fill" />
-                </button>
-            </div>
-
-        </form>
+                <button className="submit-btn">Submit</button>
+            </form>
+        </Modal>
     )
 }

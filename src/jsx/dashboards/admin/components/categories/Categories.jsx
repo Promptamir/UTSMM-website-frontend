@@ -34,28 +34,24 @@ export default function Categories() {
         "Controls",
     ]
 
-    const handleCreateNewCatClick = () => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <NewCatModal setCustomLoading={setCustomLoading} refresh={refresh} />
-        }))
-    }
+    // Defining states of component
+    const [createModalOpened, setCreateModalOpened] = useState(false);
+    const [editModalOpened, setEditModalOpened] = useState(false);
+    const [infoModalOpened, setInfoModalOpened] = useState(false);
+
+    const [editModalItem, setEditModalItem] = useState(undefined);
+    const [infoModalID, setInfoModalID] = useState(undefined);
+
+    const handleCreateNewCatClick = () => setCreateModalOpened(true);
 
     const handleEditNewCatClick = (cat) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <EditCatModal cat={cat} setCustomLoading={setCustomLoading} refresh={refresh} />
-        }))
+        setEditModalItem(cat);
+        setEditModalOpened(true);
     }
 
     const handleInfoNewCatClick = (id) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <InfoCatModal id={id} />
-        }))
+        setInfoModalOpened(true);
+        setInfoModalID(id);
     }
 
     const handleOnDelete = (id) => {
@@ -99,6 +95,32 @@ export default function Categories() {
 
     return (
         <div className='admin-panel-blogs panel-section'>
+            <NewCatModal
+                isOpened={createModalOpened}
+                closeFn={() => setCreateModalOpened(false)}
+                setCustomLoading={setCustomLoading}
+                refresh={refresh}
+            />
+            {
+                (editModalItem)
+                    ? (
+                        <EditCatModal
+                            cat={editModalItem}
+                            setCustomLoading={setCustomLoading}
+                            refresh={refresh}
+                            isOpened={editModalOpened}
+                            closeFn={() => setEditModalOpened(false)}
+                        />
+                    ) : false
+            }
+            {
+                (infoModalID)
+                    ? <InfoCatModal
+                        id={infoModalID}
+                        isOpened={infoModalOpened}
+                        closeFn={() => setInfoModalOpened(false)}
+                    /> : false
+            }
             <h2 className="blogs-header">
                 <h1 className="left">
                     Categories
@@ -112,7 +134,7 @@ export default function Categories() {
             </h2>
             <div className="blogs-body relative">
                 <div className={'loading'} data-loading={customLoading}>
-                    <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                    <Icon icon={'eos-icons:loading'} width={40} height={40} />
                 </div>
                 <Table columnsStyle={"7rem 10rem 10rem 1fr  7rem 7rem 7rem"}>
                     <TableHeader>

@@ -34,28 +34,24 @@ export default function HotCategories() {
         "Controls",
     ]
 
-    const handleCreateNewCatClick = () => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <NewHotCatModal setCustomLoading={setCustomLoading} refresh={refresh} />
-        }))
-    }
+    // Defining states of modals
+    const [newHotCatModalOpened, setNewHotCatModalOpened] = useState(false);
+    const [editModalOpened, setEditModalOpened] = useState(false);
+    const [infoModalOpened, setInfoModalOpened] = useState(false);
+
+    const [editModalItem, setEditModalItem] = useState(undefined);
+    const [infoModalID, setInfoModalID] = useState(undefined);
+
+    const handleCreateNewCatClick = () => setNewHotCatModalOpened(true);
 
     const handleEditNewCatClick = (cat) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <EditHotCatModal cat={cat} setCustomLoading={setCustomLoading} refresh={refresh} />
-        }))
+        setEditModalOpened(true);
+        setEditModalItem(cat);
     }
 
     const handleInfoNewCatClick = (id) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <InfoHotCatModal id={id} />
-        }))
+        setInfoModalOpened(true);
+        setInfoModalID(id);
     }
 
     const handleOnDelete = (id) => {
@@ -96,9 +92,36 @@ export default function HotCategories() {
             })
     }
 
-
     return (
         <div className='admin-panel-blogs panel-section'>
+            <NewHotCatModal
+                isOpened={newHotCatModalOpened}
+                closeFn={() => setNewHotCatModalOpened(false)}
+                setCustomLoading={setCustomLoading}
+                refresh={refresh}
+            />
+            {
+                (editModalItem)
+                    ? (
+                        <EditHotCatModal
+                            cat={editModalItem}
+                            setCustomLoading={setCustomLoading}
+                            refresh={refresh}
+                            isOpened={editModalOpened}
+                            closeFn={() => setEditModalOpened(false)}
+                        />
+                    ) : false
+            }
+            {
+                (infoModalID)
+                    ? (
+                        <InfoHotCatModal
+                            id={infoModalID}
+                            isOpened={infoModalOpened}
+                            closeFn={() => setInfoModalOpened(false)}
+                        />
+                    ) : false
+            }
             <h2 className="blogs-header">
                 <h1 className="left">
                     Categories

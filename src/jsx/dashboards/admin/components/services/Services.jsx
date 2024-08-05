@@ -16,6 +16,7 @@ import {useDispatch} from "react-redux";
 import InfoModal from "./components/infoModal";
 import EditModal from "./components/editModal";
 import Pagination from "../../../../primaries/pagination";
+import Modal from "../../../../pop-ups/modal";
 
 export default function Services() {
 
@@ -35,26 +36,28 @@ export default function Services() {
     "Actions",
   ]
 
+  // Defining states of modals
+  const [infoModalOpened, setInfoModalOpened] = useState(false);
+  const [infoModalID, setInfoModalID] = useState(1);
+
+  const [editModalOpened, setEditModalOpened] = useState(false);
+  const [editModalID, setEditModalID] = useState(1);
+
 
   const handleInfoButtonClick = (id) => {
-    dispatcher(showPopUp({
-      type: ADMIN_PANEL_CREATE_BLOG,
-      duration: 2000,
-      component: <InfoModal id={id} />
-    }))
+    setInfoModalID(id);
+    setInfoModalOpened(true);
   }
 
   const handleEditClick = (id) => {
-    dispatcher(showPopUp({
-      type: ADMIN_PANEL_CREATE_BLOG,
-      duration: 2000,
-      component: <EditModal setCustomLoading={setCustomLoading} refresh={refreshData} id={id} />
-    }))
+    setEditModalID(id);
+    setEditModalOpened(true);
   }
-
 
   return (
     <div className="admin-services-panel">
+      <InfoModal id={infoModalID} isOpened={infoModalOpened} closeFn={() => setInfoModalOpened(false)}  />
+      <EditModal id={editModalID} isOpened={editModalOpened} closeFn={() => setEditModalOpened(false)} setCustomLoading={setCustomLoading} refresh={refreshData} />
       <Table columnsStyle={"5rem 1fr 0.5fr 4rem 4rem 5rem 5rem 5rem"}>
         <TableHeader>
           {

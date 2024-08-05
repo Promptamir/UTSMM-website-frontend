@@ -8,104 +8,82 @@ import {closePopUp} from "../../../../../../features/popUpReducer";
 import {useDispatch} from "react-redux";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../../lib/envAccess";
+import Modal from "../../../../../pop-ups/modal";
 
 // Creating and exporting new category modal as default
-export default function NewCatModal({setCustomLoading, refresh}) {
+export default function NewCatModal({setCustomLoading, refresh, isOpened, closeFn}) {
     // Defining states of component
     const [title, setTitle] = useState('');
     const [idState, setId] = useState();
-    const dispatcher = useDispatch();
 
     // Returning JSX
     return (
-        <form onSubmit={(e) => {
-            e.preventDefault();
+        <Modal isOpened={isOpened} title={'Create'} closeFn={closeFn}>
+            <form onSubmit={(e) => {
+                e.preventDefault();
 
-            setCustomLoading(true);
-            fetch(`${BE_URL}/admin/hot-categories`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
-                },
-                body: JSON.stringify({
-                    "remote_category_title": title,
-                    "local_category_id": idState
-                })
-            })
-                .then((data) => data.json())
-                .then((data) => {
-                    setCustomLoading(false);
-                    if (data.message === "Unauthenticated.") {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Unauthenticated.'
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'success',
-                            text: data.message
-                        });
-                        refresh();
-                    }
-
-                    refresh();
-                })
-                .catch(() => {
-                    setCustomLoading(false);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'There was an error while fetching the data'
+                setCustomLoading(true);
+                closeFn();
+                fetch(`${BE_URL}/admin/hot-categories`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                    },
+                    body: JSON.stringify({
+                        "remote_category_title": title,
+                        "local_category_id": idState
                     })
                 })
-        }} className="admin-panel-create-blog-pop-up">
-            <button className="close-button" onClick={() => dispatcher(closePopUp())}>
-                <Icon icon="mingcute:close-fill"/>
-            </button>
-            <div className="pop-up-header">
-                <h1>
-                    Create category
-                </h1>
-            </div>
-            <div className="pop-up-body">
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title"/>
-                        <span>Title</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            minLength={3}
-                            maxLength={255}
-                            required
-                            onChange={(event) => setTitle(event.target.value)}
-                            type="text"
-                            name="title"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title"/>
-                        <span>Platform ID</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            min={1}
-                            required
-                            onChange={(event) => setId(event.target.value)}
-                            type="number"
-                            name="id"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <button className="submit">
-                    <span>Submit </span>
-                    <Icon icon="iconamoon:send-fill"/>
-                </button>
-            </div>
-        </form>
+                    .then((data) => data.json())
+                    .then((data) => {
+                        setCustomLoading(false);
+                        if (data.message === "Unauthenticated.") {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Unauthenticated.'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                text: data.message
+                            });
+                            refresh();
+                        }
+
+                        refresh();
+                    })
+                    .catch(() => {
+                        setCustomLoading(false);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'There was an error while fetching the data'
+                        })
+                    })
+            }} className="form w-full">
+                <label htmlFor="title">Title</label>
+                <input
+                    minLength={3}
+                    maxLength={255}
+                    required
+                    onChange={(event) => setTitle(event.target.value)}
+                    type="text"
+                    name="title"
+                    className={'input'}
+                />
+                <label htmlFor="platform_id">Platform ID</label>
+                <input
+                    min={1}
+                    required
+                    onChange={(event) => setId(event.target.value)}
+                    type="number"
+                    name="id"
+                    className={'input'}
+                />
+                <button className="submit-btn">submit</button>
+            </form>
+        </Modal>
     );
 }

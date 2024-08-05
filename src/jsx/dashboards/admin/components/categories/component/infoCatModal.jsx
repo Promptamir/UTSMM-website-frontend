@@ -1,28 +1,24 @@
 // Importing part
-
-// Creating and exporting information about categories modal as default
 import {useFetch} from "../../../../../../lib/useFetch";
 import {Icon} from "@iconify/react";
-import {closePopUp} from "../../../../../../features/popUpReducer";
-import {useDispatch} from "react-redux";
 import BE_URL from "../../../../../../lib/envAccess";
+import Modal from "../../../../../pop-ups/modal";
+import {useEffect} from "react";
 
-export default function InfoCatModal({id}) {
+// Creating and exporting information about categories modal as default
+export default function InfoCatModal({id, isOpened, closeFn}) {
     // Getting data from the server
     const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/admin/categories/${id}`)
-    const dispatcher = useDispatch();
+
+    // Using useEffect to fetch data
+    useEffect(() => {
+        setUrl(`${BE_URL}/admin/categories/${id}`);
+        refresh();
+    }, [id]);
 
     // Returning JSX
     return (
-        <div className="admin-panel-create-blog-pop-up">
-            <button className="close-button" onClick={() => dispatcher(closePopUp())}>
-                <Icon icon="mingcute:close-fill"/>
-            </button>
-            <div className="pop-up-header" style={{marginBottom: '20px'}}>
-                <h1>
-                    Info
-                </h1>
-            </div>
+        <Modal title={'Info'} isOpened={isOpened} closeFn={closeFn}>
             {
                 (loading)
                     ? (
@@ -58,6 +54,6 @@ export default function InfoCatModal({id}) {
                             </div>
                         )
             }
-        </div>
+        </Modal>
     );
 }

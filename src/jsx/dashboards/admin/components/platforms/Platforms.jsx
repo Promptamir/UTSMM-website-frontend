@@ -32,24 +32,6 @@ export default function Platforms() {
         "Controls",
     ]
 
-
-    const onEditClick = (platform) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_PLATFORM,
-            duration: 2000,
-
-            component: <EditPlatformPopUp refresh={refresh} platform={platform} customLoading={setCustomLoading} />
-        }))
-    }
-
-    const onInfoClick = (id) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_PLATFORM,
-            duration: 2000,
-            component: <InfoModal id={id} />
-        }))
-    }
-
     const onDeleteClick = (platform) => {
         setCustomLoading(true);
         fetch(`${BE_URL}/admin/platforms/${platform.id}`, {
@@ -84,28 +66,55 @@ export default function Platforms() {
             })
     }
 
-    const onCreateNewPlatform = (platform) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_PLATFORM,
-            duration: 2000,
-            component: <CreatePlatformPopUp refresh={refresh} customLoading={setCustomLoading} />
-        }))
-    }
+    // Defining states of modals
+    const [createModalOpened, setCreateModalOpened] = useState(false);
+    const [infoModalOpened, setInfoModalOpened] = useState(false);
+    const [editModalOpened, setEditModalOpened] = useState(false);
+
+    const [editModalPlatform, setEditModalPlatform] = useState(undefined);
+    const [infoModalID, setInfoModalID] = useState(undefined);
 
     return (
         <main className='admin-panel-platforms'>
+            <CreatePlatformPopUp
+                refresh={refresh}
+                customLoading={setCustomLoading}
+                isOpened={createModalOpened}
+                closeFn={() => setCreateModalOpened(false)}
+            />
+            {
+                (infoModalID)
+                    ? (
+                        <InfoModal
+                            id={infoModalID}
+                            isOpened={infoModalOpened}
+                            closeFn={() => setInfoModalOpened(false)}
+                        />
+                    ) : false
+            }
+            {
+                (editModalPlatform)
+                    ? (
+                        <EditPlatformPopUp
+                            refresh={refresh}
+                            platform={editModalPlatform}
+                            customLoading={setCustomLoading}
+                            isOpened={editModalOpened}
+                            closeFn={() => setEditModalOpened(false)}
+                        />
+                    ) : false
+            }
             <h2 className="platforms-header">
                 <h1 className="left">
                     Platform
                 </h1>
                 <div className="right">
-                    <button onClick={onCreateNewPlatform}>
+                    <button onClick={() => setCreateModalOpened(true)}>
                         <Icon icon="wpf:create-new" />
                         <span>Create New</span>
                     </button>
                 </div>
             </h2>
-
             <div className="platform-body relative">
                 <div className={'loading'} data-loading={customLoading}>
                     <Icon icon={'eos-icons:loading'} width={40} href={40}/>
@@ -166,7 +175,10 @@ export default function Platforms() {
                                                     <div className="property-body">
                                                         <button
                                                             className="edit"
-                                                            onClick={() => onInfoClick(item.id)}
+                                                            onClick={() => {
+                                                                setInfoModalOpened(true)
+                                                                setInfoModalID(item.id)
+                                                            }}
                                                             style={{
                                                                 display: 'block',
                                                                 borderRadius: '45rem',
@@ -187,7 +199,10 @@ export default function Platforms() {
                                                     <div className="property-body buttons">
                                                         <button
                                                             className="edit"
-                                                            onClick={() => onEditClick(item)}
+                                                            onClick={() => {
+                                                                setEditModalOpened(true);
+                                                                setEditModalPlatform(item);
+                                                            }}
                                                         >
                                                             <Icon icon="fluent:delete-32-filled"/>
                                                             <span>

@@ -1,27 +1,14 @@
-import { useDispatch } from "react-redux"
-import { closePopUp } from "../../features/popUpReducer"
-import { Icon } from "@iconify/react"
-import AdminPanelFiledset from "../dashboards/admin/components/tools/fieldset/AdminPanelFiledset"
-import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
-import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
-import { useState } from "react"
-import BE_URL, { API, SERVER } from "../../lib/envAccess"
-import { put } from "../../lib/useFetch"
-import { showError, showSuccess } from "../../lib/alertHandler"
+import {useState} from "react"
+import BE_URL from "../../lib/envAccess"
 import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
 import Switch from "react-switch";
+import Modal from "./modal";
+import '../../css/pop-up/pop-up.css'
 
-export default function EditBlogPopUp({ blog, refresh, setLoading }) {
+export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOpened }) {
     const [keywords, setKeywords] = useState('');
     const [error, setError] = useState('');
-
-    const dispatcher = useDispatch()
-
-    const handleCloseButtonClick = () => {
-        dispatcher(closePopUp())
-    }
-
     const [content, setContent] = useState('');
     const [description, setDescription] = useState(blog.short_description);
     const [title, setTitle] = useState(blog.title);
@@ -32,6 +19,8 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
 
         if (error === '') {
             setLoading(true);
+            closeFn();
+
             fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
                 method: "POST",
                 headers: {
@@ -77,91 +66,67 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
     }
 
     return (
-        <form className="admin-panel-create-blog-pop-up"
-            onSubmit={handleOnSubmit}
-        >
-            <button className="close-button"
-                onClick={handleCloseButtonClick}>
-                <Icon icon="mingcute:close-fill" />
-            </button>
+        <Modal title={'Edit'} isOpened={isOpened} closeFn={closeFn}>
+            <form className="form w-full" onSubmit={handleOnSubmit}>
+                <label htmlFor="title" className={'input-label'}>Title</label>
+                <input
+                    className={'input'}
+                    defaultValue={title}
+                    minLength={3}
+                    maxLength={255}
+                    required
+                    onChange={(event) => setTitle(event.target.value)}
+                    type="text"
+                    id={'title'}
+                    name="title"
+                />
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '20px'
+                }}>
+                    <label className={'input-label'}>Published</label>
+                    <Switch checked={published} onChange={(e) => {
+                        setPublished(e)
+                    }}/>
+                </div>
+                <label htmlFor={'description'} className={'input-label'}>Description</label>
+                <textarea
+                    defaultValue={description}
+                    className={'input'}
+                    required
+                    name={'description'}
+                    id={'description'}
+                    minLength={3}
+                    maxLength={300}
+                    onChange={(event) => setDescription(event.target.value)}
+                />
+                <label htmlFor={'keywords'} className={'input-label'}>Keywords</label>
+                <input
+                    defaultValue={keywords}
+                    className={'input'}
+                    type="text"
+                    name="keywords"
+                    required
+                    minLength={3}
+                    placeholder={'Separated by Comma ","'}
+                    onInput={(e) => {
+                        const value = e.target.value;
+                        const arrayOfKeywords = value.split(',');
 
-            <div className="pop-up-header">
-                <h1>
-                    Edit Blog
-                </h1>
-            </div>
-            <div className="pop-up-body">
-
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Title</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            value={title}
-                            minLength={3}
-                            maxLength={255}
-                            required
-                            onChange={(event) => setTitle(event.target.value)}
-                            type="text"
-                            name="title"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Published</span>
-                    </Legend>
-                    <FieldBody>
-                        <Switch checked={published} onChange={(e) => {setPublished(e)}} />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Description</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            value={description}
-                            required
-                            minLength={3}
-                            maxLength={300}
-                            onChange={(event) => setDescription(event.target.value)}
-                            type="text"
-                            name="description"
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title" />
-                        <span>Keywords</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            type="text"
-                            name="keywords"
-                            required
-                            minLength={3}
-                            placeholder={'Separated by Comma ","'}
-                            onInput={(e) => {
-                                const value = e.target.value;
-                                const arrayOfKeywords = value.split(',');
-
-                                if (arrayOfKeywords.length < 3) {
-                                    setError('There should be at least 3 keywords')
-                                } else {
-                                    setError('');
-                                    setKeywords(value)
-                                }
-                            }}
-                        />
-                    </FieldBody>
-                </AdminPanelFiledset>
+                        if (arrayOfKeywords.length < 3) {
+                            setError('There should be at least 3 keywords')
+                        } else {
+                            setError('');
+                            setKeywords(value)
+                        }
+                    }}
+                />
+                <label htmlFor="content">Content</label>
                 <ReactQuill
+                    defaultValue={content}
                     style={{width: '100%', marginTop: '20px'}}
                     theme="snow"
                     onChange={(val) => {
@@ -173,15 +138,9 @@ export default function EditBlogPopUp({ blog, refresh, setLoading }) {
                         }
                     }}
                 />
-
                 {error !== '' && <div className={'input-error'}>{error}</div>}
-
-                <button className="submit">
-                    <span>Submit </span>
-                    <Icon icon="iconamoon:send-fill" />
-                </button>
-            </div>
-
-        </form>
+                <button className="submit-btn">Submit</button>
+            </form>
+        </Modal>
     )
 }

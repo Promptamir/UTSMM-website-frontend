@@ -8,6 +8,7 @@ html {
 }
 
 header {
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,19 +16,22 @@ header {
   padding: 0.5em 7em;
   border-radius: 0;
   text-transform: uppercase;
-  z-index: 1000;
   transition: all 0.5s linear;
   position: fixed;
   width: 100%;
   left: 0;
   right: 0;
   max-width: 1400px;
+  height: 100px;
   transform: translateX(-50%);
   top: 0;
   left: 50%;
   border-radius: 0 0 100rem 100rem !important;
 }
 header .menu {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
   display: flex;
   font-weight: bold;
   align-items: center;
@@ -35,6 +39,7 @@ header .menu {
   gap: 0.25rem;
 }
 header .menu li {
+  flex-shrink: 0;
   padding: 0.5rem 1em;
   border-radius: 100rem;
   display: flex;

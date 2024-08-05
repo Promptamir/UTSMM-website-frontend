@@ -46,24 +46,16 @@ export default function Blogs() {
         "Controlls"
     ]
 
+    const [createBlogOpened, setCreateBlogOpened] = useState(false);
+    const [editBlogOpened, setEditBlogOpened] = useState(false);
+    const [editBlog, setEditBlog] = useState(undefined);
 
 
 
-
-    const handleCreateNewBlogClick = () => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <CreateNewBlogPopUp setLoading={setCustomLoading} refresh={refresh} />
-        }))
-    }
-
+    const handleCreateNewBlogClick = () => setCreateBlogOpened(true)
     const handleOnEditBlogClick = (blog) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <EditBlogPopUp setLoading={setCustomLoading} blog={blog} refresh={refresh} />
-        }))
+        setEditBlog(blog);
+        setEditBlogOpened(true);
     }
 
     const handleOnDelete = (blog) => {
@@ -104,9 +96,24 @@ export default function Blogs() {
             })
     }
 
-
     return (
         <div className='admin-panel-blogs panel-section'>
+            {
+                (editBlog)
+                    ? <EditBlogPopUp
+                        setLoading={setCustomLoading}
+                        blog={editBlog}
+                        refresh={refresh}
+                        isOpened={editBlogOpened}
+                        closeFn={() => setEditBlogOpened(false)}
+                    /> : false
+            }
+            <CreateNewBlogPopUp
+                setLoading={setCustomLoading}
+                refresh={refresh}
+                isOpened={createBlogOpened}
+                closeFn={() => setCreateBlogOpened(false)}
+            />
             <h2 className="blogs-header">
                 <h1 className="left">
                     Blogs

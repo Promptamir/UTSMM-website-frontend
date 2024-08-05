@@ -1,33 +1,16 @@
-import { useDispatch } from "react-redux"
-import { closePopUp } from "../../features/popUpReducer"
-import { Icon } from "@iconify/react"
-import AdminPanelFiledset from "../dashboards/admin/components/tools/fieldset/AdminPanelFiledset"
-import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
-import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
 import { useState } from "react"
-import { post, put } from "../../lib/useFetch"
-import BE_URL, { API } from "../../lib/envAccess"
-import { showError, showSuccess } from "../../lib/alertHandler"
-import { logFormData } from "../../lib/helperTools"
+import BE_URL from "../../lib/envAccess"
 import Swal from "sweetalert2";
+import Modal from "./modal";
 
 
 
-export default function CreatePlatformPopUp({refresh, customLoading }) {
-
-
-
-
+export default function CreatePlatformPopUp({refresh, customLoading, isOpened, closeFn }) {
     const [image, setImage] = useState(require("../../images/place-holder/1.png"));
     const [imageFile, setImageFile] = useState();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [order, setOrder] = useState('');
-    const dispatcher = useDispatch()
-    const handleCloseButtonClick = () => {
-        dispatcher(closePopUp())
-    }
-
 
     const handleOnImageChange = (e) => {
         const file = e.target.files[0]
@@ -47,6 +30,7 @@ export default function CreatePlatformPopUp({refresh, customLoading }) {
         e.preventDefault()
 
         customLoading(true);
+        closeFn();
 
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
@@ -91,83 +75,61 @@ export default function CreatePlatformPopUp({refresh, customLoading }) {
                 customLoading(false);
             })
     }
+
     return (
-        <form className="admin-panel-create-platform-pop-up"
-              onSubmit={handleSubmit}>
-            <button className="close-button"
-                    onClick={handleCloseButtonClick}>
-                <Icon icon="mingcute:close-fill"/>
-            </button>
-
-            <div className="pop-up-header">
-                <h1>
-                    Edit Platform
-                </h1>
-            </div>
-            <div className="pop-up-body">
-
-
-                <div className="image-input">
-                    <img src={image}/>
-                    <input
-                        type="file"
-                        name="image"
-                        required
-                        accept="image/*"
-                        onChange={handleOnImageChange}/>
-                </div>
-
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title"/>
-                        <span>name</span>
-                    </Legend>
-                    <FieldBody>
-                        <input onChange={(e) => setName(e.target.value)} required minLength={5} maxLength={255}
-                               type="text" name="title" placeholder={'Title'}/>
-                    </FieldBody>
-                </AdminPanelFiledset>
-
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="material-symbols:description-outline"/>
-                        <span>Description</span>
-                    </Legend>
-                    <FieldBody>
-                        <textarea
-                            cols={10}
-                            rows={10}
-                            required
-                            minLength={20}
-                            onChange={(e) => setDescription(e.target.value)}
-                            maxLength={350}
-                            name="description"
-                            placeholder={'Description'}/>
-                    </FieldBody>
-                </AdminPanelFiledset>
-
-                <AdminPanelFiledset className={"create-faq-field-box"}>
-                    <Legend>
-                        <Icon icon="pajamas:title"/>
-                        <span>Order</span>
-                    </Legend>
-                    <FieldBody>
-                        <input
-                            type="number"
-                            min={1}
-                            name="order"
-                            onChange={(e) => setOrder(e.target.value)}
-                            required
-                            placeholder={'Order'}/>
-                    </FieldBody>
-                </AdminPanelFiledset>
-
-                <button className="submit">
-                    <span>Submit </span>
-                    <Icon icon="iconamoon:send-fill"/>
-                </button>
-            </div>
-
-        </form>
+        <Modal title={'Create'} closeFn={closeFn} isOpened={isOpened}>
+            <form action="#" className="form w-full" onSubmit={handleSubmit}>
+                <label className={'input-label'} htmlFor="title">Image</label>
+                <img
+                    src={image}
+                    alt={'Image'}
+                    style={{
+                        width: '100%',
+                        height: '200px',
+                        borderRadius: '20px',
+                        objectFit: 'cover'
+                    }}
+                />
+                <input
+                    className={'input'}
+                    type="file"
+                    name="image"
+                    required
+                    accept="image/*"
+                    onChange={handleOnImageChange}/>
+                <label className={'input-label'} htmlFor="title">Title</label>
+                <input
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    minLength={5}
+                    maxLength={255}
+                    type="text"
+                    name="title"
+                    placeholder={'Title'}
+                    className={'input'}
+                />
+                <label className={'input-label'} htmlFor="description">Description</label>
+                <textarea
+                    required
+                    minLength={20}
+                    onChange={(e) => setDescription(e.target.value)}
+                    maxLength={350}
+                    name="description"
+                    placeholder={'Description'}
+                    className={'input'}
+                />
+                <label className={'input-label'} htmlFor="order">Order</label>
+                <input
+                    type="number"
+                    min={1}
+                    name="order"
+                    onChange={(e) => setOrder(e.target.value)}
+                    required
+                    placeholder={'Order'}
+                    className={'input'}
+                />
+                <button className={'submit-btn'}>Submit</button>
+            </form>
+        </Modal>
     )
 }

@@ -9,7 +9,7 @@ import Property from "../../../../cutsome-components/table/components/Property";
 import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
 import ResponsivePagination from "react-responsive-pagination";
 import {useFetch} from "../../../../../lib/useFetch";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {showPopUp} from "../../../../../features/popUpReducer";
 import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import {useDispatch} from "react-redux";
@@ -41,13 +41,14 @@ export default function Question() {
         "Controls",
     ]
 
+    // Defining states of modals
+    const [infoModalOpened, setInfoModalOpened] = useState(false)
+    const [infoModalID, setInfoModalID] = useState(undefined);
+
     // Defining function for buttons which toggle modals
     const handleInfoClick = (id) => {
-        dispatcher(showPopUp({
-            type: ADMIN_PANEL_CREATE_BLOG,
-            duration: 2000,
-            component: <InfoModal id={id} />
-        }))
+        setInfoModalOpened(true);
+        setInfoModalID(id);
     }
 
     const handleAnswerClick = (id) => {
@@ -105,6 +106,16 @@ export default function Question() {
     // Returning JSX
     return (
         <div className='admin-panel-blogs panel-section'>
+            {
+                (infoModalOpened)
+                    ? (
+                        <InfoModal
+                            id={infoModalID}
+                            isOpened={infoModalOpened}
+                            closeFn={() => setInfoModalOpened(false)}
+                        />
+                    ) : false
+            }
             <h2 className="blogs-header">
                 <h1 className="left">
                     Questions
