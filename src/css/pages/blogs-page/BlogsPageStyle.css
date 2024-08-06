@@ -6,8 +6,10 @@
 .blog-page .poster {
   width: 100%;
   display: block;
-  height: 200px;
+  height: 300px;
   margin-bottom: 30px;
+  object-fit: cover;
+  border-radius: 1rem;
 }
 .blog-page .title {
   font-weight: bold;
@@ -17,6 +19,7 @@
 .blog-page .content {
   font-weight: 300;
   font-size: 16px;
+  word-break: break-all;
 }
 .blog-page .keywords-holder {
   display: flex;
@@ -49,42 +52,49 @@
   font-size: 20px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content h2 {
   font-weight: bold;
   font-size: 18px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content h3 {
   font-weight: normal;
   font-size: 16px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content h4 {
   font-weight: normal;
   font-size: 14px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content h5 {
   font-weight: 300;
   font-size: 14px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content h6 {
   font-weight: 300;
   font-size: 12px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 .blog-page .parsed-content p {
   font-weight: normal;
   font-size: 16px;
   color: #000;
   display: block;
+  word-break: break-all;
 }
 
 @media only screen and (max-width: 1100px) {
