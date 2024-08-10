@@ -17,7 +17,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
     const [hashtag, setHashtag] = useState();
 
     // Conditional rendering
-    if (type.toString().toLowerCase() === 'default') {
+    if (type.toString().toLowerCase() === "default") {
         return (
             <form
                 onSubmit={(e) => {
@@ -126,7 +126,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'seo') {
+    else if (type.toString().toLowerCase() === "seo") {
         return (
             <form
                 onSubmit={(e) => {
@@ -215,7 +215,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'poll') {
+    else if (type.toString().toLowerCase() === "poll") {
         return (
             <form
                 onSubmit={(e) => {
@@ -304,7 +304,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'package') {
+    else if (type.toString().toLowerCase() === "package") {
         return (
             <form
                 onSubmit={(e) => {
@@ -368,7 +368,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'comment-like') {
+    else if (type.toString().toLowerCase() === "comment likes") {
         return (
             <form
                 onSubmit={(e) => {
@@ -457,7 +457,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'custom-comment') {
+    else if (type.toString().toLowerCase() === "custom comments") {
         return (
             <form
                 onSubmit={(e) => {
@@ -532,7 +532,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'mention-hashtag') {
+    else if (type.toString().toLowerCase() === "mentions hashtag") {
         return (
             <form
                 onSubmit={(e) => {
@@ -621,7 +621,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
             </form>
         );
     }
-    else if (type.toString().toLowerCase() === 'custom-comment-package') {
+    else if (type.toString().toLowerCase() === "custom comments package") {
         return (
             <form
                 onSubmit={(e) => {
