@@ -149,9 +149,9 @@ const NewOrders = () => {
                             ? (
                                 <FavForm
                                     type={selectedServiceFromFav.type}
-                                    formLoading={formLoading}
-                                    selectedServiceFav={selectedServiceFromFav}
                                     setFormLoading={setFormLoading}
+                                    selectedFav={selectedServiceFromFav}
+                                    formLoading={formLoading}
                                 />
                             ) : false
                     }

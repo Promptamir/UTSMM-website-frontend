@@ -74,7 +74,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -83,7 +83,6 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                 <div>
                     <label className={'label'}>Quantity</label>
                     <input
-                        disabled={(!selectedFav)}
                         onChange={(e) => setQuantity(e.target.value)}
                         type="number"
                         className="input"
@@ -182,7 +181,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -191,7 +190,6 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                 <div>
                     <label className={'label'}>Quantity</label>
                     <input
-                        disabled={(!selectedFav)}
                         onChange={(e) => setQuantity(e.target.value)}
                         type="number"
                         className="input"
@@ -271,7 +269,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -280,7 +278,6 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                 <div>
                     <label className={'label'}>Quantity</label>
                     <input
-                        disabled={(!selectedFav)}
                         onChange={(e) => setQuantity(e.target.value)}
                         type="number"
                         className="input"
@@ -358,7 +355,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -424,7 +421,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -433,7 +430,6 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                 <div>
                     <label className={'label'}>Quantity</label>
                     <input
-                        disabled={(!selectedFav)}
                         onChange={(e) => setQuantity(e.target.value)}
                         type="number"
                         className="input"
@@ -512,7 +508,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -588,7 +584,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -597,7 +593,6 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                 <div>
                     <label className={'label'}>Quantity</label>
                     <input
-                        disabled={(!selectedFav)}
                         onChange={(e) => setQuantity(e.target.value)}
                         type="number"
                         className="input"
@@ -676,7 +671,7 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required

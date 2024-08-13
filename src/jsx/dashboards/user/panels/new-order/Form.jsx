@@ -74,7 +74,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -182,7 +182,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -271,7 +271,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -358,7 +358,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -424,7 +424,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -512,7 +512,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -588,7 +588,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
@@ -676,7 +676,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                     <label className={'label'}>Link</label>
                     <input
                         onChange={(e) => setLink(e.target.value)}
-                        type="text"
+                        type="url"
                         className="input"
                         placeholder={'Type ...'}
                         required
