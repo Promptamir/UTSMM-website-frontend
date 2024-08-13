@@ -1,5 +1,16 @@
 import Lottie from "react-lottie-player"
 import { Icon } from '@iconify/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useState } from "react";
+import itemOne from "../../../../../images/main-page/intro-2/svg/1.svg"
+import itemTwo from "../../../../../images/main-page/intro-2/svg/2.svg"
+import itemThree from "../../../../../images/main-page/intro-2/svg/3.svg"
+import itemFour from "../../../../../images/main-page/intro-2/svg/4.svg"
+import services from "../../../../../animations/main-page/services.json"
+import Marquee from "react-fast-marquee";
+import stepArrowAnimation from "../../../../../animations/main-page/main-page-steps-arrow.json"
+import CompanyStaticsItem from "./components/CompanyStaticsItem";
+import {Link} from "react-router-dom";
 import {
     Navigation,
     Pagination,
@@ -9,33 +20,6 @@ import {
     EffectCoverflow,
     Autoplay,
 } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-
-import { useState } from "react";
-
-
-
-import itemOne from "../../../../../images/main-page/intro-2/svg/1.svg"
-import itemTwo from "../../../../../images/main-page/intro-2/svg/2.svg"
-import itemThree from "../../../../../images/main-page/intro-2/svg/3.svg"
-import itemFour from "../../../../../images/main-page/intro-2/svg/4.svg"
-
-
-import services from "../../../../../animations/main-page/services.json"
-import Marquee from "react-fast-marquee";
-
-
-
-import stepArrowAnimation from "../../../../../animations/main-page/main-page-steps-arrow.json"
-import CompanyStaticsItem from "./components/CompanyStaticsItem";
-
-
-import { useFetch } from "../../../../../lib/useFetch";
-import { API, SERVER } from "../../../../../lib/envAccess";
-import {Link} from "react-router-dom";
-import BE_URL from "../../../../../lib/envAccess";
-
 
 export default function Introduction({data, error, loadingAPI}) {
     const [currentSelected, setCurrentSelected] = useState({
@@ -55,14 +39,14 @@ export default function Introduction({data, error, loadingAPI}) {
                 svg: itemOne,
                 title: "Users",
                 value: users,
-                description: `With an incredible count of ${users.toLocaleString('en-US')} users, our platform has become a thriving community where individuals connect, engage, and explore a world of possibilities.`,
+                description: `With an incredible count of ${(users) ? users.toLocaleString('en-US') : 0} users, our platform has become a thriving community where individuals connect, engage, and explore a world of possibilities.`,
                 animation: window.location.origin + '/2.svg'
             },
             {
                 svg: itemTwo,
                 title: "Orders",
                 value: orders,
-                description: `A staggering ${orders.toLocaleString('en-US')} orders have been placed, showcasing the trust our customers have in us. Each order signifies a unique story of satisfaction and reliability.`,
+                description: `A staggering ${(orders) ? orders.toLocaleString('en-US') : 0} orders have been placed, showcasing the trust our customers have in us. Each order signifies a unique story of satisfaction and reliability.`,
                 animation: window.location.origin + '/3.svg'
 
             },
@@ -78,7 +62,7 @@ export default function Introduction({data, error, loadingAPI}) {
                 svg: itemFour,
                 title: "Services",
                 value: services,
-                description: `Our dedication to excellence shines through the provision of ${services.toLocaleString('en-US')} top-notch services. Each service represents our unwavering commitment to delivering quality solutions.`,
+                description: `Our dedication to excellence shines through the provision of ${(services) ? services.toLocaleString('en-US') : 0} top-notch services. Each service represents our unwavering commitment to delivering quality solutions.`,
                 animation: window.location.origin + '/5.svg'
             }
         ];

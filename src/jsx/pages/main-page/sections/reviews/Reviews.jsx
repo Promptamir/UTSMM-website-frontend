@@ -115,8 +115,8 @@ export default function Reviews({data, error, loading}) {
                                                     el: ".bullet-container"
                                                 }}
                                         >
-                                            {data.entities.comments.map(item => {
-                                                return <SwiperSlide>
+                                            {data.entities.comments.map((item, index) => {
+                                                return <SwiperSlide key={index}>
                                                     <div className="item"
                                                          style={{backgroundColor: getRandomHexColor()}}
                                                     >
@@ -168,7 +168,7 @@ export default function Reviews({data, error, loading}) {
                                         >
                                             {
                                                 data.entities.comments.map((item, index) => (
-                                                    <SwiperSlide kye={index}>
+                                                    <SwiperSlide key={index}>
                                                         <div className="progressers">
                                                             <h1>
                                                                 <span>{item.user.name}</span>
