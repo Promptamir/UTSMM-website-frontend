@@ -2,7 +2,7 @@
 import '../../../../css/pages/auth-page/AuthPageStyle.css';
 import BE_URL from "../../../../lib/envAccess";
 import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 // Creating and exporting Sign Up page as default
 export default function SignUpPage() {
@@ -18,6 +18,20 @@ export default function SignUpPage() {
 
     // Defining router to use to navigate to different pages
     const navigate = useNavigate();
+
+    // Checking if url includes ref_id attribute
+    const url = useLocation();
+    const queryString = url.search;
+
+    // Remove the leading '?' and split by '&'
+    const pairs = queryString.slice(1).split('&');
+
+    // Convert pairs to an object
+    const searchQuerys = pairs.reduce((acc, pair) => {
+        const [key, value] = pair.split('=');
+        acc[key] = Number(value); // Convert string values to numbers
+        return acc;
+    }, {});
 
     // Handling the form submit event
     function handleSubmit(event) {
@@ -40,16 +54,19 @@ export default function SignUpPage() {
                     "name": name,
                     "email": emailSignUp,
                     "password": passwordSignup,
-                    "password_confirmation": passwordRepeat
+                    "password_confirmation": passwordRepeat,
+                    "ref_id" : searchQuerys.ref_id
                 })
             })
                 .then((data) => data.json())
                 .then((data) => {
                     setloading(false);
-                    setError('');
 
-                    localStorage.setItem('token', JSON.stringify(data.entities.token));
-                    navigate('/');
+                    if (data.message === 'You are registered') {
+                        setError('We have sent you an email. Check it');
+                    } else {
+                        setError(data.message);
+                    }
                 })
                 .catch(() => {
                     setloading(false);
