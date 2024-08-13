@@ -19,10 +19,16 @@ export default function PopularServices() {
         <section className="suggested-services">
             {
                 (loading)
-                    ? <h1>Loading</h1>
-                    : (error)
-                        ? <h1>There was an error while fetching the data</h1>
-                        : (
+                    ? (
+                        <div style={{padding: '20px'}}>
+                            <h1 style={{textAlign: 'center'}}>Loading</h1>
+                        </div>
+                    )  : (error)
+                        ? (
+                            <div style={{padding: '20px'}}>
+                                <h1 style={{textAlign: 'center'}}>There was an error while fetching the data</h1>
+                            </div>
+                        ) : (
                             <Swiper
                                 modules={[Navigation, Pagination, A11y]}
                                 spaceBetween={20}
@@ -62,13 +68,10 @@ export default function PopularServices() {
                                                         textOverflow: 'ellipsis',
                                                         whiteSpace: 'nowrap'
                                                     }}>{item.title}</h1>
-                                                    <small>
-                                                        New Upcoming Services , Ready For Boosting Your Account
-                                                    </small>
                                                 </div>
                                                 <div className="button">
                                                     <button>
-                                                        See
+                                                        Order
                                                     </button>
                                                 </div>
                                             </Link>
