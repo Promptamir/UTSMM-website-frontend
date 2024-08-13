@@ -435,90 +435,38 @@
   scale: 1;
 }
 .main-page .introduction .our-services .body .item {
-  position: relative;
-  display: flex;
-  height: max-content;
-  flex-direction: column;
-  gap: 1rem;
   background-color: white;
-  padding: 2em;
-  border-radius: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
   overflow: hidden;
-  color: #3165f3;
-  transition: all 1s ease;
-  border: 4px transparent solid;
-  cursor: pointer;
-}
-.main-page .introduction .our-services .body .item:hover {
-  background-color: #0d4bf4;
-  color: white;
-  border: 4px white solid;
-}
-.main-page .introduction .our-services .body .item:hover .item-header {
-  transform: translateX(30%);
-  opacity: 1;
-}
-.main-page .introduction .our-services .body .item:hover .item-body button {
-  background-color: white;
-  color: #0d4bf4;
-}
-.main-page .introduction .our-services .body .item .item-header {
-  display: flex;
-  justify-content: start;
-  position: absolute;
-  top: 1rem;
-  right: 0;
-  bottom: 1rem;
-  background-color: rgb(172, 255, 47);
-  border-radius: 100rem 0 0 100rem;
-  opacity: 0.75;
-  transition: all 1s ease;
-  transform: translateX(50%);
 }
 .main-page .introduction .our-services .body .item .item-header img {
-  object-fit: contain;
-  transition: all 1s ease;
-  margin: 0 -1rem;
-  position: relative;
-  right: 2rem;
-}
-.main-page .introduction .our-services .body .item .item-body {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1;
-  height: 300px;
-  font-weight: bold;
+  width: 100%;
+  border-radius: 0.5rem;
+  height: 100px;
+  margin-bottom: 20px;
+  object-fit: cover;
 }
 .main-page .introduction .our-services .body .item .item-body h1 {
-  font-size: 1rem;
-  color: rgb(172, 255, 47);
-  white-space: nowrap;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
   overflow: hidden;
+  display: block;
   text-overflow: ellipsis;
-  display: block;
+  white-space: nowrap;
+  width: 100%;
+  margin-bottom: 20px;
 }
-.main-page .introduction .our-services .body .item .item-body small {
-  color: rgb(172, 255, 47);
-  line-height: 1rem;
-  height: 3rem;
-  display: block;
+.main-page .introduction .our-services .body .item .item-body p {
+  color: black;
+  font-weight: 300;
+  font-size: 16px;
   overflow: hidden;
-}
-.main-page .introduction .our-services .body .item .item-body button {
-  transition: all 1s ease;
-  margin-top: 0.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4976f3;
-  color: white;
-  padding: 0.6em 1em;
-  border-radius: 0.25rem;
-  font-size: 0.9rem;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 .main-page .introduction .our-services .body .background {
   position: absolute;

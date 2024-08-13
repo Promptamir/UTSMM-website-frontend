@@ -151,12 +151,13 @@ export default function Introduction({data, error, loadingAPI}) {
                                             data.entities.platforms.slice(0,5).map((item, index) => {
                                                 return <SwiperSlide key={index}>
                                                     <div className="item">
-                                                        <div className="item-header"><img src={item.image} alt="" />
+                                                        <div className="item-header">
+                                                            <img src={item.image} alt="" />
                                                         </div>
                                                         <div className="item-body">
                                                             <div>
                                                                 <h1>{item.title}</h1>
-                                                                <small>{item.description}</small>
+                                                                <p>{item.description}</p>
                                                             </div>
                                                         </div>
                                                     </div>
