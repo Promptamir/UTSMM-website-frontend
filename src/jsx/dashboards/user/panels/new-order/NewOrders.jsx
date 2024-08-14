@@ -1,8 +1,8 @@
 import Lottie from "react-lottie-player"
 import UserQuickView from "../../Components/UserQuickView"
 import newOrderIntroAnimatin from "../../../../../animations/user-dashboard/new-order-intro-animation.json"
-import { Icon } from "@iconify/react"
-import { useFetch } from "../../../../../lib/useFetch"
+import {Icon} from "@iconify/react"
+import {useFetch} from "../../../../../lib/useFetch"
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {useEffect, useState} from "react";
@@ -11,9 +11,11 @@ import BE_URL from "../../../../../lib/envAccess";
 import {useLocation} from "react-router-dom";
 import Form from "./Form";
 import FavForm from "./FormFav";
+import UserDashboardAcardion from "../../../../primaries/userDashboardAcardion";
 
 const NewOrders = () => {
     const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
+    const [faqs, faqsError, faqsLoading] = useFetch(`${BE_URL}/order-faqs`);
     const [categoriesData, categoriesError, categoriesLoading] = useFetch(`${BE_URL}/categories`);
     const [services, setServices] = useState([]);
     const [servicesLoading, setServicesLoading] = useState(false);
@@ -47,9 +49,9 @@ const NewOrders = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Accept" : "application/json",
-                    "X-Requested-With" : "XMLHttpRequest",
-                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                 }
             })
                 .then((data) => data.json())
@@ -122,7 +124,7 @@ const NewOrders = () => {
                             breeze. </p>
                     </div>
                 </div>
-                <div className={'new-order form'} style={{width: 'auto'}}>
+                <div className={'new-order form'} style={{width: 'auto', marginBottom: '20px'}}>
                     <div>
                         <label className={'label'}>Service</label>
                         {
@@ -156,6 +158,26 @@ const NewOrders = () => {
                             ) : false
                     }
                 </div>
+                {
+                    (faqsLoading)
+                        ? <h1>Loading</h1>
+                        : (faqsError)
+                            ? <h1>There was an error while fetching the data</h1>
+                            : (
+                                <div className={'acardion-holder'}>
+                                    <h1 style={{color: 'white'}}>Order Related Faqs</h1>
+                                    {
+                                        faqs.entities.faqs.map((item, index) => (
+                                            <UserDashboardAcardion
+                                                key={index}
+                                                answer={item.answer}
+                                                question={item.question}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                            )
+                }
             </section>
         )
     } else {
@@ -164,8 +186,14 @@ const NewOrders = () => {
                 {
                     (loading)
                         ? (
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: "center", width: '100%', padding: '20px'}}>
-                                <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: "center",
+                                width: '100%',
+                                padding: '20px'
+                            }}>
+                                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
                             </div>
                         ) : (error)
                             ? <h1>There was an error while fetching the data</h1>
@@ -181,20 +209,24 @@ const NewOrders = () => {
                         <Lottie
                             animationData={newOrderIntroAnimatin}
                             play
-                            loop />
+                            loop/>
 
                     </div>
                     <div className="right">
                         <h1>
-                            Lets Order <br />
+                            Lets Order <br/>
                             <span>New</span>
                             Service !
                         </h1>
                         <p>
-                            At UTSMM, we are excited to offer a range of services to meet your needs. Choose your desired package, provide your account details, and let our SMM panel deliver the best possible service! Whether you're aiming to boost engagement, expand your online presence or embark on a fresh project, this section is designed to make ordering social media services a breeze.                    </p>
+                            At UTSMM, we are excited to offer a range of services to meet your needs. Choose your
+                            desired package, provide your account details, and let our SMM panel deliver the best
+                            possible service! Whether you're aiming to boost engagement, expand your online presence or
+                            embark on a fresh project, this section is designed to make ordering social media services a
+                            breeze. </p>
                     </div>
                 </div>
-                <div className={'new-order form'} style={{width: 'auto'}}>
+                <div className={'new-order form'} style={{width: 'auto', marginBottom: '20px'}}>
                     <div>
                         <label className={'label'}>Category</label>
                         {
@@ -253,6 +285,26 @@ const NewOrders = () => {
                             ) : false
                     }
                 </div>
+                {
+                    (faqsLoading)
+                        ? <h1>Loading</h1>
+                        : (faqsError)
+                            ? <h1>There was an error while fetching the data</h1>
+                            : (
+                                <div className={'acardion-holder'}>
+                                    <h1 style={{color: 'white'}}>Order Related Faqs</h1>
+                                    {
+                                        faqs.entities.faqs.map((item, index) => (
+                                            <UserDashboardAcardion
+                                                key={index}
+                                                answer={item.answer}
+                                                question={item.question}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                            )
+                }
             </section>
         )
     }

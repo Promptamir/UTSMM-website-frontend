@@ -10,6 +10,62 @@
   max-width: 1400px;
   margin: 0 auto;
 }
+.user-dashboard .acardion-holder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.user-dashboard .custom-acardion {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid white;
+  transition: 0.5s;
+}
+.user-dashboard .custom-acardion[data-opened=false] {
+  height: 90px;
+}
+.user-dashboard .custom-acardion[data-opened=false] .arrow {
+  transform: rotate(180deg);
+}
+.user-dashboard .custom-acardion[data-opened=true] {
+  height: 300px;
+  background-color: white;
+}
+.user-dashboard .custom-acardion[data-opened=true] .question, .user-dashboard .custom-acardion[data-opened=true] .arrow, .user-dashboard .custom-acardion[data-opened=true] .answer {
+  color: rgb(49, 101, 243) !important;
+}
+.user-dashboard .custom-acardion .toggler {
+  padding: 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: calc(100% - 2.5rem);
+}
+.user-dashboard .custom-acardion .toggler .question {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-dashboard .custom-acardion .toggler .arrow {
+  flex-shrink: 0;
+  transition: 0.5s;
+  color: white;
+}
+.user-dashboard .custom-acardion .answer-holder {
+  padding: 20px;
+  height: 250px;
+  overflow: auto;
+}
+.user-dashboard .custom-acardion .answer-holder .answer {
+  font-weight: 300;
+  color: white;
+  font-size: 16px;
+}
 .user-dashboard .ticket-messages-all-holder {
   grid-column: span 2;
 }
@@ -1887,12 +1943,10 @@
   padding: 4em;
   color: white;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  align-items: start;
 }
 .user-dashboard .panel-tickets .left {
+  width: 100%;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.1);
@@ -1904,8 +1958,8 @@
 .user-dashboard .panel-tickets .left .state {
   display: flex;
   gap: 1rem;
-  width: max-content;
-  align-self: center;
+  width: 100%;
+  justify-content: center;
 }
 .user-dashboard .panel-tickets .left .state button {
   display: flex;
@@ -1930,7 +1984,7 @@
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
-  max-width: 30rem;
+  width: 100%;
 }
 .user-dashboard .panel-tickets .left .add-new-teicket .submit-button {
   cursor: pointer;
@@ -2017,40 +2071,6 @@
 }
 .user-dashboard .panel-tickets .left .ticket-history .seen {
   background-color: #17a2b8;
-}
-.user-dashboard .panel-tickets .right {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  max-width: 30rem;
-}
-.user-dashboard .panel-tickets .right .frequently-questions {
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-.user-dashboard .panel-tickets .right .accordions {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-height: 80dvh;
-  overflow: scroll;
-  padding-right: 1em;
-}
-.user-dashboard .panel-tickets .right .accordions h1 {
-  line-height: 1.5;
-}
-.user-dashboard .panel-tickets .right .accordions::-webkit-scrollbar {
-  width: 7px; /* width of the entire scrollbar */
-}
-.user-dashboard .panel-tickets .right .accordions::-webkit-scrollbar-track {
-  background: transparent; /* color of the tracking area */
-}
-.user-dashboard .panel-tickets .right .accordions::-webkit-scrollbar-thumb {
-  background-color: white; /* color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid transparent; /* creates padding around scroll thumb */
 }
 .user-dashboard .panel-affliates {
   padding: 2em;
