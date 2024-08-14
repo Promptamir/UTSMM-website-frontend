@@ -65,7 +65,7 @@ export default function EditCatModal({setCustomLoading, refresh, cat, closeFn, i
                         })
                     })
             }} className="form w-full">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Remote Category Title</label>
                 <input
                     minLength={3}
                     maxLength={255}
@@ -76,7 +76,7 @@ export default function EditCatModal({setCustomLoading, refresh, cat, closeFn, i
                     name="title"
                     className={'input'}
                 />
-                <label htmlFor="platform_id">Platform ID</label>
+                <label htmlFor="platform_id">Local Category ID</label>
                 {
                     (loading)
                         ? (
