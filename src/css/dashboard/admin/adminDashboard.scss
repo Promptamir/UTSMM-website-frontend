@@ -400,7 +400,7 @@ $gradient-degree: 0deg;
         padding: 0 3em;
         border-radius: 0 0 100rem 100rem;
         position: sticky;
-        gap: 2rem;
+        gap: 1rem;
         width: 90%;
         max-width: 1300px;
         flex-wrap: wrap;
@@ -415,12 +415,12 @@ $gradient-degree: 0deg;
             letter-spacing: 1px;
             position: relative;
             overflow: hidden;
+            padding: 1em;
+
         }
         .selected-true {
             background-color: $panel-color-4;
             color: black;
-            padding: 1em;
-            position: relative;
         }
     }
     .content {

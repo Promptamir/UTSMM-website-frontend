@@ -345,7 +345,7 @@
   padding: 0 3em;
   border-radius: 0 0 100rem 100rem;
   position: sticky;
-  gap: 2rem;
+  gap: 1rem;
   width: 90%;
   max-width: 1300px;
   flex-wrap: wrap;
@@ -361,12 +361,11 @@
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  padding: 1em;
 }
 .admin-dashboard nav .selected-true {
   background-color: #ffa938;
   color: black;
-  padding: 1em;
-  position: relative;
 }
 .admin-dashboard .content {
   width: 90%;
