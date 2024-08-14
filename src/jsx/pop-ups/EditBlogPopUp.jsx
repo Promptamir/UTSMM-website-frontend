@@ -14,6 +14,22 @@ export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOp
     const [description, setDescription] = useState(blog.short_description);
     const [title, setTitle] = useState(blog.title);
     const [published, setPublished] = useState((blog.status === '1'))
+    const [image, setImage] = useState(require("../../images/place-holder/1.png"));
+    const [imageFile, setImageFile] = useState();
+
+    const handleOnImageChange = (e) => {
+        const file = e.target.files[0]
+
+        const fileReader = new FileReader()
+        fileReader.onload = (e) => {
+            const result = e.target.result
+            setImage(result)
+        }
+
+        fileReader.readAsDataURL(file);
+        setImageFile(e.target.files[0]);
+    }
+
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -22,29 +38,37 @@ export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOp
             setLoading(true);
             closeFn();
 
-            fetch(`${BE_URL}/admin/blogs/${blog.id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept" : "application/json",
-                    "X-Requested-With" : "XMLHttpRequest",
-                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
-                },
-                body: JSON.stringify({
-                    "_method": 'put',
-                    "title": title,
-                    "short_description": description,
-                    "content": content,
-                    "keywords": keywords.split(','),
-                    "status": (published) ? '1' : '0'
-                })
+            const keywordsArray = keywords.split(',');
+            const myHeaders = new Headers();
+            myHeaders.append("Accept", "application/json");
+            myHeaders.append("X-Requested-With", "XMLHttpRequest");
+            myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem('token'))}`);
+
+            const formdata = new FormData();
+            formdata.append("title", title);
+            formdata.append("short_description", description);
+            formdata.append("content", content);
+            formdata.append("image", imageFile, "[PROXY]");
+            formdata.append("status", 1);
+            formdata.append("_method", "PUT");
+            keywordsArray.forEach((item, index) => {
+                formdata.append(`keywords[${index}]`, item);
             })
-                .then((data) => data.json())
-                .then((data) => {
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow"
+            };
+
+            fetch(`${BE_URL}/admin/blogs/${blog.id}`, requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
                     setLoading(false);
 
                     HandleFetchError({
-                        data: data,
+                        data: result,
                         lineBreak: false,
                         callbackSuccess: (message) => {
                             Swal.fire({icon: 'success', text: message})
@@ -54,11 +78,11 @@ export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOp
                     })
                 })
                 .catch(() => {
-                    setLoading(false);
                     Swal.fire({
                         icon: 'error',
                         title: 'There was an error while fetching the data'
                     })
+                    setLoading(false);
                 })
         }
     }
@@ -66,6 +90,23 @@ export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOp
     return (
         <Modal title={'Edit'} isOpened={isOpened} closeFn={closeFn}>
             <form className="form w-full" onSubmit={handleOnSubmit}>
+                <img
+                    src={image}
+                    alt={'Image'}
+                    style={{
+                        width: '100%',
+                        height: '200px',
+                        borderRadius: '20px',
+                        objectFit: 'cover'
+                    }}
+                />
+                <input
+                    className={'input'}
+                    required
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleOnImageChange}/>
                 <label htmlFor="title" className={'input-label'}>Title</label>
                 <input
                     className={'input'}
