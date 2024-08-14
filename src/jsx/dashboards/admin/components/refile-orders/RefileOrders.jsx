@@ -1,15 +1,12 @@
 // Importing part
 
 // Creating and exporting refiled orders component as default
-import {Icon} from "@iconify/react";
 import Table from "../../../../cutsome-components/table/Table";
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader";
 import ItemHeader from "../../../../cutsome-components/table/components/ItemHeader";
 import TableBody from "../../../../cutsome-components/table/components/TableBody";
 import Row from "../../../../cutsome-components/table/components/Row";
 import Property from "../../../../cutsome-components/table/components/Property";
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from "react-responsive-pagination";
 import {useState} from "react";
 import {useFetch} from "../../../../../lib/useFetch";
 import BE_URL from "../../../../../lib/envAccess";
@@ -73,7 +70,7 @@ export default function RefileOrders() {
                                                 <div className="property-header">
                                                     {headerList[2]}
                                                 </div>
-                                                <div className="property-body">
+                                                <div className="property-body" data-refile-status={item.status.slice(0,3).toLowerCase()}>
                                                     {item.status}
                                                 </div>
                                             </Property>

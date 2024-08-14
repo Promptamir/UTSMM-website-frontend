@@ -68,6 +68,33 @@ $panel-color-6: #dc3545;
                     img {
                         max-width: 4rem;
                     }
+
+                    &[data-refile-status="reg"] {
+                        padding: 1rem;
+                        background-color: yellow;
+                        color: black;
+                        width: 100%;
+                        text-align: center;
+                        border-radius: .5rem;
+                    }
+
+                    &[data-refile-status="rej"] {
+                        padding: 1rem;
+                        background-color: red;
+                        color: black;
+                        border-radius: .5rem;
+                        width: 100%;
+                        text-align: center;
+                    }
+
+                    &[data-refile-status="com"] {
+                        padding: 1rem;
+                        background-color: green;
+                        width: 100%;
+                        text-align: center;
+                        color: white;
+                        border-radius: .5rem;
+                    }
                 }
                 .max-2-line {
                 }
