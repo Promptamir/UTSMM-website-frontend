@@ -3,21 +3,16 @@ import BE_URL from "../../../lib/envAccess";
 import Statics from "./panels/statics/Statics"
 import PanelsItem from "./Components/PanelsItem"
 import { Icon } from "@iconify/react"
-import Services from "./panels/services/Services"
 import Orders from "./panels/orders/Orders"
 import { useEffect } from "react"
 import AddFounds from "./panels/add-found/AddFounds"
 import Tickets from "./panels/tickets/Tickets"
 import Affliates from "./panels/affliates/Affliates"
-import { Provider } from "react-redux"
 import PanelNestedItem from "./Components/PanelNestedItem"
-import Accordion from "../../cutsome-components/accordion/Accordion"
 import MassOrders from "./panels/mass-orders/MassOrders"
 import NewOrders from "./panels/new-order/NewOrders"
-import ChildPanel from "./panels/child-panel/ChildPanel"
 import { useNavigate, useParams } from "react-router-dom"
 import FreeCredits from "./panels/free-credits/FreeCredits"
-import Tutorials from "./panels/tutorials/Tutorials"
 import '../../../css/dashboard/user/menu.css';
 import Setting from './panels/setting/Setting';
 import Updates from "./panels/updates/updates";
@@ -75,12 +70,6 @@ const UserDashboard = (
             icon: <Icon icon="ion:ticket-sharp" />,
             component: <Tickets />
         },
-        // {
-        //     type: "normal",
-        //     title: "Child-Panel",
-        //     icon: <Icon icon="material-symbols:left-panel-open-sharp" />,
-        //     component: <ChildPanel />
-        // },
         {
             type: "normal",
             title: "Updates",
@@ -98,12 +87,6 @@ const UserDashboard = (
             title: "Free-Credit",
             icon: <Icon icon="mdi:credit-card" />,
             component: <FreeCredits />
-        },
-        {
-            type: "normal",
-            title: "Tutorials",
-            component : <Tutorials/>,
-            icon: <Icon icon="fluent:learning-app-24-filled" />
         },
         {
             type: "normal",
