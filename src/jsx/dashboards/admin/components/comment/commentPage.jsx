@@ -112,7 +112,7 @@ export default function CommentPage() {
                 <div className={'loading'} data-loading={customLoading}>
                     <Icon icon={'eos-icons:loading'} width={40} href={40}/>
                 </div>
-                <Table columnsStyle={"6rem 6rem 1.8fr 6rem 1fr 6rem 5rem 8rem"}>
+                <Table columnsStyle={"6rem 1.8fr 6rem 6rem 1fr 6rem 5rem 8rem"}>
                     <TableHeader>
                         {
                             headersList.map((record, index) => {
