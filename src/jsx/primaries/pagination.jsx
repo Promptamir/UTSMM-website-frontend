@@ -17,6 +17,15 @@ export default function Pagination({loading, error, count, apiEndpoint, refetch,
     // Set loadingState once based on the loading prop
     useEffect(() => {if (loadingState !== false) {setLoadingState(loading);}}, [loading, loadingState]);
 
+    // Updating data based on change of apiAppend prop (for Filtering stuff)
+    useEffect(() => {
+        if (apiAppend) {
+            setCurrentPage(1);
+            setUrl(`${BE_URL}/${apiEndpoint}?page=1${apiAppend}`);
+            refetch();
+        }
+    }, [apiAppend])
+
     // Conditional Rendering
     if (loadingState) {
         return (
