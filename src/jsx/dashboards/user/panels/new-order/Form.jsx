@@ -2,6 +2,7 @@
 import {useState} from "react";
 import BE_URL from "../../../../../lib/envAccess";
 import Swal from "sweetalert2";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting form component as default
 export default function Form({type, setFormLoading, selectedService, formLoading}) {
@@ -43,17 +44,12 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -125,8 +121,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "seo") {
+    } else if (type.toString().toLowerCase() === "seo") {
         return (
             <form
                 onSubmit={(e) => {
@@ -145,23 +140,18 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                             "service": selectedService.id,
                             "link": link,
                             "quantity": quantity,
-                            "keywords" : keywords
+                            "keywords": keywords
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -214,8 +204,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "poll") {
+    } else if (type.toString().toLowerCase() === "poll") {
         return (
             <form
                 onSubmit={(e) => {
@@ -234,23 +223,18 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                             "service": selectedService.id,
                             "link": link,
                             "quantity": quantity,
-                            "answer_number" : answerNumber
+                            "answer_number": answerNumber
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -303,8 +287,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "package") {
+    } else if (type.toString().toLowerCase() === "package") {
         return (
             <form
                 onSubmit={(e) => {
@@ -327,17 +310,12 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -367,8 +345,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "comment likes") {
+    } else if (type.toString().toLowerCase() === "comment likes") {
         return (
             <form
                 onSubmit={(e) => {
@@ -387,23 +364,18 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                             "service": selectedService.id,
                             "link": link,
                             "quantity": quantity,
-                            "username" : userName
+                            "username": userName
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -456,8 +428,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "custom comments") {
+    } else if (type.toString().toLowerCase() === "custom comments") {
         return (
             <form
                 onSubmit={(e) => {
@@ -475,23 +446,18 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                         body: JSON.stringify({
                             "service": selectedService.id,
                             "link": link,
-                            "comments" : comments
+                            "comments": comments
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -531,8 +497,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "mentions hashtag") {
+    } else if (type.toString().toLowerCase() === "mentions hashtag") {
         return (
             <form
                 onSubmit={(e) => {
@@ -550,24 +515,19 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                         body: JSON.stringify({
                             "service": selectedService.id,
                             "link": link,
-                            "quantity" : quantity,
+                            "quantity": quantity,
                             "hashtag": hashtag
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -620,8 +580,7 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                 <button disabled={formLoading} className={'submit-btn'}>Submit</button>
             </form>
         );
-    }
-    else if (type.toString().toLowerCase() === "custom comments package") {
+    } else if (type.toString().toLowerCase() === "custom comments package") {
         return (
             <form
                 onSubmit={(e) => {
@@ -639,23 +598,18 @@ export default function Form({type, setFormLoading, selectedService, formLoading
                         body: JSON.stringify({
                             "service": selectedService.id,
                             "link": link,
-                            "comments" : comments
+                            "comments": comments
                         })
                     })
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);

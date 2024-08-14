@@ -6,6 +6,7 @@ import {useState} from "react";
 import {useFetch} from "../../../../../../lib/useFetch";
 import Dropdown from "react-dropdown";
 import {Icon} from "@iconify/react";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
 
 // Creating and exporting new category modal as default
 export default function NewCatModal({setCustomLoading, refresh, isOpened, closeFn}) {
@@ -40,20 +41,15 @@ export default function NewCatModal({setCustomLoading, refresh, isOpened, closeF
                     .then((data) => data.json())
                     .then((data) => {
                         setCustomLoading(false);
-                        if (data.message === "Unauthenticated.") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Unauthenticated.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                text: data.message
-                            });
-                            refresh();
-                        }
-
-                        refresh();
+                        HandleFetchError({
+                            data: data,
+                            lineBreak: false,
+                            callbackSuccess: (message) => {
+                                Swal.fire({icon: 'success', text: message})
+                                refresh();
+                            },
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
                     })
                     .catch(() => {
                         setCustomLoading(false);

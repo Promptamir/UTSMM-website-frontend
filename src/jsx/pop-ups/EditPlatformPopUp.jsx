@@ -12,6 +12,7 @@ import { logFormData } from "../../lib/helperTools"
 import Swal from "sweetalert2";
 import BE_URL from "../../lib/envAccess";
 import Modal from "./modal";
+import HandleFetchError from "../../lib/handleFetchError";
 
 
 export default function EditPlatformPopUp({ platform, refresh, customLoading, closeFn, isOpened }) {
@@ -65,18 +66,15 @@ export default function EditPlatformPopUp({ platform, refresh, customLoading, cl
             .then((response) => response.json())
             .then((result) => {
                 customLoading(false);
-                if (result.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: result.message
-                    });
-                    refresh();
-                }
+                HandleFetchError({
+                    data: result,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 Swal.fire({

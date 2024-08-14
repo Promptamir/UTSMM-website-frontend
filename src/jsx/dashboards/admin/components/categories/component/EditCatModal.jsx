@@ -11,6 +11,7 @@ import BE_URL from "../../../../../../lib/envAccess";
 import Modal from "../../../../../pop-ups/modal";
 import Dropdown from "react-dropdown";
 import {useFetch} from "../../../../../../lib/useFetch";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
 
 // Creating and exporting edit category modal as default
 export default function EditCatModal({setCustomLoading, refresh, cat, isOpened, closeFn}) {
@@ -45,20 +46,15 @@ export default function EditCatModal({setCustomLoading, refresh, cat, isOpened, 
                     .then((data) => data.json())
                     .then((data) => {
                         setCustomLoading(false);
-                        if (data.message === "Unauthenticated.") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Unauthenticated.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                text: data.message
-                            });
-                            refresh();
-                        }
-
-                        refresh();
+                        HandleFetchError({
+                            data: data,
+                            lineBreak: false,
+                            callbackSuccess: (message) => {
+                                Swal.fire({icon: 'success', text: message})
+                                refresh();
+                            },
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
                     })
                     .catch(() => {
                         setCustomLoading(false);

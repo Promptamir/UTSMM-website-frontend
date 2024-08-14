@@ -4,6 +4,7 @@ import {useState} from "react";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../../lib/envAccess";
 import Modal from "../../../../../pop-ups/modal";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
 
 // Creating and exporting edit modal as default
 export default function EditModal({id, isOpened, closeFn, setCustomLoading, refresh}) {
@@ -37,19 +38,15 @@ export default function EditModal({id, isOpened, closeFn, setCustomLoading, refr
                     .then((data) => data.json())
                     .then((data) => {
                         setCustomLoading(false);
-                        if (data.message === "Unauthenticated.") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Unauthenticated.'
-                            });
-                        } else {
-                            refresh();
-                            Swal.fire({
-                                icon: 'success',
-                                text: data.message
-                            });
-                        }
-
+                        HandleFetchError({
+                            data: data,
+                            lineBreak: false,
+                            callbackSuccess: (message) => {
+                                Swal.fire({icon: 'success', text: message})
+                                refresh();
+                            },
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
                     })
                     .catch(() => {
                         setCustomLoading(false);

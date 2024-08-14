@@ -10,6 +10,7 @@ import BE_URL from "../../../../../lib/envAccess";
 import massOrderAnimation from "../../../../../animations/user-dashboard/mass-order-animation.json"
 import massOrderBackground from "../../../../../animations/user-dashboard/mass-order-background.json"
 import { Icon } from '@iconify/react'
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 const MassOrders = () => {
@@ -67,18 +68,15 @@ const MassOrders = () => {
                 .then((data) => data.json())
                 .then((data) => {
                     setFormLoading(false);
-                    if (data.message === "Unauthenticated.") {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Unauthenticated.'
-                        });
-                    } else if (data.message === "There is some errors, see details for more info") {
+                    if (data.message === "There is some errors, see details for more info") {
                         setCustomError(data.entities.results.join(' & '))
                     } else {
-                        Swal.fire({
-                            icon: 'success',
-                            text: data.message
-                        });
+                        HandleFetchError({
+                            data: data,
+                            lineBreak: false,
+                            callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
                     }
                 })
                 .catch(() => {

@@ -5,6 +5,7 @@ import BE_URL, { API } from "../../../../../../../lib/envAccess"
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import swal from "sweetalert2";
+import HandleFetchError from "../../../../../../../lib/handleFetchError";
 
 
 export default function SavedServices({data, refresh}) {
@@ -114,18 +115,15 @@ export default function SavedServices({data, refresh}) {
                                     .then((data) => data.json())
                                     .then((data) => {
                                         setLoading(false);
-                                        if (data.message === "Unauthenticated.") {
-                                            swal.fire({
-                                                icon: 'error',
-                                                text: 'Unauthenticated.'
-                                            });
-                                        } else {
-                                            swal.fire({
-                                                icon: 'success',
-                                                text: data.message
-                                            })
-                                            refresh();
-                                        }
+                                        HandleFetchError({
+                                            data: data,
+                                            lineBreak: true,
+                                            callbackSuccess: (message) => {
+                                                swal.fire({icon: 'success', text: message})
+                                                refresh()
+                                            },
+                                            callbackError: (message) => swal.fire({icon: 'error', text: message})
+                                        })
                                     })
                                     .catch(() => {
                                         setLoading(false);

@@ -7,10 +7,6 @@ import Row from '../../../../cutsome-components/table/components/Row'
 import Property from '../../../../cutsome-components/table/components/Property'
 import {useState} from 'react'
 import { useDispatch } from 'react-redux'
-import { showPopUp } from '../../../../../features/popUpReducer'
-import { ADMIN_PANEL_CREATE_BLOG } from '../../../../pop-ups/Constaints'
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from 'react-responsive-pagination';
 import {useFetch} from "../../../../../lib/useFetch";
 import NewCatModal from "./component/NewCatModal";
 import EditCatModal from "./component/EditCatModal";
@@ -18,6 +14,7 @@ import Swal from "sweetalert2";
 import InfoCatModal from "./component/infoCatModal";
 import BE_URL from "../../../../../lib/envAccess";
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 export default function Categories() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -68,20 +65,15 @@ export default function Categories() {
             .then((data) => data.json())
             .then((data) => {
                 setCustomLoading(false);
-                if (data.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: data.message
-                    });
-                    refresh();
-                }
-
-                refresh();
+                HandleFetchError({
+                    data: data,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 setCustomLoading(false);

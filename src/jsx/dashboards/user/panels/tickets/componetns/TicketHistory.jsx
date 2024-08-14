@@ -4,6 +4,7 @@ import BE_URL, { API } from "../../../../../../lib/envAccess";
 import {useEffect, useState} from "react";
 import Modal from "../../../../../pop-ups/modal";
 import Swal from "sweetalert2";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
 
 const TicketHistory = () => {
 
@@ -43,8 +44,15 @@ const TicketHistory = () => {
                     .then(resp => {
                         setFetchLoading(false);
 
-                        if (resp.message === "Unauthenticated.") {setFetchError('Unauthenticated.')}
-                        else {setData(resp.entities.ticket);}
+                        HandleFetchError({
+                            data: resp,
+                            lineBreak: false,
+                            callbackSuccess: () => setData(resp.entities.ticket),
+                            callbackError: (message) => Swal.fire({
+                                icon: 'error',
+                                text: message
+                            })
+                        })
                     })
                     .catch(() => {
                         setFetchLoading(true);

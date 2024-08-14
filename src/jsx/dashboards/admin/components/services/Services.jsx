@@ -7,16 +7,11 @@ import TableBody from "../../../../cutsome-components/table/components/TableBody
 import TableHeader from "../../../../cutsome-components/table/components/TableHeader"
 import Property from "../../../../cutsome-components/table/components/Property"
 import {useState} from "react";
-import TablePaginations from "../../../../cutsome-components/table/components/TablePaginations";
-import ResponsivePagination from "react-responsive-pagination";
 import {Icon} from "@iconify/react";
-import {showPopUp} from "../../../../../features/popUpReducer";
-import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import {useDispatch} from "react-redux";
 import InfoModal from "./components/infoModal";
 import EditModal from "./components/editModal";
 import Pagination from "../../../../primaries/pagination";
-import Modal from "../../../../pop-ups/modal";
 
 export default function Services() {
 

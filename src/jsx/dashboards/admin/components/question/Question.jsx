@@ -17,6 +17,7 @@ import InfoModal from "./component/infoModal";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting question section of admin panel as default
 export default function Question() {
@@ -78,19 +79,15 @@ export default function Question() {
                     .then((data) => data.json())
                     .then(resp => {
                         setCustomLoading(false);
-                        if (resp.message === "Unauthenticated.") {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Unauthenticated.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                text: resp.message
-                            });
-
-                            refresh();
-                        }
+                        HandleFetchError({
+                            data: resp,
+                            lineBreak: false,
+                            callbackSuccess: (message) => {
+                                Swal.fire({icon: 'success', text: message})
+                                refresh();
+                            },
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
                     })
                     .catch(() => {
                         setCustomLoading(false);

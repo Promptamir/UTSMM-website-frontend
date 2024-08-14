@@ -5,6 +5,7 @@ import {Icon} from "@iconify/react";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
 import BE_URL from "../../../../../lib/envAccess";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting settings tab of admin dashboard as default
 export default function Settings() {
@@ -67,19 +68,16 @@ export default function Settings() {
                             })
                                 .then((resp) => resp.json())
                                 .then(resp => {
-                                    if (resp.message === "Unauthenticated.") {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            text: 'Unauthenticated.'
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            text: resp.message
-                                        });
-                                        refresh();
-                                    }
                                     setCustomLoading(false);
+                                    HandleFetchError({
+                                        data: resp,
+                                        lineBreak: false,
+                                        callbackSuccess: (message) => {
+                                            Swal.fire({icon: 'success', text: message})
+                                            refresh();
+                                        },
+                                        callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                                    })
                                 })
                                 .catch(err => {
                                     const errors = err?.response?.data

@@ -1,6 +1,7 @@
 // Importing part
 import {useState} from "react";
 import BE_URL from "../../../../../lib/envAccess";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting question component as default
 export default function Question() {
@@ -35,9 +36,13 @@ export default function Question() {
                 .then((data) => data.json())
                 .then((data) => {
                     setLoading(false);
-                    (data.message === "Unauthenticated.")
-                        ? setError('Unauthenticated.')
-                        : setSuccess(data.message);
+
+                    HandleFetchError({
+                        data: data,
+                        lineBreak: true,
+                        callbackSuccess: (message) => setSuccess(message),
+                        callbackError: (message) => setError(message)
+                    })
                 })
                 .catch(() => {
                     setLoading(false);
@@ -53,7 +58,7 @@ export default function Question() {
             <textarea required onChange={(e) => setContent(e.target.value)} className={'form-input'} minLength={10}
                    maxLength={350} type="text" id={'content'} placeholder={'Question'} name={'content'}/>
             <button disabled={loading} className={'form-submit-btn'}>SUBMIT</button>
-            {error !== '' && <div className={'form-input-error'}>{error}</div>}
+            {error !== '' && <div className={'form-input-error'} dangerouslySetInnerHTML={{ __html: error }} />}
             {success !== '' && <div className={'form-input-succses'}>{success}</div>}
         </form>
     );

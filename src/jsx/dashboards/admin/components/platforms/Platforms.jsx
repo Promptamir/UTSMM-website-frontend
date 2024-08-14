@@ -16,6 +16,7 @@ import { showError, showSuccess } from '../../../../../lib/alertHandler'
 import EditPlatformPopUp from '../../../../pop-ups/EditPlatformPopUp'
 import InfoModal from "./components/infoModal";
 import Swal from "sweetalert2";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 export default function Platforms() {
 
@@ -45,19 +46,16 @@ export default function Platforms() {
         })
             .then((resp) => resp.json())
             .then(resp => {
-                if (resp.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: resp.message
-                    });
-                    refresh();
-                }
                 setCustomLoading(false);
+                HandleFetchError({
+                    data: resp,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(err => {
                 const errors = err?.response?.data

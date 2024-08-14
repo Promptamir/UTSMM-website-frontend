@@ -2,6 +2,7 @@
 import {useState} from "react";
 import BE_URL from "../../../../../lib/envAccess";
 import Swal from "sweetalert2";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting fav form component as default
 export default function FavForm({type, setFormLoading, selectedFav, formLoading}) {
@@ -43,17 +44,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -150,17 +146,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -238,17 +229,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -324,17 +310,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -390,17 +371,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -477,17 +453,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -553,17 +524,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);
@@ -640,17 +606,12 @@ export default function FavForm({type, setFormLoading, selectedFav, formLoading}
                         .then((data) => data.json())
                         .then((data) => {
                             setFormLoading(false);
-                            if (data.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: data.message
-                                });
-                            }
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: false,
+                                callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setFormLoading(false);

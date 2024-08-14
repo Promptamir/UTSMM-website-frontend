@@ -5,6 +5,7 @@ import ReactQuill from "react-quill";
 import Switch from "react-switch";
 import Modal from "./modal";
 import '../../css/pop-up/pop-up.css'
+import HandleFetchError from "../../lib/handleFetchError";
 
 export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOpened }) {
     const [keywords, setKeywords] = useState('');
@@ -42,18 +43,15 @@ export default function EditBlogPopUp({ blog, refresh, setLoading, closeFn, isOp
                 .then((data) => {
                     setLoading(false);
 
-                    if (data.message === "Unauthenticated.") {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Unauthenticated.'
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'success',
-                            text: data.message
-                        });
-                        refresh();
-                    }
+                    HandleFetchError({
+                        data: data,
+                        lineBreak: false,
+                        callbackSuccess: (message) => {
+                            Swal.fire({icon: 'success', text: message})
+                            refresh();
+                        },
+                        callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                    })
                 })
                 .catch(() => {
                     setLoading(false);

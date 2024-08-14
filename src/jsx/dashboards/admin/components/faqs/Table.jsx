@@ -5,6 +5,7 @@ import BE_URL from "../../../../../lib/envAccess";
 import Swal from "sweetalert2";
 import {showError} from "../../../../../lib/alertHandler";
 import Modal from "../../../../pop-ups/modal";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 // Creating and exporting table component of faqs panel in admin dashboard as deafult
 export default function Table({apiEndpoint, open = true, modalType}) {
@@ -95,19 +96,15 @@ export default function Table({apiEndpoint, open = true, modalType}) {
                         .then((resp) => resp.json())
                         .then(resp => {
                             setModalOpened(false);
-                            if (resp.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: resp.message,
-                                });
-                            }
-
-                            refetch();
+                            HandleFetchError({
+                                data: resp,
+                                lineBreak: false,
+                                callbackSuccess: (message) => {
+                                    Swal.fire({icon: 'success', text: message})
+                                    refetch();
+                                },
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setModalOpened(false);
@@ -186,18 +183,15 @@ export default function Table({apiEndpoint, open = true, modalType}) {
                             .then((resp) => resp.json())
                             .then(resp => {
                                 setLoading(false);
-                                if (resp.message === "Unauthenticated.") {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        text: 'Unauthenticated.'
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        text: resp.message
-                                    });
-                                    refetch();
-                                }
+                                HandleFetchError({
+                                    data: resp,
+                                    lineBreak: false,
+                                    callbackSuccess: (message) => {
+                                        Swal.fire({icon: 'success', text: message})
+                                        refetch();
+                                    },
+                                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                                })
                             })
                             .catch(() => {
                                 setLoading(false);
@@ -303,18 +297,15 @@ export default function Table({apiEndpoint, open = true, modalType}) {
                                                                     .then((resp) => resp.json())
                                                                     .then(resp => {
                                                                         setLoading(false);
-                                                                        if (resp.message === "Unauthenticated.") {
-                                                                            Swal.fire({
-                                                                                icon: 'error',
-                                                                                text: 'Unauthenticated.'
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
-                                                                                icon: 'success',
-                                                                                text: resp.message
-                                                                            });
-                                                                            refetch();
-                                                                        }
+                                                                        HandleFetchError({
+                                                                            data: resp,
+                                                                            lineBreak: false,
+                                                                            callbackSuccess: (message) => {
+                                                                                Swal.fire({icon: 'success', text: message})
+                                                                                refetch();
+                                                                            },
+                                                                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                                                                        })
                                                                     })
                                                                     .catch(() => {
                                                                         setLoading(false);

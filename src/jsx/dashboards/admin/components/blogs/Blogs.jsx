@@ -22,6 +22,7 @@ import ResponsivePagination from 'react-responsive-pagination';
 import { showError, showSuccess } from '../../../../../lib/alertHandler'
 import Swal from "sweetalert2";
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 export default function Blogs() {
@@ -72,20 +73,15 @@ export default function Blogs() {
             .then((data) => data.json())
             .then(() => {
                 setCustomLoading(false);
-                if (data.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: 'The item is deleted now'
-                    });
-                    refresh();
-                }
-
-                refresh();
+                HandleFetchError({
+                    data: data,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: 'The blog was deleted'})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 setCustomLoading(false);

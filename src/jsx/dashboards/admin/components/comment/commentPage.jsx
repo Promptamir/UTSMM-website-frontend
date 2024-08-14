@@ -13,6 +13,7 @@ import Switch from "react-switch";
 import Swal from "sweetalert2";
 import BE_URL from "../../../../../lib/envAccess";
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 export default function CommentPage() {
@@ -47,19 +48,15 @@ export default function CommentPage() {
             .then((data) => data.json())
             .then(resp => {
                 setCustomLoading(false);
-                if (resp.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: resp.message
-                    });
-
-                    refresh();
-                }
+                HandleFetchError({
+                    data: resp,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 setCustomLoading(false);
@@ -87,19 +84,15 @@ export default function CommentPage() {
             .then((data) => data.json())
             .then(resp => {
                 setCustomLoading(false);
-                if (resp.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: resp.message
-                    });
-
-                    refresh();
-                }
+                HandleFetchError({
+                    data: resp,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 setCustomLoading(false);
@@ -216,19 +209,15 @@ export default function CommentPage() {
                                                             .then((data) => data.json())
                                                             .then(resp => {
                                                                 setCustomLoading(false);
-                                                                if (resp.message === "Unauthenticated.") {
-                                                                    Swal.fire({
-                                                                        icon: 'error',
-                                                                        text: 'Unauthenticated.'
-                                                                    });
-                                                                } else {
-                                                                    Swal.fire({
-                                                                        icon: 'success',
-                                                                        text: resp.message
-                                                                    });
-
-                                                                    refresh();
-                                                                }
+                                                                HandleFetchError({
+                                                                    data: resp,
+                                                                    lineBreak: false,
+                                                                    callbackSuccess: (message) => {
+                                                                        Swal.fire({icon: 'success', text: message})
+                                                                        refresh();
+                                                                    },
+                                                                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                                                                })
                                                             })
                                                             .catch(() => {
                                                                 setCustomLoading(false);

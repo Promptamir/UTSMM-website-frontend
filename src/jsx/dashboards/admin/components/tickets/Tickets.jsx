@@ -13,6 +13,7 @@ import Swal from "sweetalert2"
 import BE_URL from '../../../../../lib/envAccess'
 import MessageTicketsPopUp from "../../../../pop-ups/messageTicketsPopUp";
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 export default function Tickets() {
@@ -98,17 +99,6 @@ export default function Tickets() {
                                                     {headers[5]}
                                                 </div>
                                                 <div className="property-body">
-                                                    <input
-                                                        style={{
-                                                            display: 'block',
-                                                            marginBottom: '20px',
-                                                            width: '20px',
-                                                            height: '20px'
-                                                        }}
-                                                        type="checkbox"
-                                                        disabled
-                                                        checked={(item.is_answered === "1")}
-                                                    />
                                                     <button
                                                         style={{
                                                             display: 'block',
@@ -148,18 +138,15 @@ export default function Tickets() {
                                                                 .then((data) => data.json())
                                                                 .then((data) => {
                                                                     setCustomLoading(false);
-                                                                    if (data.message === "Unauthenticated.") {
-                                                                        Swal.fire({
-                                                                            icon: 'error',
-                                                                            text: 'Unauthenticated.'
-                                                                        });
-                                                                    } else {
-                                                                        Swal.fire({
-                                                                            icon: 'success',
-                                                                            text: data.message
-                                                                        });
-                                                                        refresh();
-                                                                    }
+                                                                    HandleFetchError({
+                                                                        data: data,
+                                                                        lineBreak: false,
+                                                                        callbackSuccess: (message) => {
+                                                                            Swal.fire({icon: 'success', text: message})
+                                                                            refresh();
+                                                                        },
+                                                                        callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                                                                    })
                                                                 })
                                                                 .catch(() => {
                                                                     Swal.fire({

@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import BE_URL, {SERVER} from "../../lib/envAccess";
 import ReactQuill from "react-quill";
 import Modal from "./modal";
+import HandleFetchError from "../../lib/handleFetchError";
 
 
 export default function CreateNewBlogPopUp({ refresh, setLoading, closeFn, isOpened }) {
@@ -70,18 +71,15 @@ export default function CreateNewBlogPopUp({ refresh, setLoading, closeFn, isOpe
                 .then((result) => {
                     setLoading(false);
 
-                    if (result.message === "Unauthenticated.") {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Unauthenticated.'
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'success',
-                            text: result.message
-                        });
-                        refresh();
-                    }
+                    HandleFetchError({
+                        data: result,
+                        lineBreak: false,
+                        callbackSuccess: (message) => {
+                            Swal.fire({icon: 'success', text: message})
+                            refresh();
+                        },
+                        callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                    })
                 })
                 .catch(() => {
                     Swal.fire({

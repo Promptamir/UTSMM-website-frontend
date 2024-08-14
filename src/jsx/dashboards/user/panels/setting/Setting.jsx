@@ -3,6 +3,8 @@ import '../../../../../css/dashboard/user/setting.css';
 import {useState} from "react";
 import BE_URL from "../../../../../lib/envAccess";
 import {useFetch} from "../../../../../lib/useFetch";
+import HandleFetchError from "../../../../../lib/handleFetchError";
+import Swal from "sweetalert2";
 
 // Creating and exporting setting panel as default
 export default function Setting() {
@@ -51,8 +53,12 @@ export default function Setting() {
                         .then((data) => data.json())
                         .then((data) => {
                             setLoading(false);
-                            setError('');
-                            setSuccses(data.message)
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: true,
+                                callbackSuccess: (message) => setSuccses(message),
+                                callbackError: (message) => setError(message)
+                            })
                         })
                         .catch(() => {
                             setLoading(false);
@@ -103,13 +109,53 @@ export default function Setting() {
                             className={'dashboard-form-input'}
                         />
                     </div>
-                    {error !== '' && <div className={'dashboard-error'}>{error}</div>}
+                    {error !== '' && <div className={'dashboard-error'} dangerouslySetInnerHTML={{__html: error}} />}
                     {succses !== '' && <div className={'dashboard-succses'}>{succses}</div>}
                     <button disabled={loading} className={'dashboard-submit-btn'}>SUBMIT</button>
                 </form>
             </div>
             <div className={'container-item'}>
-                <form action="#" className={'dashboard-form'}>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+
+                    setProfileImageLoading(true);
+                    setProfileImageError('');
+                    setProfileImageSuccess('');
+
+                    const myHeaders = new Headers();
+                    myHeaders.append("Accept", "application/json");
+                    myHeaders.append("X-Requested-With", "XMLHttpRequest");
+                    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem('token'))}`);
+
+                    const formdata = new FormData();
+                    formdata.append("image", profileImageFile);
+                    formdata.append("_method", "PATCH");
+
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata,
+                        redirect: "follow"
+                    };
+
+                    fetch(`${BE_URL}/user/avatar`, requestOptions)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            setProfileImageLoading(false);
+
+                            HandleFetchError({
+                                data: data,
+                                lineBreak: true,
+                                callbackSuccess: (message) => setProfileImageSuccess(message),
+                                callbackError: (message) => setProfileImageError(message)
+                            })
+                        })
+                        .catch(() => {
+                            setProfileImageError('There was an error while fetching the data');
+                            setProfileImageSuccess('');
+                            setProfileImageLoading(false);
+                        })
+                }} action="#" className={'dashboard-form'}>
                     <h1 className={'dashboard-title'}>Profile Image</h1>
                     <div className="image-input">
                         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px'}}>
@@ -139,42 +185,9 @@ export default function Setting() {
                                 setProfileImageFile(e.target.files[0]);
                             }}/>
                     </div>
-                    {profileImageError !== '' && <div className={'dashboard-error'}>{profileImageError}</div>}
+                    {profileImageError !== '' && <div className={'dashboard-error'} dangerouslySetInnerHTML={{__html: profileImageError}} />}
                     {profileImageSuccess !== '' && <div className={'dashboard-succses'}>{profileImageSuccess}</div>}
-                    <button onClick={() => {
-                        setProfileImageLoading(true);
-                        setProfileImageError('');
-                        setProfileImageSuccess('');
-
-                        const myHeaders = new Headers();
-                        myHeaders.append("Accept", "application/json");
-                        myHeaders.append("X-Requested-With", "XMLHttpRequest");
-                        myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem('token'))}`);
-
-                        const formdata = new FormData();
-                        formdata.append("image", profileImageFile);
-                        formdata.append("_method", "PATCH");
-
-                        const requestOptions = {
-                            method: "POST",
-                            headers: myHeaders,
-                            body: formdata,
-                            redirect: "follow"
-                        };
-
-                        fetch(`${BE_URL}/user/avatar`, requestOptions)
-                            .then((response) => response.json())
-                            .then((data) => {
-                                setProfileImageLoading(false);
-                                setProfileImageError('');
-                                setProfileImageSuccess('The avatar has been Changed');
-                            })
-                            .catch(() => {
-                                setProfileImageError('There was an error while fetching the data');
-                                setProfileImageSuccess('');
-                                setProfileImageLoading(false);
-                            })
-                    }} disabled={profileImageLoading} className={'dashboard-submit-btn'}>SUBMIT</button>
+                    <button disabled={profileImageLoading} className={'dashboard-submit-btn'}>SUBMIT</button>
                 </form>
             </div>
         </section>

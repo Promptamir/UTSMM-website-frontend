@@ -10,6 +10,8 @@ import Pagination from "../../../../primaries/pagination";
 import {useFetch} from "../../../../../lib/useFetch";
 import BE_URL from "../../../../../lib/envAccess";
 import Modal from "../../../../pop-ups/modal";
+import HandleFetchError from "../../../../../lib/handleFetchError";
+import Swal from "sweetalert2";
 
 // Defining a function to format date
 function formatDate(date) {
@@ -63,8 +65,12 @@ export default function Orders() {
                 .then((data) => {
                     setInfoLoading(false);
 
-                    if (data.message === 'Unauthenticated') {setInfoError('Please login first');}
-                    else {setInfoData(data.entities.order);}
+                    HandleFetchError({
+                        data: data,
+                        lineBreak: false,
+                        callbackSuccess: () => setInfoData(data.entities.order),
+                        callbackError: (message) => setInfoError(message)
+                    })
                 })
                 .catch(() => {
                     setInfoLoading(false);

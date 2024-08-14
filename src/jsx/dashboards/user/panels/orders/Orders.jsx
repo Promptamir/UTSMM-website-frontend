@@ -1,14 +1,15 @@
 import RecentOrderItem from './components/RecentOrderItem';
-import { Icon } from '@iconify/react';
+import {Icon} from '@iconify/react';
 import {useEffect, useState} from 'react';
-import { useFetch } from '../../../../../lib/useFetch';
-import BE_URL, { API } from '../../../../../lib/envAccess';
+import {useFetch} from '../../../../../lib/useFetch';
+import BE_URL, {API} from '../../../../../lib/envAccess';
 import Swal from "sweetalert2";
 import {showPopUp} from "../../../../../features/popUpReducer";
 import {ADMIN_PANEL_CREATE_BLOG} from "../../../../pop-ups/Constaints";
 import CreateNewBlogPopUp from "../../../../pop-ups/CreateNewBlogPopUp";
 import {useDispatch} from "react-redux";
 import RefilHistoryPopUt from "../../../../pop-ups/RefilHistoryPopUt";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 const Orders = () => {
@@ -24,7 +25,7 @@ const Orders = () => {
 
     useEffect(() => {
         if (!loading) {
-          setSelectedOrder(orders.entities.orders[0])
+            setSelectedOrder(orders.entities.orders[0])
         }
     }, [loading]);
 
@@ -234,17 +235,18 @@ const Orders = () => {
                                                                     .then((data) => {
                                                                         setRefileLoading(false);
 
-                                                                        if (data.message === "Unauthenticated.") {
-                                                                            Swal.fire({
-                                                                                icon: 'error',
-                                                                                text: 'Unauthenticated.'
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
+                                                                        HandleFetchError({
+                                                                            data: data,
+                                                                            lineBreak: false,
+                                                                            callbackSuccess: (message) => Swal.fire({
                                                                                 icon: 'success',
-                                                                                text: data.message
-                                                                            });
-                                                                        }
+                                                                                text: message
+                                                                            }),
+                                                                            callbackError: (message) => Swal.fire({
+                                                                                icon: 'error',
+                                                                                text: message
+                                                                            })
+                                                                        })
                                                                     })
                                                                     .catch(() => {
                                                                         setRefileLoading(false);
@@ -321,17 +323,18 @@ const Orders = () => {
                                                                     .then((data) => {
                                                                         setCancelLoading(false);
 
-                                                                        if (data.message === "Unauthenticated.") {
-                                                                            Swal.fire({
-                                                                                icon: 'error',
-                                                                                text: 'Unauthenticated.'
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
+                                                                        HandleFetchError({
+                                                                            data: data,
+                                                                            lineBreak: false,
+                                                                            callbackSuccess: (message) => Swal.fire({
                                                                                 icon: 'success',
-                                                                                text: data.message
-                                                                            });
-                                                                        }
+                                                                                text: message
+                                                                            }),
+                                                                            callbackError: (message) => Swal.fire({
+                                                                                icon: 'error',
+                                                                                text: message
+                                                                            })
+                                                                        })
                                                                     })
                                                                     .catch(() => {
                                                                         setRefileLoading(false);
@@ -377,17 +380,18 @@ const Orders = () => {
                                                         .then((data) => {
                                                             setAddFavLoading(false);
 
-                                                            if (data.message === "Unauthenticated.") {
-                                                                Swal.fire({
-                                                                    icon: 'error',
-                                                                    text: 'Unauthenticated.'
-                                                                });
-                                                            } else {
-                                                                Swal.fire({
+                                                            HandleFetchError({
+                                                                data: data,
+                                                                lineBreak: false,
+                                                                callbackSuccess: (message) => Swal.fire({
                                                                     icon: 'success',
-                                                                    text: data.message
-                                                                });
-                                                            }
+                                                                    text: message
+                                                                }),
+                                                                callbackError: (message) => Swal.fire({
+                                                                    icon: 'error',
+                                                                    text: message
+                                                                })
+                                                            })
                                                         })
                                                         .catch(() => {
                                                             setAddFavLoading(false);
@@ -398,7 +402,7 @@ const Orders = () => {
                                                         })
                                                 }}
                                             >
-                                                <Icon icon={'mdi:heart-outline'} width={28} height={28} />
+                                                <Icon icon={'mdi:heart-outline'} width={28} height={28}/>
                                             </button>
                                         </div>
                                     </div>

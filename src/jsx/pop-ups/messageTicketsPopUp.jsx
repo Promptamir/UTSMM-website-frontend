@@ -4,6 +4,7 @@ import {useState} from "react";
 import BE_URL from "../../lib/envAccess";
 import Swal from "sweetalert2";
 import Modal from "./modal";
+import HandleFetchError from "../../lib/handleFetchError";
 
 // Creating and exporting information about categories modal as default
 export default function MessageTicketsPopUp({id, setCustomLoading, refresh, closeFn, isOpened}) {
@@ -45,18 +46,15 @@ export default function MessageTicketsPopUp({id, setCustomLoading, refresh, clos
                         .then((result) => {
                             setCustomLoading(false);
 
-                            if (result.message === "Unauthenticated.") {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Unauthenticated.'
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: result.message
-                                });
-                                refresh();
-                            }
+                            HandleFetchError({
+                                data: result,
+                                lineBreak: false,
+                                callbackSuccess: (message) => {
+                                    Swal.fire({icon: 'success', text: message})
+                                    refresh();
+                                },
+                                callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                            })
                         })
                         .catch(() => {
                             setCustomLoading(false);

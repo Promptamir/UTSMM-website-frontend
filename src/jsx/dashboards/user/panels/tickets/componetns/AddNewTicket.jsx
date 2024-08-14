@@ -3,6 +3,7 @@ import FiledSet from "../../../../../cutsome-components/Fieldset/FiledSet"
 import { Icon } from "@iconify/react"
 import Swal from "sweetalert2"
 import BE_URL from "../../../../../../lib/envAccess";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
 
 const AddNewTicket = () => {
     const [loading, setLoading] = useState(false);
@@ -43,14 +44,18 @@ const AddNewTicket = () => {
                 .then((data) => data.json())
                 .then(resp => {
                     setLoading(false);
-                    if (resp.message === "Unauthenticated.") {
-                        setError('Unauthenticated')
-                    } else {
-                        Swal.fire({
+                    HandleFetchError({
+                        data: resp,
+                        lineBreak: false,
+                        callbackSuccess: () => Swal.fire({
                             icon: 'success',
-                            text: 'The Ticket is Sent'
-                        });
-                    }
+                            text: 'The Ticket was submitted'
+                        }),
+                        callbackError: (message) => Swal.fire({
+                            icon: 'error',
+                            text: message
+                        })
+                    })
                 })
                 .catch(() => {
                     setLoading(false);

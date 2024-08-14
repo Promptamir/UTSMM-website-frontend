@@ -17,6 +17,7 @@ import Swal from "sweetalert2"
 import {showError, showSuccess} from "../../../../../lib/alertHandler"
 import BE_URL, {API} from '../../../../../lib/envAccess'
 import Pagination from "../../../../primaries/pagination";
+import HandleFetchError from "../../../../../lib/handleFetchError";
 
 
 export default function ExternalReviews() {
@@ -50,18 +51,15 @@ export default function ExternalReviews() {
             .then((data) => data.json())
             .then(resp => {
                 setCustomLoading(false);
-                if (resp.message === "Unauthenticated.") {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Unauthenticated.'
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        text: resp.message
-                    })
-                    refresh();
-                }
+                HandleFetchError({
+                    data: resp,
+                    lineBreak: false,
+                    callbackSuccess: (message) => {
+                        Swal.fire({icon: 'success', text: message})
+                        refresh();
+                    },
+                    callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                })
             })
             .catch(() => {
                 setCustomLoading(false);
