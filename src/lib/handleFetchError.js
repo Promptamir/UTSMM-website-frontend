@@ -14,5 +14,6 @@ export default function HandleFetchError({data, callbackError, callbackSuccess, 
     }
     else if (data.message === "Too many requests. Please try again later") {callbackError(data.message)}
     else if (data.message === "Internal server error") {callbackError(data.message)}
+    else if (data.message === "This question has already been answered") {callbackError(data.message)}
     else {callbackSuccess(data.message)}
 }
