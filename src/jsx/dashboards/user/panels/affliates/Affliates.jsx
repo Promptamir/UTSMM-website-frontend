@@ -148,45 +148,6 @@ const Affliates = () => {
                         )
             }
             <div className="charts row">
-                <div className="left">
-                    {
-                        (loading)
-                            ? <h1>Loading</h1>
-                            : (error)
-                                ? <h1>There was an error while fetching the data</h1>
-                                : (
-                                    <div className="revenue">
-                                        <div className="info">
-                                            <h2>Revenue</h2>
-                                            <ul>
-                                                <li>
-                                                    <div className="label">Daily</div>
-                                                    <div
-                                                        className="value">{affiliates.entities.sum_of_daily_revenues_in_last_week[0].total_sum}</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="chart">
-                                            <CircularProgressbar
-                                                className="progresser"
-                                                value={75}
-                                                strokeWidth={7}
-                                                text={`$5,000`}
-                                                styles={buildStyles({
-                                                    rotation: 0,
-                                                    strokeLinecap: 'round',
-                                                    textSize: '20px',
-                                                    pathTransitionDuration: 0.5,
-                                                    pathColor: `#0057d9`,
-                                                    textColor: '#0057d9',
-                                                    trailColor: 'rgba(0,0,0,0.1)'
-                                                })}
-                                            />
-                                        </div>
-                                    </div>
-                                )
-                    }
-                </div>
                 <div className="right">
                     <div className="your-performance">
                         <div className="header">

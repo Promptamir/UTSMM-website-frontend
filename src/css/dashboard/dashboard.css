@@ -2126,10 +2126,7 @@
   border-radius: 100rem;
 }
 .user-dashboard .panel-affliates .charts {
-  display: grid;
-  grid-template-columns: 23rem 1fr;
   width: 100% !important;
-  gap: 1rem;
   margin-top: 2rem;
 }
 .user-dashboard .panel-affliates .charts .left {
@@ -2213,9 +2210,9 @@
   background-color: white;
   padding: 2em;
   border-radius: 1rem;
-  display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 .user-dashboard .panel-affliates .charts .right .your-performance .footer {
   display: grid;

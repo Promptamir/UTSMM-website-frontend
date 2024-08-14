@@ -2307,10 +2307,7 @@ $gradient-degree: 0deg;
             }
         }
         .charts {
-            display: grid;
-            grid-template-columns: 23rem 1fr;
             width: 100% !important;
-            gap: 1rem;
             margin-top: 2rem;
             .left {
                 display: flex;
@@ -2400,9 +2397,9 @@ $gradient-degree: 0deg;
                     background-color: white;
                     padding: 2em;
                     border-radius: 1rem;
-                    display: flex;
                     flex-direction: column;
                     gap: 0.5rem;
+                    width: 100%;
 
                     .header {
                     }
