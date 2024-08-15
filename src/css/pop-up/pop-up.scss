@@ -669,7 +669,7 @@ $panel-color-6: #dc3545;
 .modal {
     .bg {
         position: fixed;
-        z-index: 10000;
+        z-index: 9999999999;
         top: 0;
         left: 0;
         width: 100%;
@@ -680,7 +680,7 @@ $panel-color-6: #dc3545;
     }
 
     .content {
-        z-index: 10001;
+        z-index: 99999999999;
         transition: 500ms;
         position: fixed;
         border-radius: 20px;

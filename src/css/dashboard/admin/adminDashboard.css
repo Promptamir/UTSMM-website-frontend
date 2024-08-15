@@ -1042,6 +1042,160 @@
 .admin-dashboard .content .admin-contact-us-panel .table .buttons .reply-email {
   background-color: #ffa938;
 }
+.admin-dashboard .content .admin-panel-blogs .media-holder {
+  margin-bottom: 20px;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-upload-btn {
+  background-color: rgb(49, 101, 243);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  width: calc(100% - 2rem);
+  margin-bottom: 20px;
+  display: block;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder {
+  overflow: auto;
+  transition: 0.5s;
+  border: 1px solid;
+  border-radius: 1rem;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder[data-opened=false] {
+  height: 0;
+  padding: 0;
+  border-color: transparent;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder[data-opened=true] {
+  height: 500px;
+  padding: 20px;
+  border-color: rgb(49, 101, 243);
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-mode-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(49, 101, 243);
+  margin-bottom: 20px;
+  width: max-content;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-mode-holder .media-mode-btn {
+  padding: 0.5rem 1rem;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  transition: 0.5s;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-mode-holder .media-mode-btn[data-selected=false] {
+  background-color: white;
+  color: rgb(49, 101, 243);
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-mode-holder .media-mode-btn[data-selected=true] {
+  background-color: rgb(49, 101, 243);
+  color: white;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item {
+  border-radius: 0.5rem;
+  height: 400px;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  overflow: hidden;
+  position: relative;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-font: blur(20px);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .media-title {
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .delete-btn {
+  background-color: red;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: calc(100% - 20px);
+  gap: 20px;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .delete-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .delete-btn svg {
+  flex-shrink: 0;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .delete-btn span {
+  font-size: 18px;
+  color: white;
+  font-weight: 300;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .copy-btn {
+  background-color: green;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: calc(100% - 20px);
+  gap: 20px;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .copy-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .copy-btn svg {
+  flex-shrink: 0;
+}
+.admin-dashboard .content .admin-panel-blogs .media-holder .media-content-holder .media-grid .media-grid-item .media-grid-item-buttons-holder .copy-btn span {
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .admin-dashboard .content .admin-panel-blogs .blogs-header {
   display: flex;
   align-content: center;
