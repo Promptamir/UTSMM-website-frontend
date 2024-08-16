@@ -246,7 +246,9 @@ $gradient-degree: 0deg;
 
         .head {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+
+            &:not(.col-8) {grid-template-columns: repeat(6, 1fr);}
+            &.col-8 {grid-template-columns: repeat(8, 1fr);}
 
             .item {
                 background-color: $ThemeColor;
@@ -260,7 +262,9 @@ $gradient-degree: 0deg;
 
         .body .row {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+
+            &:not(.col-8) {grid-template-columns: repeat(6, 1fr);}
+            &.col-8 {grid-template-columns: repeat(8, 1fr);}
 
             .item {
                 padding: 20px;
@@ -1766,6 +1770,10 @@ $gradient-degree: 0deg;
         .table {
             :is(.body .row, .head, .header) {
                 grid-template-columns: repeat(6, 200px);
+            }
+
+            :is(.body .row.col-8, .head.col-8) {
+                grid-template-columns: repeat(8, 200px);
             }
         }
 

@@ -17,6 +17,7 @@ import ExternalReviews from "./components/external-reviews/externalReviewsPage";
 import RefileOrders from "./components/refile-orders/RefileOrders";
 import {useFetch} from "../../../lib/useFetch";
 import BE_URL from "../../../lib/envAccess";
+import Payments from "./components/payments/Payments";
 
 const AdminDashboard = () => {
     const menu = [
@@ -34,6 +35,11 @@ const AdminDashboard = () => {
             title: "Orders",
             svg: <Icon icon="ri:dashboard-fill" />,
             component: <Orders />
+        },
+        {
+            title: "Payments",
+            svg: <Icon icon="ri:dashboard-fill" />,
+            component: <Payments />
         },
         {
             title: "Refiled Orders",

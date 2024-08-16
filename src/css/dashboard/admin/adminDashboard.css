@@ -201,7 +201,12 @@
 }
 .admin-orders-page .table .head {
   display: grid;
+}
+.admin-orders-page .table .head:not(.col-8) {
   grid-template-columns: repeat(6, 1fr);
+}
+.admin-orders-page .table .head.col-8 {
+  grid-template-columns: repeat(8, 1fr);
 }
 .admin-orders-page .table .head .item {
   background-color: rgb(49, 101, 243);
@@ -213,7 +218,12 @@
 }
 .admin-orders-page .table .body .row {
   display: grid;
+}
+.admin-orders-page .table .body .row:not(.col-8) {
   grid-template-columns: repeat(6, 1fr);
+}
+.admin-orders-page .table .body .row.col-8 {
+  grid-template-columns: repeat(8, 1fr);
 }
 .admin-orders-page .table .body .row .item {
   padding: 20px;
@@ -1582,6 +1592,9 @@
   }
   .admin-dashboard .table :is(.body .row, .head, .header) {
     grid-template-columns: repeat(6, 200px);
+  }
+  .admin-dashboard .table :is(.body .row.col-8, .head.col-8) {
+    grid-template-columns: repeat(8, 200px);
   }
   .admin-dashboard .admin-dashboard-panel .row {
     display: flex !important;
