@@ -29,6 +29,7 @@ import BE_URL, {API, CLIENT, SERVER} from "../../../../../lib/envAccess";
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2"
 import {createData} from "../../../../../lib/chartDataSet";
+import LineChart from "../../../../primaries/lineChart";
 
 ChartJS.register(
     ArcElement,
@@ -160,24 +161,18 @@ const Affliates = () => {
                                     : (error) 
                                         ? <h1>There was an error while fetching the data</h1>
                                         : (
-                                            <Line
-                                                className="chart"
-                                                id="myChart"
-                                                data={
-                                                    createData(
-                                                        "$",
-                                                        ['l1', 'l2', 'l3'],
-                                                        [
-                                                            Number(affiliates.entities.total_l1_referrals),
-                                                            Number(affiliates.entities.total_l2_referrals),
-                                                            Number(affiliates.entities.total_l3_referrals)
-                                                        ]
-                                                    )
-                                                }
-                                                options={options}
-                                                height={250}
-                                                width={350}
-                                            />
+                                            <LineChart data={{
+                                                labels: affiliates.entities.sum_of_daily_revenues_in_last_week.map(item => item.date),
+                                                datasets: [
+                                                    {
+                                                        label: 'Sum of daily revenus in last week',
+                                                        data: affiliates.entities.sum_of_daily_revenues_in_last_week.map(item => Number(item.total_sum)),
+                                                        fill: true,
+                                                        borderColor: 'rgb(73, 118, 243)',
+                                                        tension: 0.1,
+                                                    },
+                                                ],
+                                            }} />
                                         )
                             }
                            
@@ -227,6 +222,30 @@ const Affliates = () => {
                                                 </div>
                                                 <div className="item-body">
                                                     Earned Bonus
+                                                </div>
+                                            </div>
+                                            <div className="item">
+                                                <div className="item-header">
+                                                    {affiliates.entities.total_l1_referrals}
+                                                </div>
+                                                <div className="item-body">
+                                                    Total l1 Referrals
+                                                </div>
+                                            </div>
+                                            <div className="item">
+                                                <div className="item-header">
+                                                    {affiliates.entities.total_l2_referrals}
+                                                </div>
+                                                <div className="item-body">
+                                                    Total l2 Referrals
+                                                </div>
+                                            </div>
+                                            <div className="item">
+                                                <div className="item-header">
+                                                    {affiliates.entities.total_l3_referrals}
+                                                </div>
+                                                <div className="item-body">
+                                                    Total l3 Referrals
                                                 </div>
                                             </div>
                                         </div>
