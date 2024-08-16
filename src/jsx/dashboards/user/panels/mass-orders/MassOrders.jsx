@@ -22,71 +22,41 @@ const MassOrders = () => {
     const [formLoading, setFormLoading] = useState(false);
     const [customError, setCustomError] = useState('');
 
-    // Validating value
-    useEffect(() => {
-        const splitLines = val.split(/\r?\n/);
-
-        splitLines.forEach((item, index) => {
-            const splittedVal = item.split(' | ');
-            const intRegex = /^\d+$/;
-            const urlRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
-
-            if (splittedVal.length === 3) {
-                if (!intRegex.test(splittedVal[0])) {
-                    setCustomError(`Line ${index + 1} : The Id should be an integer`)
-                } else if (!urlRegex.test(splittedVal[1])) {
-                    setCustomError(`Line ${index + 1} : The Link should be an URL`)
-                } else if (!intRegex.test(splittedVal[2])) {
-                    setCustomError(`Line ${index + 1} : The Quantity should be an integer`)
-                } else if (
-                    intRegex.test(splittedVal[0]) &&
-                    urlRegex.test(splittedVal[1]) &&
-                    intRegex.test(splittedVal[2])
-                ) {
-                    setCustomError('');
-                }
-            } else {
-                setCustomError('There should be 3 items for separated with | (Id of Service, Link, Quantity)')
-            }
-        })
-    }, [val]);
-
     const handleSubmitClick = (e) => {
         e.preventDefault();
-        if (customError === '') {
-            setFormLoading(true);
-            fetch(`${BE_URL}/mass-orders`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept" : "application/json",
-                    "X-Requested-With" : "XMLHttpRequest",
-                    "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
-                },
-                body: JSON.stringify({"orders": val})
-            })
-                .then((data) => data.json())
-                .then((data) => {
-                    setFormLoading(false);
-                    if (data.message === "There is some errors, see details for more info") {
-                        setCustomError(data.entities.results.join(' & '))
-                    } else {
-                        HandleFetchError({
-                            data: data,
-                            lineBreak: false,
-                            callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
-                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
-                        })
-                    }
-                })
-                .catch(() => {
-                    setFormLoading(false);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'There was an error while fetching the data'
+
+        setFormLoading(true);
+        fetch(`${BE_URL}/mass-orders`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({"orders": val})
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                setFormLoading(false);
+                if (data.message === "There is some errors, see details for more info") {
+                    setCustomError(data.entities.results.join(' & ').replace(/&/g, '<br />'))
+                } else {
+                    HandleFetchError({
+                        data: data,
+                        lineBreak: false,
+                        callbackSuccess: (message) => Swal.fire({icon: 'success', text: message}),
+                        callbackError: (message) => Swal.fire({icon: 'error', text: message})
                     })
+                }
+            })
+            .catch(() => {
+                setFormLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error while fetching the data'
                 })
-        }
+            })
     }
 
 
@@ -272,20 +242,17 @@ const MassOrders = () => {
                     />
                 </div>
                 {customError !== '' && (
-                    <div style={{
-                        background: 'rgba(238, 75, 43, .2)',
+                    <div dangerouslySetInnerHTML={{__html: customError}} style={{
+                        background: 'rgba(21,35,73,0.2)',
                         width: '100%',
                         padding: '10px',
                         borderRadius: '10px',
                         marginTop: '20px',
-                        border: '1px solid rgb(238, 75, 43)',
-                    }}>
-                        <p style={{
-                            color: 'rgb(238, 75, 43)',
-                            fontSize: '24px',
-                            fontWeight: 'normal'
-                        }}>{customError}</p>
-                    </div>
+                        border: '1px solid #152349',
+                        color: '#152349',
+                        fontSize: '24px',
+                        fontWeight: 'normal'
+                    }} />
                 )}
                 <div className="form-buttons">
                     <button disabled={formLoading}>
