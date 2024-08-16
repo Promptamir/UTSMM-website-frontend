@@ -5,6 +5,7 @@ import { Prism } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ReactDropdown from "react-dropdown";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 // Creating and exporting api panel as default
 export default function ApiPanel({isPage = false}) {
@@ -123,7 +124,7 @@ export default function ApiPanel({isPage = false}) {
                             <span className={'info-title'}>API Url</span>
                         </div>
                         <div className={'info'}>
-                            <span className={'info-value'}>Get on the <a href="#">Account Page</a></span>
+                            <span className={'info-value'}>Get on the <Link to="/user/dashboard/Setting#api-key-section">Account Page</Link></span>
                             <span className={'info-title'}>API</span>
                         </div>
                         <div className={'info'}>
