@@ -13,7 +13,7 @@
   color: #4976f3;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  width: 100%;
+  width: calc(100% - 1rem);
   display: block;
   text-align: center;
 }
@@ -35,22 +35,36 @@
   align-items: center;
   justify-content: center;
 }
-.user-panel-updates .service-update-item {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  align-items: center;
-}
 .user-panel-updates .list {
   display: flex;
   flex-direction: column;
   gap: 20px;
   background-color: white;
-  height: 50vh;
+  height: 80vh;
   overflow: auto;
   border-radius: 1rem;
 }
-.user-panel-updates .service-update-col {
+.user-panel-updates .list .head {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+.user-panel-updates .list .head .item {
+  color: white;
+  background-color: #4976f3;
+  font-weight: normal;
+  font-size: 16px;
+  padding: 2em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-panel-updates .list .body .service-update-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+.user-panel-updates .list .body .service-update-item .service-update-col {
   color: #4976f3;
   font-weight: normal;
   font-size: 16px;
@@ -149,6 +163,21 @@
 .submit-button:disabled {
   opacity: 50%;
   pointer-events: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .user-panel-updates .filter-divider {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .user-panel-updates .filter-divider .filter-input {
+    grid-column: span 1;
+  }
+  .user-panel-updates .list .head {
+    grid-template-columns: repeat(4, 200px);
+  }
+  .user-panel-updates .list .body .service-update-item {
+    grid-template-columns: repeat(4, 200px);
+  }
 }
 
 /*# sourceMappingURL=menu.css.map */

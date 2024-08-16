@@ -57,18 +57,26 @@ export default function Updates() {
                         : (data.entities.updates.length === 0)
                             ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white', marginBottom: '20px'}}>There is nothing to show</h1>
                             : (
-                                <ul className={'list'}>
-                                    {
-                                        data.entities.updates.map((item , index) => (
-                                            <li key={index} className={'service-update-item'}>
-                                                <div className={'service-update-col'}>{item.service.id}</div>
-                                                <div className={'service-update-col'}>{item.service.title}</div>
-                                                <div className={'service-update-col'}>{item.description}</div>
-                                                <div className={'service-update-col'}>{new Date(item.created_at).toLocaleDateString()}</div>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
+                                <div className={'list'}>
+                                    <div className={'head'}>
+                                        <div className={'item'}>ID</div>
+                                        <div className={'item'}>Title</div>
+                                        <div className={'item'}>Description</div>
+                                        <div className={'item'}>Created At</div>
+                                    </div>
+                                    <ul className="body">
+                                        {
+                                            data.entities.updates.map((item , index) => (
+                                                <li key={index} className={'service-update-item'}>
+                                                    <div className={'service-update-col'}>{item.service.id}</div>
+                                                    <div className={'service-update-col'}>{item.service.title}</div>
+                                                    <div className={'service-update-col'}>{item.description}</div>
+                                                    <div className={'service-update-col'}>{new Date(item.created_at).toLocaleDateString()}</div>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
                             )
             }
             <Pagination

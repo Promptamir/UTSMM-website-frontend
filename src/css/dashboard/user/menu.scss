@@ -18,7 +18,7 @@ $ColorPrimary: #4976f3;
     color: $ColorPrimary;
     padding: .5rem;
     border-radius: .5rem;
-    width: 100%;
+    width: calc(100% - 1rem);
     display: block;
     text-align: center;
   }
@@ -44,31 +44,51 @@ $ColorPrimary: #4976f3;
     justify-content: center;
   }
 
-  .service-update-item {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    align-items: center;
-  }
+
 
   .list {
     display: flex;
     flex-direction: column;
     gap: 20px;
     background-color: white;
-    height: 50vh;
+    height: 80vh;
     overflow: auto;
     border-radius: 1rem;
-  }
 
-  .service-update-col {
-    color: $ColorPrimary;
-    font-weight: normal;
-    font-size: 16px;
-    padding: 2em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    .head {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+
+      .item {
+        color: white;
+        background-color: $ColorPrimary;
+        font-weight: normal;
+        font-size: 16px;
+        padding: 2em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .body {
+      .service-update-item {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+
+        .service-update-col {
+          color: $ColorPrimary;
+          font-weight: normal;
+          font-size: 16px;
+          padding: 2em;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
   }
 }
 
@@ -166,4 +186,24 @@ $ColorPrimary: #4976f3;
 .submit-button:disabled {
   opacity: 50%;
   pointer-events: none;
+}
+
+// Media querys
+@media screen and (max-width: 1024px) {
+  .user-panel-updates {
+    .filter-divider {
+      grid-template-columns: repeat(1, 1fr);
+
+      .filter-input {
+        grid-column: span 1;
+      }
+    }
+
+    .list {
+      .head {grid-template-columns: repeat(4, 200px);}
+      .body {
+        .service-update-item {grid-template-columns: repeat(4, 200px);}
+      }
+    }
+  }
 }
