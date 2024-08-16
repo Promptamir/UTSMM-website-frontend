@@ -9,13 +9,9 @@ export default function Pagination({loading, error, count, apiEndpoint, refetch,
     // Defining states of component
     const [currentPage, setCurrentPage] = useState(1);
     const [initialCount , setInitialCount] = useState(count);
-    const [loadingState, setLoadingState] = useState(loading);
 
     // Using useEffect to set initialCount
     useEffect(() => {if (initialCount === undefined) {setInitialCount(count);}}, [count, initialCount])
-
-    // Set loadingState once based on the loading prop
-    useEffect(() => {if (loadingState !== false) {setLoadingState(loading);}}, [loading, loadingState]);
 
     // Updating data based on change of apiAppend prop (for Filtering stuff)
     useEffect(() => {
@@ -26,8 +22,14 @@ export default function Pagination({loading, error, count, apiEndpoint, refetch,
         }
     }, [apiAppend])
 
+    useEffect(() => {
+        if (!loading && currentPage === 1 && apiAppend) {
+            setInitialCount(count);
+        }
+    }, [loading]);
+
     // Conditional Rendering
-    if (loadingState) {
+    if (loading) {
         return (
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '20px'}}>
                 <Icon icon={'eos-icons:loading'} width={40} href={40}/>
