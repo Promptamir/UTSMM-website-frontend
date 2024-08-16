@@ -27,17 +27,20 @@ const NewOrders = () => {
 
     // Defining token
     const location = useLocation();
-    const search = location.search?.slice(1, location.search.length);
-    const serviceSearch = search?.split('&')[0]?.split('=')[1];
-    const categorySearch = search?.split('&')[1]?.split('=')[1];
+    const searchParams = new URLSearchParams(location.search);
+    const paramsObject = {};
 
-    const [categoriesSearchData, categoriesSearchError, categoriesSearchLoading] = useFetch(`${BE_URL}/categories/${categorySearch}/services`);
+    searchParams.forEach((value, key) => {
+        paramsObject[key] = isNaN(value) ? value : Number(value);
+    });
+
+    const [categoriesSearchData, categoriesSearchError, categoriesSearchLoading] = useFetch(`${BE_URL}/categories/${paramsObject.category}/services`);
     const [selectedServiceFromFav, setSelectedServiceFromFav] = useState();
 
     useEffect(() => {
-        if (serviceSearch && categorySearch) {
+        if (paramsObject.service && paramsObject.category) {
             if (!categoriesSearchLoading) {
-                setSelectedServiceFromFav(categoriesSearchData.entities.services.find(item => item.id === Number(serviceSearch)));
+                setSelectedServiceFromFav(categoriesSearchData.entities.services.find(item => item.id === Number(paramsObject.service)));
             }
         }
     }, [categoriesSearchLoading]);
@@ -77,8 +80,21 @@ const NewOrders = () => {
         }
     }, [selectedService]);
 
+    useEffect(() => {
+        setSelectedService(undefined)
+    }, [categroy])
 
-    if (serviceSearch && categorySearch) {
+    useEffect(() => {
+        if (paramsObject.message && paramsObject.isOk) {
+            Swal.fire({
+                icon: (paramsObject.isOk === 0) ? 'error' : 'success',
+                text: paramsObject.message
+            })
+        }
+    }, []);
+
+
+    if (paramsObject.service && paramsObject.category) {
         return (
             <section className="panel-new-order">
                 {
@@ -238,8 +254,8 @@ const NewOrders = () => {
                                 ) : (categoriesError)
                                     ? <h1>Error</h1>
                                     : <Dropdown
-                                        disabled={!!(categorySearch)}
-                                        value={(categorySearch) ? categorySearch : undefined}
+                                        disabled={!!(paramsObject.category)}
+                                        value={(paramsObject.category) ? paramsObject.category : undefined}
                                         onChange={(e) => setCategory(e.value)}
                                         options={categoriesData.entities.categories.map(item => {
                                             return {
@@ -261,8 +277,7 @@ const NewOrders = () => {
                                     </div>
                                 ) : (
                                     <Dropdown
-                                        disabled={!!(serviceSearch)}
-                                        value={(serviceSearch) ? serviceSearch : undefined}
+                                        value={(paramsObject.service) ? paramsObject.service : undefined}
                                         onChange={(e) => setSelectedService(e.value)}
                                         disabled={(!categroy)}
                                         options={services.map(item => {
