@@ -10,32 +10,23 @@ import Pagination from "../../../../primaries/pagination";
 export default function Updates() {
     // Defining states of component
     const [sort, setSort] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [searchStr, setSearchStr] = useState('');
-    const [sortedByInput, setSortedByInput] = useState([]);
+    const [serviceID, setServiceID] = useState('');
 
     // Fetching the api
-    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/service-updates?page=${currentPage}&type=${sort}`);
-
-    // Using useEffect to sort items
-    useEffect(() => {
-        if (searchStr !== '') {
-            const obj = data.entities.updates;
-            setSortedByInput(obj.filter(item => item.service.title.toLowerCase().includes(searchStr.toLowerCase())))
-        }
-    }, [searchStr]);
+    const [data, error, loading, setUrl, refresh, refetch] = useFetch(`${BE_URL}/service-updates?page=1&type=${sort}&service_id=${serviceID}`);
 
     // Returning JSX
     return (
         <main className='user-panel-updates'>
-            <div className={'filter-divider'}>
+            <form action={'#'} onSubmit={(e) => {
+                e.preventDefault();
+
+                setUrl(`${BE_URL}/service-updates?page=1&type=${sort}&service_id=${serviceID}`);
+                refetch();
+            }} className={'filter-divider'}>
                 <ReactDropdown
                     placeholder={'Filter ...'}
-                    onChange={(e) => {
-                        setSort(e.value);
-                        setUrl(`${BE_URL}/service-updates?page=${currentPage}&type=${e.value}`);
-                        refetch();
-                    }}
+                    onChange={(e) => setSort(e.value)}
                     controlClassName={'dropdown-control'}
                     options={[
                         {label: "All", value: 0},
@@ -47,12 +38,14 @@ export default function Updates() {
                     ]}
                 />
                 <input
-                    onChange={(e) => setSearchStr(e.target.value)}
+                    onChange={(e) => setServiceID(e.target.value)}
                     placeholder={'Search ..'}
-                    type="text"
+                    type="number"
+                    min={1}
                     className={'filter-input'}
                 />
-            </div>
+                <button className={'submit-btn'}>Filter</button>
+            </form>
             {
                 (loading)
                     ? (
@@ -60,21 +53,13 @@ export default function Updates() {
                             <Icon icon={'eos-icons:loading'} width={40} href={40} />
                         </div>
                     ) : (error)
-                        ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white'}}>There was an error while fetching the data</h1>
+                        ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white', marginBottom: '20px'}}>There was an error while fetching the data</h1>
                         : (data.entities.updates.length === 0)
-                            ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white'}}>There is nothing to show</h1>
+                            ? <h1 style={{fontSize: '20px', textAlign: 'center', color: 'white', marginBottom: '20px'}}>There is nothing to show</h1>
                             : (
                                 <ul className={'list'}>
-                                {
-                                    (searchStr === '')
-                                        ? data.entities.updates.map((item , index) => (
-                                            <li key={index} className={'service-update-item'}>
-                                                <div className={'service-update-col'}>{item.service.id}</div>
-                                                <div className={'service-update-col'}>{item.service.title}</div>
-                                                <div className={'service-update-col'}>{item.description}</div>
-                                                <div className={'service-update-col'}>{new Date(item.created_at).toLocaleDateString()}</div>
-                                            </li>
-                                        )) : sortedByInput.map((item , index) => (
+                                    {
+                                        data.entities.updates.map((item , index) => (
                                             <li key={index} className={'service-update-item'}>
                                                 <div className={'service-update-col'}>{item.service.id}</div>
                                                 <div className={'service-update-col'}>{item.service.title}</div>
@@ -82,8 +67,8 @@ export default function Updates() {
                                                 <div className={'service-update-col'}>{new Date(item.created_at).toLocaleDateString()}</div>
                                             </li>
                                         ))
-                                }
-                            </ul>
+                                    }
+                                </ul>
                             )
             }
             <Pagination
@@ -93,7 +78,7 @@ export default function Updates() {
                 count={data?.entities?.count}
                 loading={loading}
                 apiEndpoint={'service-updates'}
-                apiAppend={`&type=${sort}`}
+                apiAppend={`&type=${sort}&service_id=${serviceID}`}
             />
         </main>
     );

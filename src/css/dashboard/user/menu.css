@@ -8,8 +8,17 @@
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 20px;
 }
+.user-panel-updates .submit-btn {
+  background-color: white;
+  color: #4976f3;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  display: block;
+  text-align: center;
+}
 .user-panel-updates .filter-input {
-  grid-column: span 3;
+  grid-column: span 2;
   padding: 1em;
   border-radius: 1em;
   outline: none;

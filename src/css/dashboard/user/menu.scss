@@ -13,8 +13,18 @@ $ColorPrimary: #4976f3;
     margin-bottom: 20px;
   }
 
+  .submit-btn {
+    background-color: white;
+    color: $ColorPrimary;
+    padding: .5rem;
+    border-radius: .5rem;
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
   .filter-input {
-    grid-column: span 3;
+    grid-column: span 2;
     padding: 1em;
     border-radius: 1em;
     outline: none;
