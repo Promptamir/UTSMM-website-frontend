@@ -669,7 +669,7 @@ $panel-color-6: #dc3545;
 .modal {
     .bg {
         position: fixed;
-        z-index: 9999999999;
+        z-index: 1000;
         top: 0;
         left: 0;
         width: 100%;
@@ -680,7 +680,7 @@ $panel-color-6: #dc3545;
     }
 
     .content {
-        z-index: 99999999999;
+        z-index: 1001;
         transition: 500ms;
         position: fixed;
         border-radius: 20px;
@@ -731,6 +731,7 @@ $panel-color-6: #dc3545;
             width: 100%;
             color: #000;
             padding: 15px;
+            position: relative;
 
             .table_2 {
                 display: grid;
