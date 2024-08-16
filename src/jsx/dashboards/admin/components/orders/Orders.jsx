@@ -29,6 +29,8 @@ export default function Orders() {
     const [date, setDate] = useState([new Date(), new Date()]);
     const [status, setStatus] = useState("");
     const [orderBy, setOrderBy] = useState("created_at");
+    const [orderMethod, setOrderMethod] = useState("desc");
+    const [orderID, setOrderID] = useState("");
     const [infoModalOpened, setInfoModalOpened] = useState(false);
     const [selectedInfoId, setSelectedInfoId] = useState(null);
 
@@ -199,6 +201,21 @@ export default function Orders() {
                             ]}
                         />
                     </div>
+                    <div className={'row'}>
+                        <h1 className={'label'}>Order method</h1>
+                        <Dropdown
+                            value={orderMethod}
+                            onChange={(e) => setOrderMethod(e.value)}
+                            options={[
+                                {value: "asc", label: 'ASC'},
+                                {value: "desc", label: 'DESC'},
+                            ]}
+                        />
+                    </div>
+                    <div className={'row'}>
+                        <h1 className={'label'}>Order ID</h1>
+                        <input className={'input'} placeholder={'Example : 1234'} type="number" onChange={(e) => setOrderID(e.target.value)}/>
+                    </div>
                     {
                         (drawerError !== '')
                             ? (
@@ -276,7 +293,7 @@ export default function Orders() {
                 count={data?.entities?.count}
                 loading={loading}
                 apiEndpoint={'admin/orders'}
-                apiAppend={`&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}`}
+                apiAppend={`&start_date=${formatDate(date[0])}&end_date=${formatDate(date[1])}&statuses=${status}&order_by=${orderBy}&order_method=${orderMethod}&order_id=${orderID}`}
             />
         </div>
     )

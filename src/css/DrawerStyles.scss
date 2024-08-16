@@ -1,3 +1,6 @@
+// Defining variables
+$ThemeColor: rgb(49, 101, 243);
+
 // Defining styles
 .drawer {
   .bg {
@@ -80,6 +83,27 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      .input {
+        width: 400px;
+        padding: .5rem;
+        color: $ThemeColor;
+        font-size: 18px;
+        font-weight: normal;
+        border: 1px solid $ThemeColor;
+        transition: .5s;
+
+        &::placeholder {color: $ThemeColor;}
+
+        &:focus {
+          background-color: $ThemeColor;
+          color: white;
+
+          &::placeholder {
+            color: white;
+          }
+        }
       }
     }
 
