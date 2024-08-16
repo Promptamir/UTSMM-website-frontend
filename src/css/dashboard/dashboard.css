@@ -1020,6 +1020,36 @@
   padding: 2em;
   color: white;
 }
+.user-dashboard .panel-orders .row-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.user-dashboard .panel-orders .row-filter .title {
+  font-weight: 700;
+  text-align: left;
+  color: black;
+  font-size: 24px;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-dashboard .panel-orders .row-filter .filtering-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgb(49, 101, 243);
+  border-radius: 0.5rem;
+  color: white;
+  flex-shrink: 0;
+  aspect-ratio: 1/1;
+}
 .user-dashboard .panel-orders .recent-orders {
   display: grid;
   grid-template-columns: 1fr 1fr;

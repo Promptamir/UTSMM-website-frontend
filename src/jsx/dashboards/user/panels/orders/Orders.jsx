@@ -10,11 +10,15 @@ import CreateNewBlogPopUp from "../../../../pop-ups/CreateNewBlogPopUp";
 import {useDispatch} from "react-redux";
 import RefilHistoryPopUt from "../../../../pop-ups/RefilHistoryPopUt";
 import HandleFetchError from "../../../../../lib/handleFetchError";
+import Pagination from "../../../../primaries/pagination";
+import Drawer from "../../../../primaries/drawer";
+import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import Dropdown from "react-dropdown";
 
 
 const Orders = () => {
 
-    const [orders, error, loading] = useFetch(`${BE_URL}/orders`)
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/orders`)
     const [selectedOrder, setSelectedOrder] = useState({});
     const [refileLoading, setRefileLoading] = useState(false);
     const [cancelLoading, setCancelLoading] = useState(false);
@@ -25,7 +29,7 @@ const Orders = () => {
 
     useEffect(() => {
         if (!loading) {
-            setSelectedOrder(orders.entities.orders[0])
+            setSelectedOrder(data.entities.orders[0])
         }
     }, [loading]);
 
@@ -44,19 +48,66 @@ const Orders = () => {
         return hours + ':' + minutes;
     }
 
+    const [isFilteringOpened, setFilteringOpened] = useState(false);
+    const [orderID, setOrderID] = useState("");
+    const [status, setStatus] = useState("");
+
     return (
         <section className="panel-orders">
             <div className="recent-orders row">
                 <div className="left">
+                    <div className={'row-filter'}>
+                        <h1 className={'title'}>Orders</h1>
+                        <button
+                            className={'filtering-btn'}
+                            onClick={() => setFilteringOpened(prevState => !prevState)}
+                        >
+                            <Icon icon="mi:filter" width={25} height={25}/>
+                        </button>
+                        <Drawer
+                            isOpened={isFilteringOpened}
+                            closeFn={() => setFilteringOpened(false)}
+                        >
+                            <div className={'row'}>
+                                <h1 className={'label'}>Status</h1>
+                                <Dropdown
+                                    value={status}
+                                    onChange={(e) => setStatus(e.value)}
+                                    options={[
+                                        {value: "-1", label: 'Canceled'},
+                                        {value: "0", label: 'Pending'},
+                                        {value: "1", label: 'Processing'},
+                                        {value: "2", label: 'In Progress'},
+                                        {value: "3", label: 'Partial'},
+                                        {value: "4", label: 'Completed'},
+                                        {value: "", label: 'All'},
+                                    ]}
+                                />
+                            </div>
+                            <div className={'row'}>
+                                <h1 className={'label'}>Order ID</h1>
+                                <input className={'input'} placeholder={'Example : 1234'} type="number"
+                                       onChange={(e) => setOrderID(e.target.value)}/>
+                            </div>
+                            <button onClick={() => {
+                                setFilteringOpened(false);
+                                setUrl(`${BE_URL}/orders?page=1&statuses=${status}&order_id=${orderID}`);
+                                refetch();
+                                setSelectedOrder({});
+                            }} className={'btn-sub'}>
+                                Filter
+                            </button>
+                        </Drawer>
+                    </div>
                     <div className="orders">
                         {
                             (loading)
                                 ? <h1>Loading</h1>
                                 : (error)
                                     ? <h1>There was an error while fetching the data</h1>
-                                    : (orders.entities.orders.length === 0)
+                                    : (data.entities.orders.length === 0)
                                         ? <h1>There is nothing to show</h1>
-                                        : orders.entities.orders.map((item, index) => (
+                                        : data.entities.orders.map((item, index) => (
                                             <div
                                                 onClick={() => setSelectedOrder(item)}
                                                 data-selected={(selectedOrder === item)}
@@ -77,7 +128,7 @@ const Orders = () => {
                                                 </div>
                                                 <div className={'order-row'}>
                                                     <h3 className={'order-row-title'}>Date</h3>
-                                                    <h6 className={'order-row-value'}>{new Date(item.created_at).toLocaleDateString()}</h6>
+                                                    <h6 className={'order-row-value'}>{(item.created_at) ? new Date(item.created_at).toLocaleDateString() : '-'}</h6>
                                                 </div>
                                                 <div className={'order-row'}>
                                                     <h3 className={'order-row-title'}>Status</h3>
@@ -87,6 +138,15 @@ const Orders = () => {
                                         ))
                         }
                     </div>
+                    <Pagination
+                        error={error}
+                        refetch={refetch}
+                        setUrl={setUrl}
+                        count={data?.entities?.count}
+                        loading={loading}
+                        apiEndpoint={'orders'}
+                        apiAppend={`&statuses=${status}&order_id=${orderID}`}
+                    />
                 </div>
                 <div className="right">
                     {
@@ -116,7 +176,7 @@ const Orders = () => {
                                                 </div>
                                                 <div className="property-right">
                                     <span>
-                                        {new Date(selectedOrder.created_at).toLocaleDateString()}
+                                        {(selectedOrder?.created_at) ? new Date(selectedOrder.created_at).toLocaleDateString() : '-'}
                                     </span>
                                                 </div>
                                             </div>
@@ -191,13 +251,13 @@ const Orders = () => {
                                                 <div className="time">
                                     <span>
                                         <Icon icon="ri:time-fill"/>
-                                        {getTime(selectedOrder?.created_at)}
+                                        {(selectedOrder?.created_at) ? getTime(selectedOrder?.created_at) : '-'}
                                     </span>
                                                 </div>
                                                 <div className="date">
                                     <span>
                                         <Icon icon="clarity:date-solid"/>
-                                        {getDate(selectedOrder?.created_at)}
+                                        {(selectedOrder?.created_at) ? getDate(selectedOrder?.created_at) : '-'}
                                     </span>
                                                 </div>
                                             </div>
