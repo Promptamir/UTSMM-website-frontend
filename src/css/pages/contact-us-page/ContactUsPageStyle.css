@@ -59,6 +59,9 @@
   display: flex;
   flex-direction: column;
 }
+.contact-us-page .form-section .left-animation {
+  pointer-events: none;
+}
 .contact-us-page .form-section .left .get-in-touch {
   display: flex;
   flex-direction: column;

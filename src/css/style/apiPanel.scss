@@ -1,0 +1,164 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.api-panel {
+  padding: 2rem;
+  width: 100%;
+
+  .inner {
+    background: $ColorPrimary;
+
+    border-radius: 2rem;
+    overflow: hidden;
+    
+    .top-side {
+      padding: 2rem;
+      border-bottom: 1px solid rgba(256,256,256,.2);
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 20px;
+
+      .item {
+        flex-shrink: 0;
+
+        .icon-holder {
+          color: white;
+          border-color: white;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 100%;
+          background: rgba(73, 118, 243, .2);
+          border: 1px solid;
+        }
+      }
+    }
+
+    .bottom-side {
+      padding: 2rem;
+
+      .title-3 {
+        margin: 20px 0;
+        font-size: 15px;
+        font-weight: normal;
+        color: white;
+      }
+
+      .info-holder {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+
+        .info {
+          padding: 1rem;
+          border-radius: 1rem;
+          border: 1px solid rgba(256,256,256,.2);
+          
+          .info-value {
+            display: block;
+            width: 100%;
+            font-weight: normal;
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 10px;
+            color: white;
+
+            a {
+              color: white;
+              text-decoration: underline;
+            }
+          }
+
+          .info-title {
+            color: white;
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+      .service-list {
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(256,256,256,.2);
+
+        .title {
+          text-align: left;
+          font-weight: bold;
+          font-size: 20px;
+          color: white;
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+
+          .item {
+            border: 1px solid rgba(256,256,256,.2);
+            padding: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: normal;
+            text-align: left;
+            color: white;
+            font-size: 15px;
+          }
+        }
+      }
+
+      .box {
+        margin: 20px 0;
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(256,256,256,.2);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .title {
+          text-align: left;
+          font-weight: bold;
+          font-size: 20px;
+          color: white;
+        }
+
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+
+          .item {
+            border: 1px solid rgba(256,256,256,.2);
+            padding: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: normal;
+            text-align: left;
+            color: white;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media query
+@media screen and (max-width: $MqSize) {
+  .api-panel .bottom-side .info-holder {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}

@@ -1,0 +1,102 @@
+// Importing part
+import Swal from "sweetalert2";
+import BE_URL from "../../../../../../lib/envAccess";
+import Modal from "../../../../../pop-ups/modal";
+import {useState} from "react";
+import {useFetch} from "../../../../../../lib/useFetch";
+import Dropdown from "react-dropdown";
+import {Icon} from "@iconify/react";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
+
+// Creating and exporting new category modal as default
+export default function NewCatModal({setCustomLoading, refresh, isOpened, closeFn}) {
+    // Getting data of platforms
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin/platforms`);
+
+    // Defining states of component
+    const [title, setTitle] = useState('');
+    const [platform_id, setPlatformID] = useState();
+
+    // Returning JSX
+    return (
+        <Modal isOpened={isOpened} closeFn={closeFn} title={'Create'}>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+
+                setCustomLoading(true);
+                closeFn();
+                fetch(`${BE_URL}/admin/categories`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                    },
+                    body: JSON.stringify({
+                        "title": title,
+                        "platform_id": platform_id
+                    })
+                })
+                    .then((data) => data.json())
+                    .then((data) => {
+                        setCustomLoading(false);
+                        HandleFetchError({
+                            data: data,
+                            lineBreak: false,
+                            callbackSuccess: (message) => {
+                                Swal.fire({icon: 'success', text: message})
+                                refresh();
+                            },
+                            callbackError: (message) => Swal.fire({icon: 'error', text: message})
+                        })
+                    })
+                    .catch(() => {
+                        setCustomLoading(false);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'There was an error while fetching the data'
+                        })
+                    })
+            }} className="form w-full">
+                <label htmlFor="title">Title</label>
+                <input
+                    minLength={5}
+                    maxLength={255}
+                    required
+                    onChange={(event) => setTitle(event.target.value)}
+                    type="text"
+                    name="title"
+                    className={'input'}
+                />
+                <label htmlFor="platform_id">Platform ID</label>
+                {
+                    (loading)
+                        ? (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginTop: '20px'
+                            }}>
+                                <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                            </div>
+                        ) : (error)
+                            ? <h1>There was an error while fetching the data</h1>
+                            : (
+                                <Dropdown
+                                    onChange={(item) => setPlatformID(item.value)}
+                                    options={data.entities.platforms.map(item => {
+                                        return {
+                                            value: item.id,
+                                            label : item.title
+                                        }
+                                    })}
+                                />
+                            )
+                }
+                <button disabled={loading} className="submit-btn">Submit</button>
+            </form>
+        </Modal>
+    );
+}

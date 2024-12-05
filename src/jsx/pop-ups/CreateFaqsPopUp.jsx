@@ -5,13 +5,12 @@ import { closePopUp } from "../../features/popUpReducer"
 import AdminPanelFiledset from "../dashboards/admin/components/tools/fieldset/AdminPanelFiledset"
 import Legend from "../dashboards/admin/components/tools/fieldset/Legend"
 import FieldBody from "../dashboards/admin/components/tools/fieldset/FieldBody"
-import { post } from "../../lib/useFetch"
-import { API } from "../../lib/envAccess"
-import { showError, showSuccess } from "../../lib/alertHandler"
+import {useState} from "react";
+import Swal from "sweetalert2";
+import BE_URL from "../../lib/envAccess";
 
 
-
-export default function CreateFaqsPopUp({ refresh }) {
+export default function CreateFaqsPopUp({ refresh, setLoading }) {
 
 
 
@@ -25,20 +24,52 @@ export default function CreateFaqsPopUp({ refresh }) {
     }
 
 
+    const [question, setQuestion] = useState('');
+    const [answer, setAnswer] = useState('');
+    const [tag, setTag] = useState('');
+    const [order, setOrder] = useState('');
+
     const handleFormSubmit = (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
 
-        post(API.ADMIN_DASHBOARD.SELECTED_FAQS.POST, formData)
-            .then(res => {
-                showSuccess(res).finally(end => {
-                    refresh()
-                    handleCloseButtonClick()
-                })
+        setLoading(true);
+        fetch(`${BE_URL}/admin/faqs`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest",
+                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            },
+            body: JSON.stringify({
+                "question": question,
+                "answer": answer,
+                "tag": tag,
+                "order": order
             })
-            .catch(err => {
-                const errors = err?.response?.data
-                showError(errors)
+        })
+            .then((data) => data.json())
+            .then(resp => {
+                setLoading(false);
+                if (resp.message === "Unauthenticated.") {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Unauthenticated.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: resp.message
+                    });
+                    refresh();
+                }
+            })
+            .catch(() => {
+                setLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'There was a problem fetching the data'
+                });
             })
 
     }
@@ -66,12 +97,45 @@ export default function CreateFaqsPopUp({ refresh }) {
                     </Legend>
                     <FieldBody>
                         <input
+                            onChange={(e) => setQuestion(e.target.value)}
+                            required
+                            minLength={10}
                             type="text"
                             name="question"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
-
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="ri:question-fill" />
+                        <span>Tag</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            onChange={(e) => setTag(e.target.value)}
+                            required
+                            minLength={3}
+                            maxLength={40}
+                            type="text"
+                            name="tag"
+                            defaultValue={""} />
+                    </FieldBody>
+                </AdminPanelFiledset>
+                <AdminPanelFiledset className={"create-faq-field-box"}>
+                    <Legend>
+                        <Icon icon="ri:question-fill" />
+                        <span>Order</span>
+                    </Legend>
+                    <FieldBody>
+                        <input
+                            onChange={(e) => setOrder(e.target.value)}
+                            required
+                            minLength={1}
+                            type="number"
+                            name="order"
+                            defaultValue={""} />
+                    </FieldBody>
+                </AdminPanelFiledset>
                 <AdminPanelFiledset className={"create-faq-field-box"}>
                     <Legend>
                         <Icon icon="fluent:text-12-filled" />
@@ -79,15 +143,17 @@ export default function CreateFaqsPopUp({ refresh }) {
                     </Legend>
                     <FieldBody>
                         <textarea
+                            onChange={(e) => setAnswer(e.target.value)}
+                            required
                             cols={10}
                             rows={10}
-                            type="number"
+                            minLength={10}
                             name="answer"
                             defaultValue={""} />
                     </FieldBody>
                 </AdminPanelFiledset>
                 <button className="submit">
-                    <span>Submit </span>
+                    <span>Submit</span>
                     <Icon icon="iconamoon:send-fill" />
                 </button>
             </div>

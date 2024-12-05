@@ -95,34 +95,8 @@ const eventsItems = [
 
 
 const RecentEvents = () => {
-
-
-    const [events, error, loading] =
-        useFetch(API.DASHBOARD.USER_EVENTS.GET)
-
-
     return (
         <section className="recent-events-container">
-            <div className="recent-events">
-
-                <div className="body">
-
-                    <VerticalTimeline>
-                        {
-                            events.map((item, index) => {
-                                switch (item.type) {
-                                    case "order":
-                                        return <NormalEvent
-                                            key={index}
-                                            data={item} />
-                                    // case "instagram-post": return <InstagramPostEvent data={item} />
-                                }
-                            })
-                        }
-
-                    </VerticalTimeline>
-                </div>
-            </div>
         </section>
 
     )

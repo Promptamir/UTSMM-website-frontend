@@ -1,15 +1,18 @@
 import { useDispatch } from "react-redux"
 import { closePopUp } from "../../features/popUpReducer"
 import { Icon } from "@iconify/react"
-import { SERVER } from "../../lib/envAccess"
+import BE_URL, { SERVER } from "../../lib/envAccess"
+import TablePaginations from "../cutsome-components/table/components/TablePaginations";
+import ResponsivePagination from "react-responsive-pagination";
+import {useState} from "react";
 
 
 
 
 
 
-const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
-
+const SelectPaymentPopup = ({resultFunction, currentSelected}) => {
+    const [currentPage, setCurrentPage] = useState(1);
 
 
     const dispatcher = useDispatch()
@@ -26,7 +29,13 @@ const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
 
 
 
-
+    const methods = [
+        "Payeer",
+        "Cryptomus",
+        "NowPayments",
+        "PerfectMoney",
+        "WebMoney"
+    ];
 
 
 
@@ -43,19 +52,20 @@ const SelectPaymentPopup = ({ methods, resultFunction, currentSelected }) => {
                     Select Payment Method
                 </h1>
             </div>
-            <div className="pop-up-body">
+            <div className="pop-up-body" style={{
+                height: '25vh',
+                overflow: 'auto'
+            }}>
                 {
                     methods.map((item, index) => {
                         return <div
-                            className={`item ${item?.name === currentSelected?.name}`}
+                            className={`item ${item === currentSelected}`}
                             key={index}
                             onClick={() => handleItemClick(item)}
                         >
-                            <img src={SERVER.BASE_URL + item.image} />
-
                             <span>{index} - </span>
                             <p>
-                                {item.name}
+                                {item}
                             </p>
                         </div>
                     })

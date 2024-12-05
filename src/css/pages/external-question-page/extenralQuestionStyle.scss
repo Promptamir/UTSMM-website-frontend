@@ -1,0 +1,85 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.external-question-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+  background: $ColorPrimary;
+
+  .centred-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .custom-table {
+    border: 1px solid white;
+    border-radius: 20px;
+    overflow: auto;
+
+
+    .header {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: $ColorPrimary;
+
+      .item {
+        background: $ColorPrimary;
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        padding: 15px;
+      }
+    }
+
+    .body .row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+
+      .item {
+        background-color: white;
+        white-space: nowrap;
+        font-size: 16px;
+        font-weight: normal;
+        color: black;
+        padding: 15px;
+        align-content: center;
+
+        &.text {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .id {
+          color: white;
+          background-color: orange;
+          width: fit-content;
+          padding-block: 10px;
+          padding-inline: 20px;
+          border-radius: 50rem;
+        }
+
+        .img {
+          width: 50px;
+          height: 50px;
+          aspect-ratio: 1/1;
+          object-fit: cover;
+          border-radius: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Media querys
+@media (max-width: 1024px) {
+  .external-question-page .custom-table .body .row,
+  .external-question-page .custom-table .header {
+    grid-template-columns: repeat(5, 200px);
+  }
+}

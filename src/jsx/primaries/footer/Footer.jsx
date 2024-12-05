@@ -7,7 +7,7 @@ import Lottie from "react-lottie-player"
 
 
 import footerAnimation from "../../../animations/main-page/footer-animation.json"
-import { useNavigate } from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 
 const Footer = () => {
@@ -30,35 +30,35 @@ const Footer = () => {
           Take your social media game to the next level with UTSMM!
         </h1>
         <div className="social-media">
-          <div className="item">
+          <Link style={{color: 'white'}} to={'/'} className="item">
             <Icon icon="iconoir:internet" />
             <span>WWW.UTSMM.COM</span>
-          </div>
-          <div className="item">
+          </Link>
+          <Link style={{color: 'white'}} to={'https://instagram.com/UT_SMM'} className="item">
             <Icon icon="formkit:instagram" />
             <span>@UT_SMM</span>
-          </div>
-          <div className="item">
+          </Link>
+          <Link style={{color: 'white'}} to={'https://telegram.com/UT_SMM'} className="item">
             <Icon icon="ic:twotone-telegram" />
             <span>@UT_SMM</span>
-          </div>
+          </Link>
         </div>
       </div>
       <div className="right">
         <ul>
           <h1>Quick Links</h1>
-          <li onClick={() => { handleClick("/faqs") }}>FAQ</li>
-          <li onClick={() => { handleClick("/services") }}>Services</li>
-          <li onClick={() => { handleClick("/contact-us") }}>Contact Us</li>
+          <Link style={{color: 'white'}} to={"/faqs"}>FAQ</Link>
+          <Link style={{color: 'white'}} to={"/services"}>Services</Link>
+          <Link style={{color: 'white'}} to={"/contact-us"}>Contact Us</Link>
         </ul>
 
         <ul>
           <h1>Support</h1>
-          <li>API DOCS</li>
-          <li>Tickets</li>
-          <li>Terms & Conditions</li>
-          <li>Privacy Policy</li>
-          <li>Refund Policy</li>
+          <Link style={{color: 'white'}} to={'/docs'}>API DOCS</Link>
+          <Link style={{color: 'white'}} to={'/tickets'}>Tickets</Link>
+          <Link style={{color: 'white'}} to={'/terms'}>Terms & Conditions</Link>
+          <Link style={{color: 'white'}} to={'/privacy'}>Privacy Policy</Link>
+          <Link style={{color: 'white'}} to={'/policy'}>Refund Policy</Link>
         </ul>
       </div>
       <img className="avatar" src={window.location.origin + '/6.svg'} alt="" />

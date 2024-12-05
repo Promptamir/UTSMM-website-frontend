@@ -1,46 +1,79 @@
 import { useState } from "react"
 import FiledSet from "../../../../../cutsome-components/Fieldset/FiledSet"
 import { Icon } from "@iconify/react"
-import SelectBox from "../../../../../cutsome-components/select-box/SelectBox"
-import { post } from "../../../../../../lib/useFetch"
-import { API } from "../../../../../../lib/envAccess"
 import Swal from "sweetalert2"
-import { showError } from "../../../../../../lib/alertHandler"
+import BE_URL from "../../../../../../lib/envAccess";
+import HandleFetchError from "../../../../../../lib/handleFetchError";
+
 const AddNewTicket = () => {
-
-
+    const [loading, setLoading] = useState(false);
+    const [subject, setSubject] = useState('');
+    const [id, setId] = useState('');
+    const [content, setContent] = useState('');
+    const [error, setError] = useState('');
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
-        Swal.fire({
-            title: "Are you sur for submiting ?",
-            showCancelButton: true,
-            cancelButtonColor: "red",
-            confirmButtonColor: "green",
-            icon: "question"
-        }).then(result => {
-            if (result.isConfirmed) {
-                post(API.DASHBOARD.USER_TICKET_SUBMIT.POST,
-                    formData)
-                    .then(response => {
+        let errArray = [];
 
-                        if (response.status === 200) {
-                            Swal.fire({
-                                title: "Your ticket Successfuly Submited! ",
-                                icon: "success"
-                            })
-                        }
-                    }).catch(err => {
+        setError('');
 
+        if (
+            (10 <= subject.length) && (subject.length <= 100) &&
+            (10 <= content.length) && (content.length <= 350) &&
+            (id.length === 16)
+        ) {
+            setError('');
+            errArray = [];
+
+            setLoading(true);
+            fetch(`${BE_URL}/tickets`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                },
+                body: JSON.stringify({
+                    "subject": subject,
+                    "anything_id": id,
+                    "content": content
+                })
+            })
+                .then((data) => data.json())
+                .then(resp => {
+                    setLoading(false);
+                    HandleFetchError({
+                        data: resp,
+                        lineBreak: false,
+                        callbackSuccess: () => Swal.fire({
+                            icon: 'success',
+                            text: 'The Ticket was submitted'
+                        }),
+                        callbackError: (message) => Swal.fire({
+                            icon: 'error',
+                            text: message
+                        })
                     })
-            }
-        })
+                })
+                .catch(() => {
+                    setLoading(false);
+                    setError('There was a problem fetching the data')
+                })
+        } else {
+            if (subject.length <= 10) {errArray.push('Minimum length of subject is 10 characters.')}
+            else if (subject.length >= 100) {errArray.push('Maximum length of subject is 100 characters.')}
 
+            if (content.length <= 10) {errArray.push('Minimum length of content is 10 characters.')}
+            else if (content.length >= 350) {errArray.push('Maximum length of content is 350 characters.')}
+
+            if (id.length !== 16) {errArray.push('Id should be 16 character.')}
+
+            if (errArray.length === 1) {setError(errArray[0]);}
+            else {setError(errArray.join(' & '))}
+        }
     }
-
-
-
 
     return (
         <form className="add-new-teicket" onSubmit={handleFormSubmit}>
@@ -54,28 +87,16 @@ const AddNewTicket = () => {
                         svg: <Icon icon="fluent:document-header-20-filled" />
                     }
                 }
-
+                onChange={(e) => setSubject(e.target.value)}
                 inputName={"subject"} />
-
 
             <FiledSet
                 isRequired={true}
                 fieldClassName={"add-new-ticket-field"}
                 legend={{ title: "order-id / Anything ID", svg: <Icon icon="fluent-mdl2:product" /> }}
                 inputName={"orderID"}
+                onChange={(e) => setId(e.target.value)}
             />
-
-
-            <FiledSet
-                isRequired={true}
-                fieldClassName={"add-new-ticket-field"}
-                legend={
-                    {
-                        title: "Request",
-                        svg: <Icon icon="mingcute:git-pull-request-fill" />
-                    }
-                }
-                inputName={"request"} />
 
 
             <FiledSet
@@ -84,9 +105,12 @@ const AddNewTicket = () => {
                 legend={{ title: "Message", svg: <Icon icon="ant-design:message-filled" /> }}
                 inputName={"message"}
                 inputType={"textarea"}
+                onChange={(e) => setContent(e.target.value)}
             />
 
-            <button className="submit-button">
+            {error !== '' && <div className={'input-error'}>{error}</div>}
+
+            <button disabled={loading} className="submit-button">
                 <span>
                     Submit Ticket
                 </span>

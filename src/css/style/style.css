@@ -8,6 +8,7 @@ html {
 }
 
 header {
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,19 +16,23 @@ header {
   padding: 0.5em 7em;
   border-radius: 0;
   text-transform: uppercase;
-  z-index: 10;
   transition: all 0.5s linear;
   position: fixed;
   width: 100%;
   left: 0;
   right: 0;
+  z-index: 900;
   max-width: 1400px;
+  height: 100px;
   transform: translateX(-50%);
   top: 0;
   left: 50%;
   border-radius: 0 0 100rem 100rem !important;
 }
 header .menu {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
   display: flex;
   font-weight: bold;
   align-items: center;
@@ -35,6 +40,7 @@ header .menu {
   gap: 0.25rem;
 }
 header .menu li {
+  flex-shrink: 0;
   padding: 0.5rem 1em;
   border-radius: 100rem;
   display: flex;
@@ -302,6 +308,7 @@ footer .avatar {
 }
 @media only screen and (max-width: 1250px) {
   header {
+    overflow: visible;
     padding: 0em 4em;
     padding-right: 4em;
     padding-left: 4em;
@@ -322,7 +329,6 @@ footer .avatar {
     pointer-events: none;
   }
   header .right ul {
-    width: -moz-max-content;
     width: max-content;
     flex-direction: column;
     align-items: start;
@@ -350,8 +356,7 @@ footer .avatar {
   }
   header .right-true {
     background-color: rgba(0, 0, 0, 0.5);
-    -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     pointer-events: all;
   }
   header .right-true ul {
@@ -411,4 +416,6 @@ footer .avatar {
     z-index: 0;
     opacity: 0.2;
   }
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */

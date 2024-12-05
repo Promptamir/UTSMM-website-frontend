@@ -1,0 +1,209 @@
+// Variables
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.user-panel-updates {
+  width: 100%;
+  padding: 2em;
+
+  .filter-divider {
+    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 20px;
+  }
+
+  .submit-btn {
+    background-color: white;
+    color: $ColorPrimary;
+    padding: .5rem;
+    border-radius: .5rem;
+    width: calc(100% - 1rem);
+    display: block;
+    text-align: center;
+  }
+
+  .filter-input {
+    grid-column: span 2;
+    padding: 1em;
+    border-radius: 1em;
+    outline: none;
+    border: none;
+    height: 40px;
+    background-color: white;
+  }
+
+  .dropdown-control {
+    border-radius: .5em;
+    height: 40px;
+  }
+
+  .centred-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    height: 80vh;
+    overflow: auto;
+    border-radius: 1rem;
+
+    .head {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+
+      .item {
+        color: white;
+        background-color: $ColorPrimary;
+        font-weight: normal;
+        font-size: 16px;
+        padding: 2em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .body {
+      .service-update-item {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+
+        .service-update-col {
+          color: $ColorPrimary;
+          font-weight: normal;
+          font-size: 16px;
+          padding: 2em;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+.payment-method-modal-body button {
+  background-color: $ColorPrimary;
+  padding: 10px;
+  border-radius: 20px;
+  display: block;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 20px;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 20%;
+  }
+}
+
+.payment-method-modal-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  & input {
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px;
+    border: 1px solid $ColorPrimary;
+    transition: 500ms;
+
+    &:focus {
+      background-color: $ColorPrimary;
+      color: white;
+    }
+
+    &:focus::placeholder {
+      color: white;
+    }
+
+    &::placeholder {
+      color: $ColorPrimary;
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+}
+
+.form-input-error {
+  background-color: rgba(255, 0, 0, .2);
+  color: red;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.form-input-succses {
+  background-color: rgba(0, 255, 13, 0.2);
+  color: rgba(0,255,13);
+  border: 1px solid rgba(0,255,13);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.log-out {
+  display: block;
+  background-color: #152349;
+  padding: 10px 20px;
+  text-align: left;
+  border-radius: 20px;
+  transition: 500ms;
+
+  &:hover {background-color: #0a1225;}
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 20%;
+  }
+}
+
+.error {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.submit-button:disabled {
+  opacity: 50%;
+  pointer-events: none;
+}
+
+// Media querys
+@media screen and (max-width: 1024px) {
+  .user-panel-updates {
+    .filter-divider {
+      grid-template-columns: repeat(1, 1fr);
+
+      .filter-input {
+        grid-column: span 1;
+      }
+    }
+
+    .list {
+      .head {grid-template-columns: repeat(4, 200px);}
+      .body {
+        .service-update-item {grid-template-columns: repeat(4, 200px);}
+      }
+    }
+  }
+}

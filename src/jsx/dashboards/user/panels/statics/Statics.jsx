@@ -6,7 +6,7 @@
 import { FAKE_CATEGORY, FAKE_SERVICES } from "../../../../fakeData/FAKE_DATA"
 
 
-// SvG 
+// SvG
 import rocket from "../../../../../images/auth-page/rocket.svg"
 import statisticsSvg from "../../../../../images/panel/dashboad/statistics/back.svg"
 
@@ -30,7 +30,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 
 
-// React Chart.js 2 
+// React Chart.js 2
 import {
     Chart as ChartJS,
     ArcElement,
@@ -53,6 +53,8 @@ import MaxLineText from "../../../../cutsome-components/Text/MaxLineText"
 import { Icon } from "@iconify/react"
 import UserSection from "./components/user/UserSection"
 import SavedServices from "./components/saved-services/SavedServices"
+import {useFetch, usePost} from "../../../../../lib/useFetch";
+import BE_URL, {API} from "../../../../../lib/envAccess";
 
 
 ChartJS.register(
@@ -80,19 +82,41 @@ ChartJS.defaults.plugins.legend.align = "start"
 
 
 const Statics = () => {
-
-
+    const [data, error, loading] = useFetch(`${BE_URL}/user-index`);
+    const [savedServicesData, savedServicesError, savedServicesLoading, setUrl, refreshData] = useFetch(`${BE_URL}/user/favorite-services`);
 
     return (
         <section className="statics">
 
-            <UserQuickView />
+            {
+                (loading)
+                    ? (
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: "center", width: '100%', padding: '20px'}}>
+                          <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                      </div>
+                    ) : (error)
+                        ? <h1>There was an error while fetching the data</h1>
+                        : <UserQuickView
+                            orders={data.entities.total_orders}
+                            spend={data.entities.total_spend}
+                            balance={data.entities.balance}
+                            activeOrders={data.entities.active_orders}
+                        />
+            }
 
-            <UserSection />
 
 
 
-            <SavedServices />
+            {
+                (savedServicesLoading)
+                    ? (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: "center", width: '100%', padding: '20px'}}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40} />
+                        </div>
+                    ) : (savedServicesError)
+                        ? <h1>There was an error while fetching the data</h1>
+                        : <SavedServices refresh={refreshData} data={savedServicesData.entities.services} />
+            }
 
 
 

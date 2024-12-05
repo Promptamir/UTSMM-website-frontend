@@ -1,15 +1,11 @@
-let SERVER_URL = window.origin.includes("localhost")
-  ? `${window.origin.replace(":3000", "")}:3001`
-  : window.origin;
-
-console.log(SERVER_URL);
+let SERVER_URL = 'https://back.utsmm.com/api';
 export const CLIENT = {
   BASE_URL: window.location.origin,
 };
 
 export const SERVER = {
   BASE_URL: SERVER_URL,
-  API_URL: SERVER_URL + "/api/",
+  API_URL: SERVER_URL + "api/",
   ADMIN_PANEL_API_URL: SERVER_URL + "/api/admin/dashboard/",
 };
 
@@ -27,8 +23,8 @@ export const API = {
     GET: SERVER.API_URL + "countries/",
   },
   AUTH: {
-    LOGIN: SERVER.API_URL + "auth/login",
-    SIGNUP: SERVER.API_URL + "auth/register",
+    LOGIN: SERVER.API_URL + "login",
+    SIGNUP: SERVER.API_URL + "register",
   },
   DASHBOARD: {
     QUICK_VIEW: {
@@ -267,3 +263,9 @@ export const API = {
     },
   },
 };
+
+// Defining Backends url
+const BE_URL = "https://back.utsmm.com/api"
+
+// Exporting the back end url
+export default BE_URL;

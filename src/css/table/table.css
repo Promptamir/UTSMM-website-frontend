@@ -55,6 +55,30 @@
 .table .table-body .row .property .property-body img {
   max-width: 4rem;
 }
+.table .table-body .row .property .property-body[data-refile-status=reg] {
+  padding: 1rem;
+  background-color: yellow;
+  color: black;
+  width: 100%;
+  text-align: center;
+  border-radius: 0.5rem;
+}
+.table .table-body .row .property .property-body[data-refile-status=rej] {
+  padding: 1rem;
+  background-color: red;
+  color: black;
+  border-radius: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+.table .table-body .row .property .property-body[data-refile-status=com] {
+  padding: 1rem;
+  background-color: green;
+  width: 100%;
+  text-align: center;
+  color: white;
+  border-radius: 0.5rem;
+}
 .table .table-body .row .property .property-header {
   display: none;
 }
@@ -112,6 +136,7 @@
   .table .table-body {
     overflow: auto;
     grid-template-columns: 1fr;
+    width: 100%;
   }
   .table .table-body .row {
     gap: 0;
@@ -143,4 +168,6 @@
   .table .table-body .row .property:last-child .property-header {
     border-radius: 0 0 0.5rem 0.5rem;
   }
-}/*# sourceMappingURL=table.css.map */
+}
+
+/*# sourceMappingURL=table.css.map */

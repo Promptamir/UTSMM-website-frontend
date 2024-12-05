@@ -1,20 +1,25 @@
-import { useState } from "react"
+import {useState} from "react"
 import Dashboard from "./components/dashboard/Dashboard"
-import { Icon } from "@iconify/react"
+import {Icon} from "@iconify/react"
 import Services from "./components/services/Services"
-import Users from "./components/users/Users";
-import ContactsUs from "./components/contact-us/ContactsUs";
 import Faqs from "./components/faqs/Faqs";
 import Blogs from "./components/blogs/Blogs";
 import Tickets from "./components/tickets/Tickets";
 import Economy from "./components/economy/Economy";
 import Orders from "./components/orders/Orders";
 import Platforms from "./components/platforms/Platforms";
-import PaymentMethods from "./components/payment-methods/PaymentMethods";
+import CommentPage from './components/comment/commentPage';
+import Settings from "./components/settings/Settings";
+import Categories from "./components/categories/Categories";
+import HotCategories from "./components/hot-categories/HotCategories";
+import Question from "./components/question/Question";
+import ExternalReviews from "./components/external-reviews/externalReviewsPage";
+import RefileOrders from "./components/refile-orders/RefileOrders";
+import {useFetch} from "../../../lib/useFetch";
+import BE_URL from "../../../lib/envAccess";
+import Payments from "./components/payments/Payments";
 
 const AdminDashboard = () => {
-
- 
     const menu = [
         {
             title: "Dashboard",
@@ -32,14 +37,19 @@ const AdminDashboard = () => {
             component: <Orders />
         },
         {
+            title: "Payments",
+            svg: <Icon icon="ri:dashboard-fill" />,
+            component: <Payments />
+        },
+        {
+            title: "Refiled Orders",
+            svg: <Icon icon="ri:dashboard-fill" />,
+            component: <RefileOrders />
+        },
+        {
             title: "Tickets",
             svg: <Icon icon="majesticons:tickets" />,
             component: <Tickets />
-        },
-        {
-            title: "Users",
-            svg: <Icon icon="mdi:users" />,
-            component: <Users />
         },
         {
             title: "Blogs",
@@ -52,19 +62,9 @@ const AdminDashboard = () => {
             component: <Faqs />
         },
         {
-            title: "Contact Us",
-            svg: <Icon icon="mdi:support" />,
-            component: <ContactsUs />
-        },
-        {
             title: "Economy",
             svg: <Icon icon="tdesign:money" />,
             component: <Economy />
-        },
-        {
-            title: "Payment Methods",
-            svg:<Icon icon="fluent:payment-48-filled" />,
-            component: <PaymentMethods/>
         },
         {
             title: "Platforms",
@@ -74,35 +74,76 @@ const AdminDashboard = () => {
         {
             title: "Setting",
             svg: <Icon icon="ant-design:setting-filled" />,
-            component: <Dashboard />
+            component: <Settings />
+        },
+        {
+            title: "Comment",
+            svg: <Icon icon="ant-design:message-filled" />,
+            component: <CommentPage />
+        },
+        {
+            title: "Categories",
+            svg: <Icon icon="bx:category-alt" />,
+            component: <Categories />
+        },{
+            title: "Hot Categories",
+            svg: <Icon icon="bx:category-alt" />,
+            component: <HotCategories />
+        },
+        {
+            title: "Questions",
+            svg: <Icon icon="bi:question" />,
+            component: <Question />
+        },
+        {
+            title: 'External reviews',
+            svg: <Icon icon="mage:preview-circle" />,
+            component: <ExternalReviews />
         }
     ]
-
     const [selectedMenu, setSelectedMenu] = useState(menu[0])
 
+    const [data, error, loading, setUrl, refreshData, refetch] = useFetch(`${BE_URL}/admin-index`);
 
     return (
         <main className="admin-dashboard">
-            <nav>
-                {
-                    menu.map((item, index) => {
-                        return <div
-                            onClick={() => { setSelectedMenu(item) }}
-                            key={index}
-                            className={`item selected-${item.title === selectedMenu.title}`}
-                        >
-                            {item.svg}
-                            <span>
+            {
+                (loading)
+                    ? (
+                        <div className={'loading-full-screen'}>
+                            <Icon icon={'eos-icons:loading'} width={40} href={40}/>
+                        </div>
+                    ) : (error)
+                        ? (
+                            <div className={'error-full-screen'}>
+                                <p>There was an error while fetching the data</p>
+                            </div>
+                        ) : (
+                            <>
+                                <nav>
+                                    {
+                                        menu.map((item, index) => {
+                                            return <div
+                                                onClick={() => {
+                                                    setSelectedMenu(item)
+                                                }}
+                                                key={index}
+                                                className={`item selected-${item.title === selectedMenu.title}`}
+                                            >
+                                                {item.svg}
+                                                <span>
                                 {item.title}
                             </span>
-                        </div>
-                    })
-                }
-            </nav>
-
-            <section className="content">
-                {selectedMenu.component}
-            </section>
+                                            </div>
+                                        })
+                                    }
+                                </nav>
+                                <section className="content">
+                                    {selectedMenu.component}
+                                </section>
+                            </>
+                        )
+            }
         </main>
     )
 }

@@ -1,7 +1,10 @@
 import { Icon } from '@iconify/react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useFetcher, useLocation, useNavigate } from 'react-router-dom';
+import {Link, useFetcher, useLocation, useNavigate} from 'react-router-dom';
+import {useFetch} from "../../../lib/useFetch";
+import BE_URL from "../../../lib/envAccess";
+import {Helmet} from "react-helmet";
 const Header = (
     {
         userPanelMenuState,
@@ -12,19 +15,14 @@ const Header = (
 
 ) => {
 
+    const tokenExists = localStorage.getItem('token');
 
-
-
+    const [data, error, loading, setUrl, refresh] = useFetch(`${BE_URL}/general-configs`);
 
     const menuList = [
         {
-            title: "Home",
-            route: "/home",
-            icon: <Icon icon="majesticons:home" />
-        },
-        {
-            title: "Account",
-            route: "/auth",
+            title: (tokenExists) ? 'Dashboard' : 'Account',
+            route: (tokenExists) ? "/user/dashboard/Statics" : '/auth/login',
             icon: <Icon icon="mdi:account" />
         },
         {
@@ -42,16 +40,6 @@ const Header = (
             route: "/about-us",
             icon: <Icon icon="mdi:about" />
         },
-        // {
-        //     title: "API",
-        //     route: "/api",
-        //     icon: <Icon icon="ic:twotone-api" />
-        // },
-        {
-            title: "Contact Us",
-            route: "/contact-us",
-            icon: <Icon icon="entypo:network" />
-        },
         {
             title: "Services",
             route: "/services",
@@ -62,7 +50,6 @@ const Header = (
             route: "/admin/dashboard",
             icon: <Icon icon="fluent:data-pie-24-filled" />
         }
-
     ]
 
 
@@ -132,17 +119,22 @@ const Header = (
 
     return (
         <header style={headerStyle}>
+            {
+                (!loading && !error)
+                    ? (
+                        <Helmet>
+                            <meta name={'keywords'} content={Object.values(data.entities)[0].keywords.join(',')} />
+                            <meta name={'description'} content={Object.values(data.entities)[0].seo_description} />
+                        </Helmet>
+                    ) : false
+            }
             <div className="left">
-                <img
-                    src={require("../../../images/header/logo.png")}
-                    className="logo" />
+                <Link to={'/'}>
+                    <img src={require("../../../images/header/logo.png")} className="logo"/>
+                </Link>
             </div>
             <div className={`right right-${mainMenuState}`}>
-                <ul className={`menu`}>
-                    <Icon
-                        onClick={() => setMainMenuState(false)}
-                        className='menu-close'
-                        icon="zondicons:close-solid" />
+                <ul onClick={toggleMenu} className={`menu`}>
                     {
                         menuList.reverse().map((item, index) => {
                             return <li
@@ -164,9 +156,6 @@ const Header = (
                 onClick={toggleMenu}
                 className='menu-icon'
                 icon="ep:menu" />
-
-
-
         </header>
     )
 }

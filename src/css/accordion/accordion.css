@@ -51,10 +51,11 @@
   padding-bottom: 2em;
 }
 
-.accordion-true {
-  opacity: 1;
-  background-color: white;
+.accordion-true .content{
+  overflow: visible;
+  height: 100px;
 }
+
 .accordion-true .accordion-header {
   color: #0d4bf4;
   border-bottom: 2px solid rgba(105, 142, 243, 0.137254902);

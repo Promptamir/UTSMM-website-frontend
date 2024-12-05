@@ -3,43 +3,25 @@ import React from 'react'
 import { useFetch } from '../../../../../../lib/useFetch'
 import { API } from '../../../../../../lib/envAccess'
 
-export default function QuickView() {
-
-    const [data , error ,loading] = useFetch(API.ADMIN_DASHBOARD.QUICK_VIEW.GET)
-
-
+export default function QuickView({orders,countOfOrders,income,customers}) {
     return (
         <div className="quick-view">
             <div className="item progressing">
                 <div className="item-header">
-                    Orders Received
+                    Orders
                 </div>
                 <div className="item-body">
                     <Icon icon="material-symbols:order-play" />
-                    <span>{data?.ordersReceived?.totalOrders}</span>
-                </div>
-                <div className="item-footer">
-                    <span>Completed Orders</span>
-                    <span>
-                        <Icon icon="subway:up-2" />
-                        {data?.ordersReceived?.completedOrders}
-                    </span>
+                    <span>{orders}</span>
                 </div>
             </div>
             <div className="item progressing">
                 <div className="item-header">
-                    Total Services
+                    Success orders
                 </div>
                 <div className="item-body">
                     <Icon icon="icon-park-solid:sales-report" />
-                    <span>{data?.totalServices?.total}</span>
-                </div>
-                <div className="item-footer">
-                    <span>Platforms</span>
-                    <span>
-                        <Icon icon="subway:up-2" />
-                        {data?.totalServices?.platforms}
-                    </span>
+                    <span>{countOfOrders}</span>
                 </div>
             </div>
             <div className="item regressing">
@@ -48,14 +30,7 @@ export default function QuickView() {
                 </div>
                 <div className="item-body">
                     <Icon icon="healthicons:money-bag" />
-                    <span>${data?.income?.total}</span>
-                </div>
-                <div className="item-footer">
-                    <span>This Month</span>
-                    <span>
-                        <Icon icon="subway:up-2" />
-                        ${data?.income?.thisMonth}
-                    </span>
+                    <span>${income}</span>
                 </div>
             </div>
             <div className="item regressing">
@@ -64,14 +39,7 @@ export default function QuickView() {
                 </div>
                 <div className="item-body">
                     <Icon icon="carbon:user-filled" />
-                    <span>{data?.customers?.total}</span>
-                </div>
-                <div className="item-footer">
-                    <span>This Month</span>
-                    <span>
-                        <Icon icon="subway:up-2" />
-                        +{data?.customers?.thisMonth}
-                    </span>
+                    <span>{customers}</span>
                 </div>
             </div>
         </div>

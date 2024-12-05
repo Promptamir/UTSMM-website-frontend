@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import {  SERVER } from '../../../lib/envAccess';
+import BE_URL, {  SERVER } from '../../../lib/envAccess';
 
 
 
@@ -11,36 +11,21 @@ import Introduction from './sections/introduction/Introduction';
 import Reviews from './sections/reviews/Reviews';
 import Faqs from './sections/faqs/Faqs';
 import WhyChooseUs from './sections/why-choose-us/WhyChooseUs';
-
-
-
-axios.defaults.baseURL = SERVER.API_URL
-
+import {useFetch} from "../../../lib/useFetch";
 
 
 const MainPage = () => {
 
-
-
+    const [data, error, loading] = useFetch(`${BE_URL}/index`);
 
     return (
         <main className="main-page">
-
             <Poster />
-
-            {/* <MainBackground /> */}
-
             <WhyChooseUs />
-
-            <Introduction />
-
-            <Reviews />
-
-            <Blogs />
-
-            <Faqs />
-
-
+            <Introduction data={data} error={error} loadingAPI={loading} />
+            <Reviews data={data} error={error} loading={loading} />
+            <Blogs data={data} error={error} loading={loading} />
+            <Faqs data={data} error={error} loading={loading} />
         </main >
     )
 }

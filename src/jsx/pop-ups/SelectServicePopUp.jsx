@@ -115,13 +115,6 @@ const SelectServicePopUp = ({ currentSelected, resultFunction }) => {
 
     }, [])
 
-    console.log(hugeProccess);
-
-
-
-
-
-
 
     return (
         <div className="select-service-pop-up">

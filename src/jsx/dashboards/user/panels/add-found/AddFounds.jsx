@@ -1,15 +1,8 @@
 import React, { useState } from 'react'
-
-
-
-
 import payAniamtion from "../../../../../animations/pay.json"
 import amountOfMoneyAnimation from "../../../../../animations/amount-money.json"
 import paymentMethodsAnimation from "../../../../../animations/payment-methods.json"
 import Lottie from 'react-lottie-player'
-
-
-
 import { Icon } from '@iconify/react'
 import { useDispatch } from 'react-redux'
 import { showPopUp } from '../../../../../features/popUpReducer'
@@ -17,36 +10,21 @@ import { SELECT_PAYMENT_METHOD_POP_UP } from '../../../../pop-ups/Constaints'
 import SelectPaymentPopup from '../../../../pop-ups/SelectPaymentPopup'
 import { useEffect } from 'react'
 import SelectAmountOfMoney from '../../../../pop-ups/SelectAmountOfMoney'
-import { post, useFetch, usePost } from '../../../../../lib/useFetch'
-import { API, SERVER } from '../../../../../lib/envAccess'
+import {useFetch} from '../../../../../lib/useFetch'
 import Swal from "sweetalert2"
-
-import { showError } from '../../../../../lib/alertHandler'
-
-
-
-
+import BE_URL from "../../../../../lib/envAccess";
+import parse from 'html-react-parser';
+import Modal from "../../../../pop-ups/modal";
 
 const AddFounds = () => {
-
-    const [paymentMethods, methodError, methodLoading] = useFetch(
-        API.DASHBOARD.USER_PAYMENT_METHODS.GET
-    )
-    const [checkout, checkoutError, checkoutLoading, createCheckout] = usePost(API.DASHBOARD.USER_PAYMENT_CHECKOUT.POST)
-
     const [selectedMethod, setSelectedMethod] = useState()
-
+    const [currentStep, setStep] = useState(1)
+    const dispatcher = useDispatch()
     const [amountOfMoney, setAmountOfMoney] = useState({
         amount: 0,
         fee: 0,
         total: 0
     })
-
-    const [currentStep, setStep] = useState(1)
-
-    const dispatcher = useDispatch()
-
-
 
     const openSelectPaymentPopup = () => {
 
@@ -58,7 +36,6 @@ const AddFounds = () => {
             type: SELECT_PAYMENT_METHOD_POP_UP,
             duration: 2000,
             component: <SelectPaymentPopup
-                methods={paymentMethods}
                 resultFunction={resultFunction}
                 currentSelected={selectedMethod} />
         }))
@@ -75,11 +52,10 @@ const AddFounds = () => {
             duration: 2000,
             component: <SelectAmountOfMoney
                 resultFunction={resultFunction}
-                feePercentage={0.02}
+                feePercentage={0}
             />
         }))
     }
-
 
     const stepIcon = (counter) => {
         if (counter < currentStep) {
@@ -90,8 +66,6 @@ const AddFounds = () => {
 
 
     }
-
-
     const isCompleted = (stepIndex) => {
         if (stepIndex < currentStep) {
             return "completed"
@@ -100,8 +74,6 @@ const AddFounds = () => {
             return ""
         }
     }
-
-
     const isCurrentStep = (stepIndex) => {
         if (stepIndex === currentStep) {
             return "currnet-step"
@@ -109,8 +81,6 @@ const AddFounds = () => {
             return ""
         }
     }
-
-
     useEffect(() => {
 
         if (selectedMethod) setStep(2)
@@ -118,14 +88,7 @@ const AddFounds = () => {
 
     }, [selectedMethod, amountOfMoney])
 
-
-
-
     async function handlePayButtonSubmit() {
-
-
-
-
         Swal.fire({
             title: "Continue for paying?",
             text: "click yes for continue!",
@@ -136,67 +99,121 @@ const AddFounds = () => {
             confirmButtonText: "Yes, continue"
         }).then((result) => {
             if (result.isConfirmed) {
-                post(API.DASHBOARD.USER_PAYMENT_CHECKOUT.POST,
-                    {
-                        method: selectedMethod,
-                        amount: amountOfMoney
-                    }
-                ).then(response => {
-
-                    const { payMethod, url, method, body } = response.data
-                    switch (payMethod) {
-                        case "cryptomous": {
+                if (selectedMethod === "Payeer") {
+                    fetch(`${BE_URL}/payeer-payments`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        },
+                        body: JSON.stringify({"amount": amountOfMoney.total})
+                    })
+                        .then((data) => data.json())
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
+                        .catch(() => {
                             Swal.fire({
-                                title: "Open Link, and pay!",
-                                text: url,
-                                icon: 'info',
-                                confirmButtonText: "Open link"
-                            }).then(result => {
-                                window.open(url, "_blank")
+                                icon: 'error',
+                                text: 'There was an error while fetching the data'
                             })
-                            break;
-                        }
-                        case "perfectmoney": {
+                        })
+                } else if (selectedMethod === "Cryptomus") {
+                    fetch(`${BE_URL}/cryptomus-payments`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        },
+                        body: JSON.stringify({"amount": amountOfMoney.total})
+                    })
+                        .then((data) => data.json())
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
+                        .catch(() => {
                             Swal.fire({
-                                title: "Your Payment Ready To go!",
-                                text: "in order for continue for final step , click to open link button",
-                                icon: 'info',
-                                confirmButtonText: "Open link"
-                            }).then(result => {
-                                const form = document.createElement("form");
-                                form.method = method || "POST";
-                                form.action = url;
-                                form.target = "_blank"
-                                for (const key in body) {
-                                    if (body.hasOwnProperty(key)) {
-                                        const input = document.createElement("input");
-                                        input.type = "hidden";
-                                        input.name = key;
-                                        input.value = body[key];
-                                        form.appendChild(input);
-                                    }
-                                }
-                                document.body.appendChild(form);
-                                form.submit();
+                                icon: 'error',
+                                text: 'There was an error while fetching the data'
                             })
-                            break ;
-                        }
-                    }
+                        })
+                } else if (selectedMethod === "NowPayments") {
+                    fetch(`${BE_URL}/nowpayments-payments`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        },
+                        body: JSON.stringify({"amount": amountOfMoney.total})
+                    })
+                        .then((data) => data.json())
+                        .then((data) => window.open(data.entities.payment_page_url, '_self').focus())
+                        .catch(() => {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'There was an error while fetching the data'
+                            })
+                        })
+                } else if (selectedMethod === "PerfectMoney") {
+                    fetch(`${BE_URL}/perfectmoney-payments`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        },
+                        body: JSON.stringify({"amount": amountOfMoney.total})
+                    })
+                        .then((data) => data.json())
+                        .then((data) => {
+                            const formStr = data.entities.payment_form;
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(formStr, 'text/html');
+                            const formElement = doc.querySelector('form');
+                            document.body.appendChild(formElement);
 
+                            formElement.submit();
+                        })
+                        .catch(() => {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'There was an error while fetching the data'
+                            })
+                        })
+                } else if (selectedMethod === "WebMoney") {
+                    fetch(`${BE_URL}/webmoney-payments`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        },
+                        body: JSON.stringify({"amount": amountOfMoney.total})
+                    })
+                        .then((data) => data.json())
+                        .then((data) => {
+                            const formStr = data.entities.payment_form;
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(formStr, 'text/html');
+                            const formElement = doc.querySelector('form');
+                            document.body.appendChild(formElement);
 
-
-                }).catch(err => {
-                    const response = err?.response?.data
-                    if (response) {
-                        showError(response, "Somthing Wrong...")
-                    }
-                })
-
+                            formElement.submit();
+                        })
+                        .catch((data) => {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'There was an error while fetching the data'
+                            })
+                        })
+                }
             }
         });
     }
-
-
 
     return (
         <section className='panel-add-founds'>
@@ -237,7 +254,7 @@ const AddFounds = () => {
                                 </legend>
                                 <div className="content">
                                     <h1>
-                                        {selectedMethod?.name || "Click Here"}
+                                        {selectedMethod || "Click Here"}
                                     </h1>
                                 </div>
                             </fieldset>
@@ -325,21 +342,6 @@ const AddFounds = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="avaialble-methods-intro">
-                {paymentMethods.map((item, index) => {
-                    return <div className="item" key={index}>
-                        <div className="item-header">
-                            <img src={SERVER.BASE_URL + item.image} />
-                            <span>{item.name}</span>
-                        </div>
-                        <div className="item-body">
-                            <p>
-                                {item.description}
-                            </p>
-                        </div>
-                    </div>
-                })}
             </div>
         </section>
     )

@@ -15,11 +15,14 @@ export function useFetch(defaultUrl, deafultValue) {
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
     const navigator = useNavigate()
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
+    const [val ,setVal] = useState(0);
 
     function refreshData() {
         setRefresh(!refresh)
     }
+
+    function refetch() {setVal(prevState => prevState + 1)}
 
     useEffect(() => {
         (
@@ -29,14 +32,16 @@ export function useFetch(defaultUrl, deafultValue) {
                     const response = await axios.get(url, {
                         method: "get",
                         headers: {
-                            "token": token
+                            "Content-Type": "application/json",
+                            "Accept" : "application/json",
+                            "X-Requested-With" : "XMLHttpRequest",
+                            "Authorization" : `Bearer ${JSON.parse(localStorage.getItem('token'))}`
                         },
                     })
                     setData(response.data)
                 } catch (err) {
-                    if (err?.response?.status === 403) {
-                        sessionStorage.removeItem("token")
-                        navigator("/auth")
+                    if (err?.response?.data.message === "Unauthenticated") {
+                        navigator('/auth/login');
                     }
                     setError(err)
                 } finally {
@@ -44,9 +49,9 @@ export function useFetch(defaultUrl, deafultValue) {
                 }
             }
         )()
-    }, [url, refresh])
+    }, [url, refresh, val])
 
-    return [data, error, loading, setUrl, refreshData]
+    return [data, error, loading, setUrl, refreshData, refetch]
 
 }
 
@@ -57,7 +62,7 @@ export function usePost(url) {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
 
@@ -103,7 +108,7 @@ export function usePost(url) {
 
 export async function post(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -116,7 +121,6 @@ export async function post(url, postData) {
     }).then(response => {
         return response
     }).catch(err => {
-        console.log(err)
         throw err
     })
 
@@ -124,7 +128,7 @@ export async function post(url, postData) {
 
 export async function put(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -144,7 +148,7 @@ export async function put(url, postData) {
 
 export async function deletE(url, deleteData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -165,7 +169,7 @@ export async function deletE(url, deleteData) {
 
 export async function get(url, postData) {
 
-    const token = JSON.parse(sessionStorage.getItem("token"))
+    const token = JSON.parse(localStorage.getItem("token"))
 
 
     return await axios({
@@ -178,7 +182,6 @@ export async function get(url, postData) {
     }).then(response => {
         return response
     }).catch(err => {
-        console.log(err)
         throw err
     })
 

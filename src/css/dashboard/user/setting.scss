@@ -1,0 +1,101 @@
+// Variables
+$MqSize: 1024px;
+$ColorPrimary: #4976f3;
+
+// Defining styles
+.container-dashboard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+
+  .container-item {
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .dashboard-error {
+    background-color: rgba(255, 0, 0, .2);
+    color: red;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .dashboard-succses {
+    background-color: rgba(0, 255, 13, 0.2);
+    color: rgba(0,255,13);
+    border: 1px solid rgba(0,255,13);
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .dashboard-submit-btn {
+    background-color: $ColorPrimary;
+    padding: 10px;
+    border-radius: 20px;
+    display: block;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+
+    &:disabled {
+      pointer-events: none;
+      opacity: 20%;
+    }
+  }
+
+  .dashboard-form-input {
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px;
+    border: 1px solid $ColorPrimary;
+    transition: 500ms;
+    width: 100%;
+
+    &:focus {
+      background-color: $ColorPrimary;
+      color: white;
+    }
+
+    &:focus::placeholder {
+      color: white;
+    }
+
+    &::placeholder {
+      color: $ColorPrimary;
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+
+  .dashboard-form-label {
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+  }
+
+  .dashboard-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}

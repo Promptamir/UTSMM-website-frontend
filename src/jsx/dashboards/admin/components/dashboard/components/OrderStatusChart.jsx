@@ -12,9 +12,6 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { useFetch } from '../../../../../../lib/useFetch';
-import { API } from '../../../../../../lib/envAccess';
-import { useEffect, useState } from 'react';
 
 
 ChartJS.register(
@@ -65,41 +62,17 @@ const options = {
         },
     }
 };
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
+function randomRGBA() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    const a = 0.2; // Alpha value set to 0.2
+    return `rgba(${r},${g},${b},${a})`;
+}
 
 export default function OrderStatusChart() {
-
-    const [chartData, chartDataError, chartDataLoading, setChartchartDataUrl] = useFetch(API.ADMIN_DASHBOARD.ORDER_STATUS.WEEKLY.GET)
-
-
-    const [chartModeDate, setChartModeDate] = useState(dateSelectOptions[0].value)
-
-
-    useEffect(() => {
-
-        switch (chartModeDate) {
-            case dateSelectOptions[0].value: {
-                setChartchartDataUrl(API.ADMIN_DASHBOARD.ORDER_STATUS.WEEKLY.GET)
-                break;
-            }
-            case dateSelectOptions[1].value: {
-                setChartchartDataUrl(API.ADMIN_DASHBOARD.ORDER_STATUS.MONTHLY.GET)
-                break;
-            }
-            case dateSelectOptions[2].value: {
-                setChartchartDataUrl(API.ADMIN_DASHBOARD.ORDER_STATUS.YEARLY.GET)
-                break;
-            }
-        }
-    }, [chartModeDate])
-
-
-
-
-
-
-    if (chartDataLoading) return <h1> Loading</h1>
-
     return (
         <div className="order-status box">
             <div className="info">
@@ -114,7 +87,6 @@ export default function OrderStatusChart() {
                         options={dateSelectOptions}
                         placeholder={"Date"}
                         isSearchable={true}
-                        onChange={(e) => { setChartModeDate(e.value) }}
                         defaultValue={dateSelectOptions[0]}
                     />
                     <Select
@@ -127,9 +99,7 @@ export default function OrderStatusChart() {
             </div>
             <div className="summary">
                 <div className="item">
-                    <div className="item-header">
-                        {chartData?.summary?.onSuccessData}
-                    </div>
+                    <div className="item-header">X</div>
                     <div className="item-body">
                         success
                         <Icon icon="bi:circle-fill" color="green" />
@@ -137,9 +107,7 @@ export default function OrderStatusChart() {
                 </div>
 
                 <div className="item">
-                    <div className="item-header">
-                        {chartData?.summary?.onProgressData}
-                    </div>
+                    <div className="item-header">X</div>
                     <div className="item-body">
                         Progress
                         <Icon icon="bi:circle-fill" color="orange" />
@@ -147,9 +115,7 @@ export default function OrderStatusChart() {
                 </div>
 
                 <div className="item">
-                    <div className="item-header">
-                        {chartData?.summary?.onErrorData}
-                    </div>
+                    <div className="item-header">X</div>
                     <div className="item-body">
                         Failed
                         <Icon icon="bi:circle-fill" color="red" />
@@ -160,8 +126,19 @@ export default function OrderStatusChart() {
                 <Bar
                     options={options}
                     data={{
-                        labels: chartData.labels,
-                        datasets: chartData.datasets
+                        labels,
+                        datasets: [
+                            {
+                                label: 'Dataset 1',
+                                data: 1,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            },
+                            {
+                                label: 'Dataset 2',
+                                data: 2,
+                                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                            },
+                        ],
                     }}
                 />
             </div>

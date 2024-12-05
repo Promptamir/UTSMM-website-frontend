@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import FiledSet from '../../../../cutsome-components/Fieldset/FiledSet'
 import { Icon } from '@iconify/react'
 import Lottie from 'react-lottie-player';
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { post } from '../../../../../lib/useFetch';
 import { API } from '../../../../../lib/envAccess';
 import Swal from "sweetalert2"
-
+import BE_URL from "../../../../../lib/envAccess";
 
 
 
@@ -41,24 +41,38 @@ export default function Poster() {
 
 
 
+    const emailRef = useRef();
+    const passwordRef = useRef();
+
     const authFormSubmites = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target)
-        post(API.AUTH.LOGIN, formData)
-            .then(res => {
-                const token = res?.data?.token
-                sessionStorage.setItem("token", JSON.stringify(token))
 
-                Swal.fire({
-                    icon: "success",
-                    text: res.data.message,
-                }).finally(end => {
-                    setIsActive(isTokenExist())
-                })
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
 
+        fetch(`${BE_URL}/auth-tokens`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept" : "application/json",
+                "X-Requested-With" : "XMLHttpRequest"
+            },
+            body: JSON.stringify({
+                "email": email,
+                "password": password
             })
-            .catch(err => {
-                console.log(err)
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                Swal.fire('You are logged in now.');
+                localStorage.setItem('token', JSON.stringify(data.entities.token));
+                window.location.reload();
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error. Please try again'
+                });
             })
     }
 
@@ -93,7 +107,9 @@ export default function Poster() {
                                             title: "Email"
                                         }}
                                     inputType={"text"}
-                                    inputName={"email"} />
+                                    inputName={"email"}
+                                    inputRef={emailRef}
+                                />
                                 <FiledSet
                                     fieldClassName={"main-page-auth-fields"}
                                     legend={
@@ -102,7 +118,9 @@ export default function Poster() {
                                             title: "Password"
                                         }}
                                     inputType={"password"}
-                                    inputName={"password"} />
+                                    inputName={"password"}
+                                    inputRef={passwordRef}
+                                />
                             </div>
                             <div className="form-options">
                                 <label >
@@ -117,7 +135,7 @@ export default function Poster() {
 
 
                                 <button type='button'
-                                    onClick={signUpClick} >
+                                        onClick={signUpClick} >
                                     <Icon icon="mdi:register" />
                                     <span>
                                         Sign Up

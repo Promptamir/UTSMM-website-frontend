@@ -1,3 +1,22 @@
+.modal-row {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal-row span {
+  width: 50%;
+  display: block;
+  font-weight: normal;
+  color: black;
+  font-size: 15px;
+}
+.modal-row span:first-of-type {
+  font-weight: bold;
+}
+
 .services-page {
   display: grid;
   flex-direction: column;
@@ -106,9 +125,6 @@
   all: unset;
   width: 100%;
 }
-.services-page .search .right .form-search input::-moz-placeholder {
-  color: #0d4bf4;
-}
 .services-page .search .right .form-search input::placeholder {
   color: #0d4bf4;
 }
@@ -181,7 +197,6 @@
   justify-content: center !important;
   padding: 1em;
   text-align: start;
-  max-height: -moz-max-content !important;
   max-height: max-content !important;
 }
 .services-page .suggested-services .first-slide {
@@ -373,7 +388,6 @@
     display: none;
   }
   .services-page .search .right .form-search {
-    width: -moz-max-content;
     width: max-content;
   }
   .services-page .social-icons {
@@ -461,4 +475,6 @@
     border-radius: 50%;
     padding: 0.2em;
   }
-}/*# sourceMappingURL=ServicesPageStyle.css.map */
+}
+
+/*# sourceMappingURL=ServicesPageStyle.css.map */

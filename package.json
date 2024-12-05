@@ -3,20 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@prisma/client": "^5.5.2",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^5.28.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.6.2",
+    "@wojtekmaj/react-daterange-picker": "^6.0.0",
+    "axios": "^1.6.8",
     "chart.js": "^4.4.0",
     "chartjs-chart-geo": "^4.2.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
+    "html-react-parser": "^5.1.10",
     "mongoose": "^7.6.3",
     "papaparse": "^5.4.1",
+    "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
@@ -28,6 +33,7 @@
     "react-line-progress-bar-steps": "^0.0.5",
     "react-lottie-player": "^1.5.4",
     "react-particles": "^2.12.2",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.1.1",
     "react-responsive-pagination": "^2.2.4",
     "react-router-dom": "^6.14.1",
@@ -37,6 +43,7 @@
     "react-sweet-progress": "^1.1.2",
     "react-sweetalert2": "^0.6.0",
     "react-switch": "^7.0.0",
+    "react-syntax-highlighter": "^15.5.0",
     "react-vertical-timeline-component": "^3.6.0",
     "react-wavify": "^1.9.0",
     "redux": "^4.2.1",
@@ -46,9 +53,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -72,6 +79,9 @@
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
     "@iconify/react": "^4.1.1",
-    "prisma": "^5.5.2"
+    "compression-webpack-plugin": "^11.1.0",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "prisma": "^5.5.2",
+    "terser-webpack-plugin": "^5.3.10"
   }
 }

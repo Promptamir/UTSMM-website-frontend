@@ -1,0 +1,14 @@
+.not-found-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  padding-inline: 20px;
+  background-color: #4976f3;
+}
+.not-found-page .title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+}
+
+/*# sourceMappingURL=404PageStyle.css.map */

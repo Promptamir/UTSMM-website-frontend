@@ -3,10 +3,7 @@ import React from 'react'
 import { useFetch } from '../../../../lib/useFetch'
 import { API } from '../../../../lib/envAccess'
 
-const UserQuickView = () => {
-    const [data , error , loading ] = useFetch(API.DASHBOARD.QUICK_VIEW.GET)
-
-    
+const UserQuickView = ({orders, spend, balance, activeOrders}) => {
     return (
         <div className="user-quick-view">
             <div className="item">
@@ -18,7 +15,7 @@ const UserQuickView = () => {
                         Total Orders
                     </div>
                     <div className="body">
-                        {data.totalOrders}
+                        {orders}
                     </div>
                 </div>
 
@@ -33,7 +30,7 @@ const UserQuickView = () => {
                         Total Spend
                     </div>
                     <div className="body">
-                        ${data.totalSpend}
+                        ${spend}
                     </div>
                 </div>
 
@@ -48,7 +45,7 @@ const UserQuickView = () => {
                         Account Balance
                     </div>
                     <div className="body">
-                        ${data.accountBalance}
+                        ${balance}
                     </div>
                 </div>
 
@@ -63,7 +60,7 @@ const UserQuickView = () => {
                        Active Orders
                     </div>
                     <div className="body">
-                        {data.activeOrders}
+                        {activeOrders}
                     </div>
                 </div>
 

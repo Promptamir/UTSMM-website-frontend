@@ -70,12 +70,12 @@ export default function ShareTweet() {
                     </h1>
                     <p>
                         Share a <div className="under-line">
-                            positive review about us in any social media platform</div>
+                        positive review about us in any social media platform</div>
                         and send proof to our support. Get rewarded with $0.5 credit as our way of saying thank you!
                     </p>
                 </div>
                 <form className="input-box "
-                    onSubmit={handleProofSubmit}
+                      onSubmit={handleProofSubmit}
                 >
                     {shareSteps === 0 && <div className="input step">
                         <label >
